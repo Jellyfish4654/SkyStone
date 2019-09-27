@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
+@TeleOp(name = "TensorFlow: TFStone proof of concept", group = "Concept")
 public class StoneDetectTest extends LinearOpMode {
 
     TFStoneDetector stoneDetector = new TFStoneDetector();
@@ -18,7 +18,7 @@ public class StoneDetectTest extends LinearOpMode {
         stoneDetector.initVuforia(this);
         stoneDetector.initTfod();
         stoneDetector.activateTF();
-        
+
         waitForStart();
 
         while (opModeIsActive()) {
