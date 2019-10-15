@@ -11,4 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "JellyTele")
 public class JellyTele extends LinearOpMode{
     
+    public void runOpMode(){
+    }
+
 }

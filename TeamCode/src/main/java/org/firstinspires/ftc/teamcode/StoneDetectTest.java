@@ -5,11 +5,13 @@ import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 import org.firstinspires.ftc.teamcode.framework.Datalog;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "TensorFlow: TFStone proof of concept", group = "Concept")
+@TeleOp(name = "TFStone: Working proof of concept", group = "Concept")
 public class StoneDetectTest extends LinearOpMode {
 
     TFStoneDetector stoneDetector = new TFStoneDetector();

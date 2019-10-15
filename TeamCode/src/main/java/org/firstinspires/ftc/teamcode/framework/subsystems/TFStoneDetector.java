@@ -16,10 +16,11 @@ public class TFStoneDetector {
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
 
-    private static final String VUFORIA_KEY = "AV7cAYn/////AAAAGXDR1Nv900lOoewPO1Nq3ypDBIfk+d8X+UJOgVQZn5ZvQIY5Y4yGL6DVf24bEoMOVLCq5sZXPs9937r2zpeSZQaaaJbxeWggveVuvccsVlBdR38brId6fIRi/ssxtkUpVppCaRDO1N6K7IVbAJWrhpv1rG2DqTcS51znxjEYDE34AN6sNkurIq/qs0tLfvI+lx5VYRKdqh5LwnVt2HnpdX836kSbAN/1wnupzlLSKHcVPF9zlmRjCXrHduW8ikVefKAPGNCEzaDj4D+X+YM9iaHj9H8qN23bbaT81Ze3g5WwrXsb6dsX1N3+FqeXbiEUB02lXsmGwtvCJI89xutgPzlDAHqerduaLS2WZbL3oVyS";
+    private static final String VUFORIA_KEY = "AazZIlb/////AAABmRbCE9nGwUxMsIXmlS2x1+NMRNQ8Hz20HMiHWJeSBk9fXUYA5XnNqK6z4fAkSQmPHAxHfdp6DuLU6Qq1dVRe+sGvRuRPO15KyqgDIMqRAtlQQLOjyo0wuJF73BrtYGSWI9/axd7kUXLRBR9gurnTRqVxVLp8ktFsH05GoL4AR8fNP/UNJiEs/v7QQ5aBtYs4qhOGspKEV0YI/s+2ljKdWJpHcLRpu9jJYoFrbp47FZiRyK0L4VRWQ5dfxOUKyiCmQgID3j4ZHj0PGvwzz/c4n6OZxz7SrXW8pLPkfZE4H1+g6/bypvqRv8WZxrNgduI9IGGvIC5A+5IRqVcmqkTNIkIAgbAjV7mg/AeWx329RwF6";
 
     VuforiaLocalizer vuforia;
     TFObjectDetector tfod;
+    WebcamName webcamName;
 
     private LinearOpMode linearOpMode;
 
@@ -30,11 +31,11 @@ public class TFStoneDetector {
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
 
+        
         // Phone cam and webcam
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        // parameters.cameraName = linearOpMode.hardwareMap.get(WebcamName.class,
-        // "Webcam 1");
-
+        //parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraName = linearOpMode.hardwareMap.get(WebcamName.class, "Webcam 1");
+      
         // Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
     }
@@ -48,10 +49,10 @@ public class TFStoneDetector {
             tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
             tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
 
-            linearOpMode.telemetry.addData(">>","TensorFlow Init");
+            linearOpMode.telemetry.addData(">>", "TensorFlow Init");
             linearOpMode.telemetry.update();
         } else {
-            linearOpMode.telemetry.addData(">>","Check Phone. TFOD Incompatibility Error");
+            linearOpMode.telemetry.addData(">>", "Check Phone. TFOD Incompatibility Error");
             linearOpMode.telemetry.update();
         }
     }
