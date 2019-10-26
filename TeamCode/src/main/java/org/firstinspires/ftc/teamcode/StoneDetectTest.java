@@ -18,7 +18,7 @@ public class StoneDetectTest extends LinearOpMode {
 
     public void runOpMode() {
         stoneDetector.initVuforia(this);
-        stoneDetector.initTfod(0.6); //Lower confidence can distinguish between individual stones better
+        stoneDetector.initTfod(0.55); // Lower confidence can distinguish between individual stones better
         stoneDetector.activateTF();
 
         waitForStart();
