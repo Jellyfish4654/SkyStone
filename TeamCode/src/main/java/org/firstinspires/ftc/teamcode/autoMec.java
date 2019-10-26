@@ -18,8 +18,8 @@ import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 
 import java.util.ArrayList;
 
-@Autonomous(name = "autoMec Test")
-public class autoMec extends LinearOpMode {
+@Autonomous(name = "AutoMec Test")
+public class AutoMec extends LinearOpMode {
     Telemetry telemetry;
     IDriveTrain drive;
 
