@@ -43,6 +43,6 @@ public class Odometry implements Moveable {
 
     @Override
     public void stop() {
-
+        layer.stop();
     }
 }
