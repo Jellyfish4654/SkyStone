@@ -93,8 +93,8 @@ public class Mecanum implements IDriveTrain {
             this.setPowerAll(powers[0], powers[1], powers[2], powers[3]);
         }
     }
-    // calculate power for x direction
 
+    // calculate power for x direction
     private double calculateX(double desiredAngle, double speed) {
         return Math.sin(Math.toRadians(desiredAngle)) * speed;
     }
@@ -125,11 +125,13 @@ public class Mecanum implements IDriveTrain {
         horizontalLastEncoder = 0;
     }
 
+    // checks whether it needs to continue moving or stop, then calls rawSlide
     public boolean move(double currentPosition, double targetPosition, double rampDownTargetPosition,
             double rampUpTargetPosition, double rampDownEnd, double maxPower, double lowPower, double moveAngle,
             double[] PIDGain, double endOrientationAngle, double allowableDistanceError, double correctionTime) {
         double positionDifference = targetPosition - currentPosition;
 
+        // if it's within allowableDistanceError of the end, stop moving
         if (Math.abs(positionDifference) <= allowableDistanceError) {
             this.stop();
 
@@ -145,9 +147,11 @@ public class Mecanum implements IDriveTrain {
             double power;
             if (rampDownEndDifference >= Math.abs(positionDifference)) {
                 power = lowPower;
+            // if current position is between rampDown and rampEnd gradually ramp down
             } else if (rampDownDifference > Math.abs(positionDifference)) {
                 power = Math.abs((positionDifference) - rampDownDifference)
                         * ((maxPower - lowPower) / (rampDownDifference - rampDownEndDifference)) + maxPower;
+            // if current position is before rampEnd, set to max power
             } else {
                 power = maxPower;
             }
@@ -177,9 +181,9 @@ public class Mecanum implements IDriveTrain {
             this.stop();
             targetReached = false;
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**

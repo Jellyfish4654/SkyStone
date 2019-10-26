@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class BaseOpMode extends OpMode {
-
     protected Servo claw, colorArm, clawPitch, glyph, hugLeft, hugRight;
     protected ColorSensor color;
     protected DcMotor backLeftDrive, backRightDrive, frontLeftDrive, frontRightDrive, hug;
@@ -43,5 +42,4 @@ public class BaseOpMode extends OpMode {
 
         setPowers(power * sin, power * cos, power * cos, power * sin);
     }
-
 }
