@@ -147,11 +147,11 @@ public class Mecanum implements IDriveTrain {
             double power;
             if (rampDownEndDifference >= Math.abs(positionDifference)) {
                 power = lowPower;
-            // if current position is between rampDown and rampEnd gradually ramp down
+                // if current position is between rampDown and rampEnd gradually ramp down
             } else if (rampDownDifference > Math.abs(positionDifference)) {
                 power = Math.abs((positionDifference) - rampDownDifference)
                         * ((maxPower - lowPower) / (rampDownDifference - rampDownEndDifference)) + maxPower;
-            // if current position is before rampEnd, set to max power
+                // if current position is before rampEnd, set to max power
             } else {
                 power = maxPower;
             }
@@ -182,7 +182,6 @@ public class Mecanum implements IDriveTrain {
             targetReached = false;
             return false;
         }
-
         return true;
     }
 
