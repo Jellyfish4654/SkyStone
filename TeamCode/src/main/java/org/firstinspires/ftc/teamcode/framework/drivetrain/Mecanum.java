@@ -7,7 +7,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
 import org.firstinspires.ftc.teamcode.enums.Direction;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IIMU;
-import org.firstinspires.ftc.teamcode.framework.Datalog;
 import org.firstinspires.ftc.teamcode.framework.Utility;
 
 import java.util.List;
@@ -16,8 +15,6 @@ public class Mecanum implements IDriveTrain {
     private List<DcMotor> motors;
     private List<DcMotor> encoders;
     private IIMU imu;
-
-    private Datalog data;
 
     private final double END_ANGLE_OFFSET = 5;
 

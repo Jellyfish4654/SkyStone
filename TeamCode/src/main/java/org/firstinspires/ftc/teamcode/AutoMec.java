@@ -9,21 +9,20 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
 import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IIMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
+import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 
 import java.util.ArrayList;
 
 @Autonomous(name = "AutoMec Test")
 public class AutoMec extends LinearOpMode {
-    Telemetry telemetry;
     IDriveTrain drive;
+    TFStoneDetector stoneDetector;
 
-    DcMotor mFrontLeft, mFrontRight, mBackLeft, mBackRight; // Declare mecanum motors
+    DcMotor mRightFront, mRightBack, mLeftFront, mLeftBack; // Declare mecanum motors
     DcMotor eVerticalLeft, eVerticalRight, eHorizontal, eHorizontalEmpty; // Declares odometry encoder (last one is
                                                                           // empty)
     ArrayList motors, encoders;
@@ -45,16 +44,34 @@ public class AutoMec extends LinearOpMode {
     final double countsPerMM;
 
     @Override
-    public void runOpMode() throws IntterruptedException {
+    public void runOpMode() throws InterruptedException {
+        telemetry.addline("Status");
 
-        // Init Drivetrain
+        initHardware();
+
+        // Init Drivetrain Systems and IMU Params
         drive = new MecanumDrive(motors, imu, telemetry, encoders);
+        drive.resetEncoders();
+
+        // Init Stone Detector
+        stoneDetector = new TFStoneDetector();
+        stoneDetector.initVuforia(this);
+        stoneDetector.initTfod(0.55);
+
+        waitForStart();
     }
 
     public void declareStonePositions() {
 
     }
 
+    /**
+     * Simplification of drive move
+     * 
+     * @param targetPosition
+     * @param moveAngle
+     * @param endOrientationAngle
+     */
     public void move(double targetPosition, double moveAngle, double endOrientationAngle) {
         double rampDownTargetPosition = targetPosition * .8;
         double rampUpTargetPosition = targetPosition * .1;
@@ -67,5 +84,59 @@ public class AutoMec extends LinearOpMode {
             ;
         drive.stop();
 
+    }
+
+    // Initialization steps
+    public void initHardware() {
+        /*******************************
+         **** Init Motors and Encoders***
+         *********************************/
+
+        /*
+         * Assumes the following hardware map RightFront motor is with vertical left
+         * encoder RightBack motor is with vertical right encoder LeftFront motor is
+         * with horizontal encoder LeftBack motor is with a dummy encoder
+         */
+
+        // Drive Motors
+        mRightFront = hardwareMap.dcMotor.get("rf");
+        mRightBack = hardwareMap.dcMotor.get("rb");
+        mLeftFront = hardwareMap.dcMotor.get("lf");
+        mLeftBack = hardwareMap.dcMotor.get("bl");
+
+        motors = new ArrayList<>();
+        motors.add(mRightFront);
+        motors.add(mRightBack);
+        motors.add(mLeftFront);
+        motors.add(mLeftBack);
+
+        // Odometry encoders
+        eVerticalLeft = hardwareMap.dcMotor("rf");
+        eVerticalRight = hardwareMap.dcMotor.get("rb");
+        eHorizontal = hardwareMap.dcMotor.get("lf");
+        eHorizontalEmpty = hardwareMap.dcMotor.get("bl");
+
+        encoders = new ArrayList<>();
+        encoders.add(eVerticalLeft);
+        encoders.add(eVerticalRight);
+        encoders.add(eHorizontal);
+        encoders.add(eHorizontalEmpty);
+
+        status("Motor and Encoder Hardware Initialized");
+    }
+
+    public void initIMU() {
+        // Init IMU
+        boschIMU = hardwareMap.get(BNO055IMU.class, "imu");
+        imu = new IMU(boschIMU);
+        imu.initialize();
+        imu.setOffset(0);
+        status("IMU Initialized");
+    }
+
+    // Utility
+    public void status(String message) {
+        telemetry.addData("Status", message);
+        telemetry.update();
     }
 }
