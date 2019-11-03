@@ -3,10 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
 import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 
 import java.util.ArrayList;
 
-@Autonomous(name = "AutoMec Test")
+@Autonomous(name = "AutoMec")
 public class AutoMec extends LinearOpMode {
     IDriveTrain drive;
     TFStoneDetector stoneDetector;
@@ -47,15 +47,14 @@ public class AutoMec extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         initHardware();
-
         initVision();
-
         initIMU(0);
 
         // Init Drivetrain Systems and IMU Params
         drive = new Mecanum(motors, imu, telemetry, encoders);
         drive.resetEncoders();
 
+        status("Initialization Complete, Waiting for Start");
         waitForStart();
         // ****START****
 
@@ -145,6 +144,10 @@ public class AutoMec extends LinearOpMode {
         stoneDetector.initTfod(0.55);
     }
 
+    /**
+     * 
+     * @param offSet
+     */
     public void initIMU(double offSet) {
         // Init IMU
         boschIMU = hardwareMap.get(BNO055IMU.class, "imu");
