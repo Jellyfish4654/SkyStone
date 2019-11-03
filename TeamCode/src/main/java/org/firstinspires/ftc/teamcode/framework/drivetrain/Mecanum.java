@@ -39,7 +39,7 @@ public class Mecanum implements IDriveTrain {
      * @param encoders List of encoders (passed in as DcMotor) on drivetrain to
      *                 calculate distances and positions
      */
-    public void MecanumDrive(List<DcMotor> motors, IIMU imu, Telemetry telemetry, List<DcMotor> encoders) {
+    public Mecanum(List<DcMotor> motors, IIMU imu, Telemetry telemetry, List<DcMotor> encoders) {
         this.motors = motors;
         this.imu = imu;
         this.imu.initialize();

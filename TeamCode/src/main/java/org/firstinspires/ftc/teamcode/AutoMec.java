@@ -34,35 +34,46 @@ public class AutoMec extends LinearOpMode {
     final double defaultMinPower = .3;
     final double defaultMinPowerPivot = .15;
 
-    final double defaultRampUpModifier = .2;
-    final double defaultRampDownModifer;
-    final double defaultRampEndModifer;
+    final double defaultRampUpModifier = .1;
+    final double defaultRampDownModifer = .8; 
+    final double defaultRampDownEndModifer = .9;
     final double defaultErrorDistance = 10;
     final double defaultCorrectionTime = 500; // ms
 
     final double[] defaultPIDGain = { .02 };
-    final double countsPerMM;
+    final double countsPerMM = 500; //change this
 
     @Override
     public void runOpMode() throws InterruptedException {
-        telemetry.addline("Status");
 
         initHardware();
 
+        initVision();
+
+        initIMU(0);
+
         // Init Drivetrain Systems and IMU Params
-        drive = new MecanumDrive(motors, imu, telemetry, encoders);
+        drive = new Mecanum(motors, imu, telemetry, encoders);
         drive.resetEncoders();
 
-        // Init Stone Detector
-        stoneDetector = new TFStoneDetector();
-        stoneDetector.initVuforia(this);
-        stoneDetector.initTfod(0.55);
-
         waitForStart();
+        // ****START****
+
+        // move to stones
+
+        declareStonePositions();
+
+        // collect and move to drop
+
+        // move to stone position
+
     }
 
     public void declareStonePositions() {
-
+        // Reset origin, Check position one, if can be determined return
+        // DO NOT RESET ORIGIN Check position two, if can be determined return
+        // DO NOT RESET ORIGIN Check position three, if can be determined return
+        // DO NOT RESET ORIGIN Move to last pos and return
     }
 
     /**
@@ -72,12 +83,14 @@ public class AutoMec extends LinearOpMode {
      * @param moveAngle
      * @param endOrientationAngle
      */
-    public void move(double targetPosition, double moveAngle, double endOrientationAngle) {
-        double rampDownTargetPosition = targetPosition * .8;
-        double rampUpTargetPosition = targetPosition * .1;
-        double rampDownEnd = targetPosition * .9;
+    public void move(boolean resetOrigin, double targetPosition, double moveAngle, double endOrientationAngle) {
+        double rampDownTargetPosition = targetPosition * defaultRampDownModifer;
+        double rampUpTargetPosition = targetPosition * defaultRampUpModifier;
+        double rampDownEnd = targetPosition * defaultRampDownEndModifer;
 
-        drive.softEncoderReset();
+        if (resetOrigin)
+            drive.softEncoderReset();
+
         while (opModeIsActive() && drive.move(drive.getEncoderDistance(), targetPosition, rampDownTargetPosition,
                 rampUpTargetPosition, rampDownEnd, defaultMaxPower, defaultMinPower, moveAngle, defaultPIDGain,
                 endOrientationAngle, defaultErrorDistance, defaultCorrectionTime))
@@ -111,7 +124,7 @@ public class AutoMec extends LinearOpMode {
         motors.add(mLeftBack);
 
         // Odometry encoders
-        eVerticalLeft = hardwareMap.dcMotor("rf");
+        eVerticalLeft = hardwareMap.dcMotor.get("rf");
         eVerticalRight = hardwareMap.dcMotor.get("rb");
         eHorizontal = hardwareMap.dcMotor.get("lf");
         eHorizontalEmpty = hardwareMap.dcMotor.get("bl");
@@ -125,12 +138,19 @@ public class AutoMec extends LinearOpMode {
         status("Motor and Encoder Hardware Initialized");
     }
 
-    public void initIMU() {
+    public void initVision() {
+        // Init Stone Detector
+        stoneDetector = new TFStoneDetector();
+        stoneDetector.initVuforia(this);
+        stoneDetector.initTfod(0.55);
+    }
+
+    public void initIMU(double offSet) {
         // Init IMU
         boschIMU = hardwareMap.get(BNO055IMU.class, "imu");
         imu = new IMU(boschIMU);
         imu.initialize();
-        imu.setOffset(0);
+        imu.setOffSet(offSet);
         status("IMU Initialized");
     }
 

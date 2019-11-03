@@ -67,7 +67,7 @@ public interface IDriveTrain {
          * 
          * @return List with total encoder distances
          */
-        double[] getEncoderDistance();
+        double getEncoderDistance();
 
         /**
          * Stops all running drivetrain motors
