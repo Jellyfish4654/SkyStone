@@ -114,7 +114,7 @@ public class AutoMec extends LinearOpMode {
         mRightFront = hardwareMap.dcMotor.get("rf");
         mRightBack = hardwareMap.dcMotor.get("rb");
         mLeftFront = hardwareMap.dcMotor.get("lf");
-        mLeftBack = hardwareMap.dcMotor.get("bl");
+        mLeftBack = hardwareMap.dcMotor.get("lb");
 
         motors = new ArrayList<>();
         motors.add(mRightFront);
@@ -126,7 +126,7 @@ public class AutoMec extends LinearOpMode {
         eVerticalLeft = hardwareMap.dcMotor.get("rf");
         eVerticalRight = hardwareMap.dcMotor.get("rb");
         eHorizontal = hardwareMap.dcMotor.get("lf");
-        eHorizontalEmpty = hardwareMap.dcMotor.get("bl");
+        eHorizontalEmpty = hardwareMap.dcMotor.get("lb");
 
         encoders = new ArrayList<>();
         encoders.add(eVerticalLeft);
