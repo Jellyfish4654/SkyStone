@@ -99,6 +99,16 @@ public class JellyTele extends BaseOpMode {
     }
 
     private void setPowers(double mult, double frontRight, double backRight, double frontLeft, double backLeft) {
-        super.setPowers(frontRight * mult, backRight * mult, frontLeft * mult, backLeft * mult);
+        this.mFR.setPower(frontRight * mult);
+        this.mBR.setPower(backRight * mult);
+        this.mFL.setPower(frontLeft * mult);
+        this.mBL.setPower(backLeft * mult);
+    }
+
+    protected void setMecanumPowers(double mult, double angle, double power) {
+        double sin = Math.sin(angle - Math.PI / 4);
+        double cos = Math.cos(angle - Math.PI / 4);
+
+        setPowers(mult, power * sin, power * cos, power * cos, power * sin);
     }
 }

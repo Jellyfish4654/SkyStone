@@ -7,12 +7,13 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class BaseOpMode extends OpMode {
+public abstract class BaseOpMode extends OpMode {
 //  protected Servo claw, colorArm, clawPitch, glyph, hugLeft, hugRight;
 //  protected ColorSensor color;
 //  protected DcMotor hug;
     protected DcMotor mFR, mBR, mFL, mBL;
 
+    @Override
     public void init() {
         mFR = hardwareMap.dcMotor.get("fr");
         mBR = hardwareMap.dcMotor.get("br");
@@ -24,22 +25,5 @@ public class BaseOpMode extends OpMode {
         mFL.setDirection(DcMotorSimple.Direction.REVERSE);
         // backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
-    }
-
-    public void loop() {
-    }
-
-    protected void setPowers(double rightFront, double rightBack, double leftFront, double leftBack) {
-        this.mFR.setPower(rightFront);
-        this.mBR.setPower(rightBack);
-        this.mFL.setPower(leftFront);
-        this.mBL.setPower(leftBack);
-    }
-
-    protected void setMecanumPowers(double angle, double power) {
-        double sin = Math.sin(angle - Math.PI / 4);
-        double cos = Math.cos(angle - Math.PI / 4);
-
-        setPowers(power * sin, power * cos, power * cos, power * sin);
     }
 }
