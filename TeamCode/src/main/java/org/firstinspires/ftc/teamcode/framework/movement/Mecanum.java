@@ -13,7 +13,7 @@ public class Mecanum implements Moveable {
     }
 
     @Override
-    public void move(double dist, double dir, double angle) {
+    public void move(double dist, double dir, double angle, double speed) {
         // todo: convert dist        
         layer.softEncoderReset();
 
@@ -35,7 +35,7 @@ public class Mecanum implements Moveable {
     }
 
     @Override
-    public void pivot(double angle) {
+    public void pivot(double angle, double speed) {
         double rampDownAngle = angle * 0.8;
         double allowableError = angle * 0.1;
         while(layer.pivot(angle, rampDownAngle, 1.0, 0.1, correctionTime, allowableError, Direction.FASTEST));
