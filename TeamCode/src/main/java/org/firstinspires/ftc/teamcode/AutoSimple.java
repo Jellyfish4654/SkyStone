@@ -26,7 +26,7 @@ import java.util.ArrayList;
 @Autonomous(name = "AutoSimple")
 public class AutoSimple extends LinearOpMode {
     TFStoneDetector stoneDetector;
-    DcMotor mBF, mBR, mFL, mBL; // Declares motors
+    DcMotor mFR, mBR, mFL, mBL; // Declares motors
     DcMotor eRightFront, eRightBack, eLeftFront, eLeftBack; // Declares motor encoders
 
     ArrayList motors, encoders;
@@ -58,13 +58,13 @@ public class AutoSimple extends LinearOpMode {
          */
 
         // Drive Motors
-        mBF = hardwareMap.dcMotor.get("fr");
+        mFR = hardwareMap.dcMotor.get("fr");
         mBR = hardwareMap.dcMotor.get("br");
         mFL = hardwareMap.dcMotor.get("fl");
         mBL = hardwareMap.dcMotor.get("bl");
 
         motors = new ArrayList<>();
-        motors.add(mBF);
+        motors.add(mFR);
         motors.add(mBR);
         motors.add(mFL);
         motors.add(mBL);
