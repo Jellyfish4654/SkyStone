@@ -7,11 +7,14 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+
 public abstract class BaseOpMode extends OpMode {
 //  protected Servo claw, colorArm, clawPitch, glyph, hugLeft, hugRight;
 //  protected ColorSensor color;
 //  protected DcMotor hug;
     protected DcMotor mFR, mBR, mFL, mBL;
+    protected BNO055IMU imu;
 
     @Override
     public void init() {
@@ -25,5 +28,7 @@ public abstract class BaseOpMode extends OpMode {
         mFL.setDirection(DcMotorSimple.Direction.REVERSE);
         // backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        // Initialize imu
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
     }
 }

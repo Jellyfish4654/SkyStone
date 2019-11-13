@@ -32,9 +32,6 @@ public class JellyTele extends BaseOpMode {
         DRIVE, MECANUM, TANK, MECANUM2
     }
 
-    // The IMU sensor object
-    BNO055IMU imu;
-
     // State used for updating telemetry
     Orientation angles;
     Acceleration gravity;
@@ -42,11 +39,6 @@ public class JellyTele extends BaseOpMode {
     private State state = State.DRIVE;
 
     int temp = 0;
-
-    DcMotor frontLeft;
-    DcMotor frontRight;
-    DcMotor backLeft;
-    DcMotor backRight;
 
     @Override
     public void start() {
