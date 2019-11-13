@@ -101,6 +101,6 @@ public class JellyTele extends BaseOpMode {
         double sin = Math.sin(angle - Math.PI / 4);
         double cos = Math.cos(angle - Math.PI / 4);
 
-        setPowers(mult, power * sin, power * cos, power * cos, power * sin);
+        setPowers(mult, power * cos, power * sin, power * sin, power * cos);
     }
 }
