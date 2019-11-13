@@ -4,12 +4,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 /** Implements Moveable without using Odometry. */
 public class Tank implements Moveable {
-    DcMotor mLF, mLB, mRF, mRB;
-    public Tank(DcMotor mLF, DcMotor mLB, DcMotor mRF, DcMotor mRB) {
-        this.mLF = mLF;
-        this.mLB = mLB;
-        this.mRF = mRF;
-        this.mRB = mRB;
+    DcMotor mFR, mBR, mFL, mBL;
+    public Tank(DcMotor mFR, DcMotor mBR, DcMotor mFL, DcMotor mBL) {
+        this.mFR = mFR;
+        this.mBR = mBR;
+        this.mFL = mFL;
+        this.mBL = mBL;
     }
 
     @Override

@@ -68,7 +68,7 @@ public class JellyTele extends BaseOpMode {
         double x = gamepad1.left_stick_x, y = gamepad1.left_stick_y;
         switch (state) {
         case DRIVE:
-            setPowers(mult, y - x, y - x, y + x, y + x);
+            setPowers(mult, y + x, y + x, y - x, y - x);
             break;
         case MECANUM:
             double power = Math.sqrt(x * x + y * y);
@@ -76,7 +76,7 @@ public class JellyTele extends BaseOpMode {
             double sin = Math.sin(angle - Math.PI / 4);
             double cos = Math.cos(angle - Math.PI / 4);
 
-            setPowers(mult * power, sin, cos, cos, sin);
+            setPowers(mult * power, cos, sin, sin, cos);
             break;
         case MECANUM2:
             double power2 = Math.sqrt(x * x + y * y);
@@ -86,19 +86,19 @@ public class JellyTele extends BaseOpMode {
 
             double turn = -gamepad1.right_stick_x;
 
-            setPowers(mult, power2 * sin2 + turn, power2 * cos2 + turn, power2 * cos2 - turn, power2 * sin2 - turn);
+            setPowers(mult, power2 * cos2 - turn, power2 * sin2 - turn, power2 * sin2 + turn, power2 * cos2 + turn);
             break;
         case TANK:
             // left is y
             double left = gamepad1.left_stick_y;
             double right = gamepad1.right_stick_y;
-            setPowers(mult, left, left, right, right);
+            setPowers(mult, right, right, left, left);
             break;
         }
 
     }
 
-    private void setPowers(double mult, double frontLeft, double backLeft, double frontRight, double backRight) {
-        super.setPowers(frontLeft * mult, backLeft * mult, frontRight * mult, backRight * mult);
+    private void setPowers(double mult, double frontRight, double backRight, double frontLeft, double backLeft) {
+        super.setPowers(frontRight * mult, backRight * mult, frontLeft * mult, backLeft * mult);
     }
 }
