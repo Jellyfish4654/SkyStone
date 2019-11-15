@@ -41,7 +41,7 @@ public class TFStoneDetector {
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
     }
 
-    public void initTfod(Double minConfidence) {
+    public void initTfod(double minConfidence) {
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
             int tfodMonitorViewId = linearOpMode.hardwareMap.appContext.getResources()
                     .getIdentifier("tfodMonitorViewId", "id", linearOpMode.hardwareMap.appContext.getPackageName());
