@@ -22,7 +22,7 @@ public class AutoMec extends LinearOpMode {
     IDriveTrain drive;
     TFStoneDetector stoneDetector;
 
-    DcMotor mRightFront, mRightBack, mLeftFront, mLeftBack; // Declare mecanum motors
+    DcMotor mFR, mBR, mFL, mBL; // Declare mecanum motors
     DcMotor eVerticalLeft, eVerticalRight, eHorizontal, eHorizontalEmpty; // Declares odometry encoder (last one is
                                                                           // empty)
     ArrayList motors, encoders;
@@ -111,22 +111,22 @@ public class AutoMec extends LinearOpMode {
          */
 
         // Drive Motors
-        mRightFront = hardwareMap.dcMotor.get("rf");
-        mRightBack = hardwareMap.dcMotor.get("rb");
-        mLeftFront = hardwareMap.dcMotor.get("lf");
-        mLeftBack = hardwareMap.dcMotor.get("lb");
+        mFR = hardwareMap.dcMotor.get("fr");
+        mBR = hardwareMap.dcMotor.get("br");
+        mFL = hardwareMap.dcMotor.get("fl");
+        mBL = hardwareMap.dcMotor.get("bl");
 
         motors = new ArrayList<>();
-        motors.add(mRightFront);
-        motors.add(mRightBack);
-        motors.add(mLeftFront);
-        motors.add(mLeftBack);
+        motors.add(mFR);
+        motors.add(mBR);
+        motors.add(mFL);
+        motors.add(mBL);
 
         // Odometry encoders
-        eVerticalLeft = hardwareMap.dcMotor.get("rf");
-        eVerticalRight = hardwareMap.dcMotor.get("rb");
-        eHorizontal = hardwareMap.dcMotor.get("lf");
-        eHorizontalEmpty = hardwareMap.dcMotor.get("lb");
+        eVerticalLeft = hardwareMap.dcMotor.get("fr");
+        eVerticalRight = hardwareMap.dcMotor.get("br");
+        eHorizontal = hardwareMap.dcMotor.get("fl");
+        eHorizontalEmpty = hardwareMap.dcMotor.get("bl");
 
         encoders = new ArrayList<>();
         encoders.add(eVerticalLeft);

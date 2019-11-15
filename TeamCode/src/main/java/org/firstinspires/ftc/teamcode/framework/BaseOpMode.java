@@ -7,39 +7,28 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class BaseOpMode extends OpMode {
-    protected Servo claw, colorArm, clawPitch, glyph, hugLeft, hugRight;
-    protected ColorSensor color;
-    protected DcMotor backLeftDrive, backRightDrive, frontLeftDrive, frontRightDrive, hug;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 
+public abstract class BaseOpMode extends OpMode {
+//  protected Servo claw, colorArm, clawPitch, glyph, hugLeft, hugRight;
+//  protected ColorSensor color;
+//  protected DcMotor hug;
+    protected DcMotor mFR, mBR, mFL, mBL;
+    protected BNO055IMU imu;
+
+    @Override
     public void init() {
-        frontLeftDrive = hardwareMap.dcMotor.get("lf");
-        frontRightDrive = hardwareMap.dcMotor.get("rf");
-        backLeftDrive = hardwareMap.dcMotor.get("lb");
-        backRightDrive = hardwareMap.dcMotor.get("rb");
+        mFR = hardwareMap.dcMotor.get("fr");
+        mBR = hardwareMap.dcMotor.get("br");
+        mFL = hardwareMap.dcMotor.get("fl");
+        mBL = hardwareMap.dcMotor.get("bl");
 
         // Allows motor to utilize encoder
-        backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        mBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mFL.setDirection(DcMotorSimple.Direction.REVERSE);
         // backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
-    }
-
-    public void loop() {
-    }
-
-    protected void setPowers(double leftFront, double leftBack, double rightFront, double rightBack) {
-        this.frontLeftDrive.setPower(leftFront);
-        this.backLeftDrive.setPower(leftBack);
-        this.frontRightDrive.setPower(rightFront);
-        this.backRightDrive.setPower(rightBack);
-    }
-
-    protected void setMecanumPowers(double angle, double power) {
-        double sin = Math.sin(angle - Math.PI / 4);
-        double cos = Math.cos(angle - Math.PI / 4);
-
-        setPowers(power * sin, power * cos, power * cos, power * sin);
+        // Initialize imu
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
     }
 }

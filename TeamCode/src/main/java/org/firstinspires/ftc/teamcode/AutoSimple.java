@@ -26,7 +26,7 @@ import java.util.ArrayList;
 @Autonomous(name = "AutoSimple")
 public class AutoSimple extends LinearOpMode {
     TFStoneDetector stoneDetector;
-    DcMotor mRightFront, mRightBack, mLeftFront, mLeftBack; // Declares motors
+    DcMotor mFR, mBR, mFL, mBL; // Declares motors
     DcMotor eRightFront, eRightBack, eLeftFront, eLeftBack; // Declares motor encoders
 
     ArrayList motors, encoders;
@@ -58,21 +58,21 @@ public class AutoSimple extends LinearOpMode {
          */
 
         // Drive Motors
-        mRightFront = hardwareMap.dcMotor.get("rf");
-        mRightBack = hardwareMap.dcMotor.get("rb");
-        mLeftFront = hardwareMap.dcMotor.get("lf");
-        mLeftBack = hardwareMap.dcMotor.get("bl");
+        mFR = hardwareMap.dcMotor.get("fr");
+        mBR = hardwareMap.dcMotor.get("br");
+        mFL = hardwareMap.dcMotor.get("fl");
+        mBL = hardwareMap.dcMotor.get("bl");
 
         motors = new ArrayList<>();
-        motors.add(mRightFront);
-        motors.add(mRightBack);
-        motors.add(mLeftFront);
-        motors.add(mLeftBack);
+        motors.add(mFR);
+        motors.add(mBR);
+        motors.add(mFL);
+        motors.add(mBL);
 
         // Odometry encoders
-        eRightFront = hardwareMap.dcMotor.get("rf");
-        eRightBack = hardwareMap.dcMotor.get("rb");
-        eLeftFront = hardwareMap.dcMotor.get("lf");
+        eRightFront = hardwareMap.dcMotor.get("fr");
+        eRightBack = hardwareMap.dcMotor.get("br");
+        eLeftFront = hardwareMap.dcMotor.get("fl");
         eLeftBack = hardwareMap.dcMotor.get("bl");
 
         encoders = new ArrayList<>();
