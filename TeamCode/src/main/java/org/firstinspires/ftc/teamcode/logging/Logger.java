@@ -22,12 +22,13 @@ public class Logger {
         }
     }
 
-    static boolean log(String label, Object object) {
-        String line = null;
+    public static boolean log(String label, Object object) {
+        Date now = new Date();
+        String line = String.format("%2d:%2d:%2d ", now.getHours(), now.getMinutes(), now.getSeconds());
         if (label.isEmpty()) {
-            line = object.toString() + "\n";
+            line += object.toString() + "\n";
         } else {
-            line = label + ": " + object.toString() + "\n";
+            line += label + ": " + object.toString() + "\n";
         }
 
         try {

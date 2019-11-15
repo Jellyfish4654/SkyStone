@@ -20,9 +20,6 @@ import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 import java.util.ArrayList;
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 
-import org.firstinspires.ftc.teamcode.framework.movement.BaseOpMode;
-
-
 @Autonomous(name = "AutoSimple")
 public class AutoSimple extends BaseOpMode {
     TFStoneDetector stoneDetector;
