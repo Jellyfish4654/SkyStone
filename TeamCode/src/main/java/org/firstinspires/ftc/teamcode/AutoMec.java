@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,22 +14,21 @@ import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 
 @Autonomous(name = "AutoMec")
-public class AutoMec extends LinearOpMode {
+public class AutoMec extends BaseOpMode {
     IDriveTrain drive;
     TFStoneDetector stoneDetector;
 
-    DcMotor mFR, mBR, mFL, mBL; // Declare mecanum motors
-    DcMotor eVerticalLeft, eVerticalRight, eHorizontal, eHorizontalEmpty; // Declares odometry encoder (last one is
-                                                                          // empty)
-    ArrayList motors, encoders;
-
-    IMU imu;
-    BNO055IMU boschIMU;
+    private static class Encoder {
+        static final int VL = 0;
+        static final int VR = 1;
+        static final int H = 2;
+        static final int HE = 3;
+    }
 
     final double defaultMaxPower = .9;
     final double defaultMinPower = .3;
@@ -49,10 +47,9 @@ public class AutoMec extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         initHardware();
         initVision();
-        initIMU(0);
 
         // Init Drivetrain Systems and IMU Params
-        drive = new Mecanum(motors, imu, telemetry, encoders);
+        drive = new Mecanum(Arrays.asList(motors), imu, telemetry, Arrays.asList(motors));
         drive.resetEncoders();
 
         status("Initialization Complete, Waiting for Start");
@@ -99,63 +96,11 @@ public class AutoMec extends LinearOpMode {
 
     }
 
-    // Initialization steps
-    public void initHardware() {
-        /*******************************
-         **** Init Motors and Encoders***
-         *********************************/
-
-        /*
-         * Assumes the following hardware map RightFront motor is with vertical left
-         * encoder RightBack motor is with vertical right encoder LeftFront motor is
-         * with horizontal encoder LeftBack motor is with a dummy encoder
-         */
-
-        // Drive Motors
-        mFR = hardwareMap.dcMotor.get("fr");
-        mBR = hardwareMap.dcMotor.get("br");
-        mFL = hardwareMap.dcMotor.get("fl");
-        mBL = hardwareMap.dcMotor.get("bl");
-
-        motors = new ArrayList<>();
-        motors.add(mFR);
-        motors.add(mBR);
-        motors.add(mFL);
-        motors.add(mBL);
-
-        // Odometry encoders
-        eVerticalLeft = hardwareMap.dcMotor.get("fr");
-        eVerticalRight = hardwareMap.dcMotor.get("br");
-        eHorizontal = hardwareMap.dcMotor.get("fl");
-        eHorizontalEmpty = hardwareMap.dcMotor.get("bl");
-
-        encoders = new ArrayList<>();
-        encoders.add(eVerticalLeft);
-        encoders.add(eVerticalRight);
-        encoders.add(eHorizontal);
-        encoders.add(eHorizontalEmpty);
-
-        status("Motor and Encoder Hardware Initialized");
-    }
-
     public void initVision() {
         // Init Stone Detector
         stoneDetector = new TFStoneDetector();
         stoneDetector.initVuforia(this);
         stoneDetector.initTfod(0.55);
-    }
-
-    /**
-     * 
-     * @param offSet
-     */
-    public void initIMU(double offSet) {
-        // Init IMU
-        boschIMU = hardwareMap.get(BNO055IMU.class, "imu");
-        imu = new BNO055(boschIMU);
-        imu.initialize();
-        imu.setOffSet(offSet);
-        status("IMU Initialized");
     }
 
     // Utility
