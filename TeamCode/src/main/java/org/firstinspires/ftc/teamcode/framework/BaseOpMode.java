@@ -12,6 +12,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
+import org.firstinspires.ftc.teamcode.enums.Corner;
 
 public abstract class BaseOpMode extends LinearOpMode {
 //  protected Servo claw, colorArm, clawPitch, glyph, hugLeft, hugRight;
@@ -27,6 +28,8 @@ public abstract class BaseOpMode extends LinearOpMode {
             hardwareMap.dcMotor.get("fl"),
             hardwareMap.dcMotor.get("bl")
         };
+
+        motors[Corner.FR].setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Initialize imu
         BNO055IMU imuHardware = hardwareMap.get(BNO055IMU.class, "imu");
