@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
 import org.firstinspires.ftc.teamcode.enums.Direction;
-import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IIMU;
+import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.Utility;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public class Mecanum implements IDriveTrain {
     private List<DcMotor> motors;
     private List<DcMotor> encoders;
-    private IIMU imu;
+    private IMU imu;
 
     private final double END_ANGLE_OFFSET = 5;
 
@@ -39,7 +39,7 @@ public class Mecanum implements IDriveTrain {
      * @param encoders List of encoders (passed in as DcMotor) on drivetrain to
      *                 calculate distances and positions
      */
-    public Mecanum(List<DcMotor> motors, IIMU imu, Telemetry telemetry, List<DcMotor> encoders) {
+    public Mecanum(List<DcMotor> motors, IMU imu, Telemetry telemetry, List<DcMotor> encoders) {
         this.motors = motors;
         this.imu = imu;
         this.imu.initialize();

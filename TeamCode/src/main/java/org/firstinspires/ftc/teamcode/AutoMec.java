@@ -11,11 +11,13 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 
 import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
 import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
-import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IIMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
+import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 
 import java.util.ArrayList;
+
+import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 
 @Autonomous(name = "AutoMec")
 public class AutoMec extends LinearOpMode {
@@ -27,7 +29,7 @@ public class AutoMec extends LinearOpMode {
                                                                           // empty)
     ArrayList motors, encoders;
 
-    IIMU imu;
+    IMU imu;
     BNO055IMU boschIMU;
 
     final double defaultMaxPower = .9;
@@ -45,7 +47,6 @@ public class AutoMec extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
         initHardware();
         initVision();
         initIMU(0);
@@ -151,7 +152,7 @@ public class AutoMec extends LinearOpMode {
     public void initIMU(double offSet) {
         // Init IMU
         boschIMU = hardwareMap.get(BNO055IMU.class, "imu");
-        imu = new IMU(boschIMU);
+        imu = new BNO055(boschIMU);
         imu.initialize();
         imu.setOffSet(offSet);
         status("IMU Initialized");

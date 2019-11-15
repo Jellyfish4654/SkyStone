@@ -4,98 +4,93 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
-import java.io.File;
 
-public class IMU implements IIMU {
-    // Creation
-    BNO055IMU imu;
-    double offset;
+public interface IMU {
+    /**
+     * Gets the angle on the x-axis
+     * 
+     * @return the x-axis angle
+     */
+    double getXAngle();
 
     /**
-     * Constructor for IMU
+     * Gets the angle on the y-axis
      * 
-     * @param imu imu sensor
+     * @return the y-axis angle
      */
-    public IMU(BNO055IMU imu) {
-        this.imu = imu;
-    }
+    double getYAngle();
 
-    @Override
-    public double getXAngle() {
-        return -imu.getAngularOrientation().thirdAngle - offset;
-    }
+    /**
+     * Gets the angle on the z-axis
+     * 
+     * @return the z-axis angle
+     */
+    double getZAngle();
 
-    @Override
-    public double getYAngle() {
-        return -imu.getAngularOrientation().secondAngle - offset;
-    }
+    /**
+     * Gets the angle on the z-axis with the discontinuity being opposite of the
+     * desired angle
+     * 
+     * @return the z-axis angle
+     */
+    double getZAngle(double desiredAngle);
 
-    @Override
-    public double getZAngle() {
-        return -imu.getAngularOrientation().firstAngle - offset;
-    }
+    /**
+     * Gets the acceleration on the x-axis
+     * 
+     * @return hte acceleration on the x-axis
+     */
+    double getXAcc();
 
-    // Gets angle of z-axid with discontinuty
-    @Override
-    public double getZAngle(double desiredAngle) {
-        double angle = getZAngle();
-        if (angle < desiredAngle - 180) {
-            angle += 360;
-        } else if (angle > desiredAngle + 180) {
-            angle -= 360;
-        }
-        return angle;
-    }
+    /**
+     * Gets the acceleration on the y-axis
+     * 
+     * @return the accerlation on the y-axis
+     */
+    double getYAcc();
 
-    @Override
-    public double getXAcc() {
-        return imu.getAcceleration().xAccel;
-    }
+    /**
+     * Gets the acceleration on the z-axis
+     * 
+     * @return the acceleration on the z-axis
+     */
+    double getZAcc();
 
-    @Override
-    public double getYAcc() {
-        return imu.getAcceleration().yAccel;
-    }
+    /**
+     * Gets the velocity on the x-axis
+     * 
+     * @return the x-axis velocity
+     */
+    double getXVelo();
 
-    @Override
-    public double getZAcc() {
-        return imu.getAcceleration().zAccel;
-    }
+    /**
+     * Gets the acceleration on the y-axis
+     * 
+     * @return the y-axis velocity
+     */
+    double getYVelo();
 
-    @Override
-    public double getXVelo() {
-        return imu.getVelocity().xVeloc;
-    }
+    /**
+     * Gets the acceleration on the z-axis
+     * 
+     * @return the z-axis velocity
+     */
+    double getZVelo();
 
-    @Override
-    public double getYVelo() {
-        return imu.getVelocity().yVeloc;
-    }
+    /**
+     * Set an offest for the imu
+     * 
+     * @param offset the offset to set
+     */
+    void setOffSet(double offset);
 
-    @Override
-    public double getZVelo() {
-        return imu.getVelocity().zVeloc;
-    }
+    /**
+     * Set the current position as the zero position for the imu
+     */
+    void setAsZero();
 
-    @Override
-    public void initialize() {
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        imu.initialize(parameters);
-    }
-
-    @Override
-    public void setOffSet(double offset) {
-        this.offset = offset;
-    }
-
-    @Override
-    public void setAsZero() {
-        offset = -imu.getAngularOrientation().firstAngle;
-    }
+    /**
+     * Initialize the parameters for the IMU
+     */
+    void initialize();
 }

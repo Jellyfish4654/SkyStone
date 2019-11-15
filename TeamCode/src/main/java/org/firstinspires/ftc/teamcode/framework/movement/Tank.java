@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.framework.movement;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IIMU;
+import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 
 /** Implements Moveable without using Odometry. */
 public class Tank implements Moveable {
     DcMotor mFR, mBR, mFL, mBL;
-    IIMU imu;
-    public Tank(DcMotor mFR, DcMotor mBR, DcMotor mFL, DcMotor mBL, IIMU imu) {
+    IMU imu;
+    public Tank(DcMotor mFR, DcMotor mBR, DcMotor mFL, DcMotor mBL, IMU imu) {
         this.mFR = mFR;
         this.mBR = mBR;
         this.mFL = mFL;
