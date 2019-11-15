@@ -6,10 +6,10 @@ public class Corner {
     public final static int FL = 2;
     public final static int BL = 3;
 
-    public static final int VL = FR;
-    public static final int VR = BR;
-    public static final int H = FL;
-    public static final int HE = BL;
+    public static final int E_VL = FR;
+    public static final int E_VR = BR;
+    public static final int E_H = FL;
+    public static final int E_HE = BL;
 
     private Corner() {}
 }
