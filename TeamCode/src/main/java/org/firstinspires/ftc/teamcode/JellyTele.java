@@ -24,6 +24,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
+import org.firstinspires.ftc.teamcode.enums.Corner;
 
 @TeleOp(name = "JellyTele", group = "Iterative Opmode")
 public class JellyTele extends BaseOpMode {

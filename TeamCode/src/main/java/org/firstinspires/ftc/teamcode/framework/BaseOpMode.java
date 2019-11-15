@@ -17,13 +17,6 @@ public abstract class BaseOpMode extends LinearOpMode {
 //  protected Servo claw, colorArm, clawPitch, glyph, hugLeft, hugRight;
 //  protected ColorSensor color;
 //  protected DcMotor hug;
-    protected static class Corner {
-        public final static int FR = 0;
-        public final static int BR = 1;
-        public final static int FL = 2;
-        public final static int BL = 3;
-    }
-
     protected DcMotor[] motors;
     protected IMU imu;
 

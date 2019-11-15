@@ -23,13 +23,6 @@ public class AutoMec extends BaseOpMode {
     IDriveTrain drive;
     TFStoneDetector stoneDetector;
 
-    private static class Encoder {
-        static final int VL = 0;
-        static final int VR = 1;
-        static final int H = 2;
-        static final int HE = 3;
-    }
-
     final double defaultMaxPower = .9;
     final double defaultMinPower = .3;
     final double defaultMinPowerPivot = .15;
