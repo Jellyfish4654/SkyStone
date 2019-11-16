@@ -2,14 +2,22 @@ package org.firstinspires.ftc.teamcode.framework.movement;
 
 import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
+
+import java.util.List;
+import java.util.Arrays;
 
 /** Implements Moveable with IDriveTrain. */
 public class Mecanum implements Moveable {
     private static final double correctionTime = 200;
 
     private IDriveTrain layer; 
-    public Mecanum(IDriveTrain layer) {
-        this.layer = layer;
+    public Mecanum(DcMotor[] motors, IMU imu, Telemetry telemetry) {
+        List<DcMotor> list = Arrays.asList(motors);
+        this.layer = new org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum(list, imu, telemetry, list);
     }
 
     @Override
