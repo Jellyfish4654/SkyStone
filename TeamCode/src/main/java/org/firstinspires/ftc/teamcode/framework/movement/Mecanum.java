@@ -14,7 +14,7 @@ public class Mecanum implements Moveable {
 
     @Override
     public void move(double dist, double dir, double angle, double speed) {
-        // todo: convert dist        
+        // TODO: convert dist        
         layer.softEncoderReset();
 
         double current = layer.getEncoderDistance();
