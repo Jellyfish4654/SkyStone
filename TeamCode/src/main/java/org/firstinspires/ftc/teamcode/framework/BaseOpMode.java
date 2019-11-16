@@ -12,12 +12,9 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
-import org.firstinspires.ftc.teamcode.enums.Corner;
+import org.firstinspires.ftc.teamcode.framework.enums.Corner;
 
 public abstract class BaseOpMode extends LinearOpMode {
-//  protected Servo claw, colorArm, clawPitch, glyph, hugLeft, hugRight;
-//  protected ColorSensor color;
-//  protected DcMotor hug;
     protected DcMotor[] motors;
     protected IMU imu;
 

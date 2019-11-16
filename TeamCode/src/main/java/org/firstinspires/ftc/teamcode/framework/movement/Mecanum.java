@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.framework.movement;
 
 import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
-import org.firstinspires.ftc.teamcode.enums.Direction;
+import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 
 /** Implements Moveable with IDriveTrain. */
 public class Mecanum implements Moveable {

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.enums;
+package org.firstinspires.ftc.teamcode.framework.enums;
 
 public class Corner {
     public final static int FR = 0;

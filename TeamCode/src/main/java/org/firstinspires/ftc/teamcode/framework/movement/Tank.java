@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.framework.movement;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
-import org.firstinspires.ftc.teamcode.enums.Corner;
+import org.firstinspires.ftc.teamcode.framework.enums.Corner;
 
 /** Implements Moveable without using Odometry. */
 public class Tank implements Moveable {
