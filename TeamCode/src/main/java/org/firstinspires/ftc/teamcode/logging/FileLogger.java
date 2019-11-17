@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Date;
 
-public class Logger {
+public class FileLogger {
     private static OutputStream file;
     static {
         try {
@@ -22,7 +22,16 @@ public class Logger {
         }
     }
 
-    public static boolean log(String label, Object object) {
+    public static boolean addLine(String line) {
+        try {
+            file.write(line.getBytes());
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean addData(String label, Object object) {
         Date now = new Date();
         String line = String.format("%2d:%2d:%2d ", now.getHours(), now.getMinutes(), now.getSeconds());
         if (label.isEmpty()) {
@@ -31,11 +40,6 @@ public class Logger {
             line += label + ": " + object.toString() + "\n";
         }
 
-        try {
-            file.write(line.getBytes());
-            return true;
-        } catch(Exception e) {
-            return false;
-        }
+        return addLine(line);
     }
 }
