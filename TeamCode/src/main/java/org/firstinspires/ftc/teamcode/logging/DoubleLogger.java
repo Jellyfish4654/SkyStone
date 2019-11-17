@@ -16,9 +16,10 @@ public class DoubleLogger {
     }
 
     public void update() {
+        telemetry.update();
+
         Date now = new Date();
         String timestamp = String.format("%2d:%2d:%2d", now.getHours(), now.getMinutes(), now.getSeconds());
-        telemetry.update();
         FileLogger.addLine("=== " + timestamp + " UPDATE ===");
     }
 }

@@ -1,22 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 
 import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
 import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
-import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
-import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
+import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 
 import java.util.Arrays;
-
-import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 
 @Autonomous(name = "AutoMec")
 public class AutoMec extends BaseOpMode {
