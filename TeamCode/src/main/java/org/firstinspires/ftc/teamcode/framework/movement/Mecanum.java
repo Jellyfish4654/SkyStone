@@ -22,10 +22,9 @@ public class Mecanum implements Moveable {
 
     @Override
     public void move(double dist, double dir, double angle, double speed) {
-        // TODO: convert dist        
+        //TODO: convert dist        
         layer.softEncoderReset();
 
-        double current = layer.getEncoderDistance();
         double target = current + dist;
 
         double rampUp = current + dist * 0.2;
@@ -37,9 +36,7 @@ public class Mecanum implements Moveable {
 
         double allowableDistanceError = 0.2;
 
-        while(layer.move(current, dist, rampUp, rampDown, rampEnd, 1.0, 0.1, dir, pidGain, angle, allowableDistanceError, correctionTime)) {
-            current = layer.getEncoderDistance();
-        }
+        while(layer.move(layer.getEncoderDistance(), dist, rampUp, rampDown, rampEnd, 1.0, 0.1, dir, pidGain, angle, allowableDistanceError, correctionTime));
     }
 
     @Override

@@ -50,16 +50,16 @@ public class Mecanum implements IDriveTrain {
     }
 
     /**
-     * @param rfPower right front power
-     * @param rbPower right back power
-     * @param lfPower left front power
-     * @param lbPower left back power
+     * @param frPower right front power
+     * @param brPower right back power
+     * @param flPower left front power
+     * @param blPower left back power
      */
-    private void setPowerAll(double rfPower, double rbPower, double lfPower, double lbPower) {
-        motors.get(0).setPower(rfPower);
-        motors.get(1).setPower(rbPower);
-        motors.get(2).setPower(lfPower);
-        motors.get(3).setPower(lbPower);
+    private void setPowerAll(double frPower, double brPower, double flPower, double blPower) {
+        motors.get(0).setPower(frPower);
+        motors.get(1).setPower(brPower);
+        motors.get(2).setPower(flPower);
+        motors.get(3).setPower(blPower);
     }
 
     // translation of vertical, horizontal, pivot power into motor speeds
