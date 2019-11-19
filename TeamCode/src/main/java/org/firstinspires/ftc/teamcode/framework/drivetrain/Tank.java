@@ -5,10 +5,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
+import org.firstinspires.ftc.teamcode.framework.Utility;
 
-/** Implements Moveable without using Odometry. */
+import java.util.List;
+
+/** Implements IDriveTrain without using Odometry. */
 public class Tank implements IDriveTrain {
     private List<DcMotor> motors;
     private IMU imu;
@@ -81,16 +85,19 @@ public class Tank implements IDriveTrain {
             double rampUpTargetPosition, double rampDownEnd, double maxPower, double lowPower, double moveAngle,
             double[] PIDGain, double endOrientationAngle, double allowableDistanceError, double correctiontime) {
 
+return true;
     }
 
     @Override
     public boolean pivot(double desiredAngle, double rampDownAngle, double maxPower, double minPower,
             double correctionTime, double correctionAngleError, Direction direction) {
 
+                return true; 
+
     }
 
     @Override
-    public void softResetEncoders() {
+    public void softEncoderReset() {
         frEncoder = motors.get(0).getCurrentPosition();
         brEncoder = motors.get(1).getCurrentPosition();
         flEncoder = motors.get(2).getCurrentPosition();
@@ -109,10 +116,13 @@ public class Tank implements IDriveTrain {
     @Override
     public double getEncoderDistance() {
         int encoderSum = 0;
-        encoderSum += (motors.get(0).getCurrentPosition - frEncoder);
-        encoderSum += (motors.get(1).getCurrentPosition - brEncoder);
-        encoderSum += (motors.get(2).getCurrentPosition - flEncoder);
-        encoderSum += (motors.get(3).getCurrentPosition - blEncoder);
+        encoderSum += (motors.get(0).getCurrentPosition() - frEncoder);
+        encoderSum += (motors.get(1).getCurrentPosition() - brEncoder);
+        encoderSum += (motors.get(2).getCurrentPosition() - flEncoder);
+        encoderSum += (motors.get(3).getCurrentPosition() - blEncoder);
+       
+        double temp = 0;
+        return temp;
     }
 
     @Override

@@ -25,11 +25,9 @@ public class Mecanum implements Moveable {
         //TODO: convert dist        
         layer.softEncoderReset();
 
-        double target = current + dist;
-
-        double rampUp = current + dist * 0.2;
-        double rampDown = current + dist * 0.7;
-        double rampEnd = current + dist * 0.8;
+        double rampUp = dist * 0.2;
+        double rampDown = dist * 0.7;
+        double rampEnd = dist * 0.8;
 
         // speed
         double[] pidGain = {0.02, 0.02, 0.02};
