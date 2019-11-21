@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
+import org.firstinspires.ftc.teamcode.logging.DoubleLogger;
 
 import java.util.Arrays;
 
@@ -57,29 +58,6 @@ public class AutoMec extends BaseOpMode {
         // DO NOT RESET ORIGIN Check position two, if can be determined return
         // DO NOT RESET ORIGIN Check position three, if can be determined return
         // DO NOT RESET ORIGIN Move to last pos and return
-    }
-
-    /**
-     * Simplification of drive move
-     * 
-     * @param targetPosition
-     * @param moveAngle
-     * @param endOrientationAngle
-     */
-    public void move(boolean resetOrigin, double targetPosition, double moveAngle, double endOrientationAngle) {
-        double rampDownTargetPosition = targetPosition * defaultRampDownModifer;
-        double rampUpTargetPosition = targetPosition * defaultRampUpModifier;
-        double rampDownEnd = targetPosition * defaultRampDownEndModifer;
-
-        if (resetOrigin)
-            drive.softEncoderReset();
-
-        while (opModeIsActive() && drive.move(drive.getEncoderDistance(), targetPosition, rampDownTargetPosition,
-                rampUpTargetPosition, rampDownEnd, defaultMaxPower, defaultMinPower, moveAngle, defaultPIDGain,
-                endOrientationAngle, defaultErrorDistance, defaultCorrectionTime))
-            ;
-        drive.stop();
-
     }
 
     public void initVision() {
