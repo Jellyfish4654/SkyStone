@@ -70,7 +70,7 @@ public class TFStoneDetector {
         }
     }
 
-    public void detectStone() {
+    public List<Recognition> detectStone() {
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
         if (updatedRecognitions != null) {
             linearOpMode.telemetry.addData("# Object Detected", updatedRecognitions.size());
@@ -85,5 +85,7 @@ public class TFStoneDetector {
             }
             linearOpMode.telemetry.update();
         }
+        return updatedRecognitions;
     }
+
 }
