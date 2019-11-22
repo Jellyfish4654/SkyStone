@@ -180,57 +180,39 @@ public class Mecanum implements DriveTrain {
         return true;
     }
 
-    /**
-     * Pivots the robot to a desired angle, while using a proportional control loop
-     * to maintain the robot's drive speed
-     * 
-     * @param desiredAngle         The angle to which to pivot to
-     * @param rampDownAngle        The angle at which to start slowing down
-     * @param maxPower             The max power to pivot at, ranging from 0.0 to
-     *                             1.0
-     * @param minPower             The min power to pivot at, ranging from 0.0 to
-     *                             1.0
-     * @param correctionAngleError
-     * @param correctionTime       The amount of time to spend correcting to stay
-     *                             within the desired range
-     * @param direction
-     * @return true if the action has been completed, false if the robot is still
-     *         pivoting
-     */
     @Override
-    public boolean pivot(double desiredAngle, double rampDownAngle, double maxPower, double minPower,
-            double correctionTime, double correctionAngleError, Direction direction) {
-        double currentAngle = imu.getZAngle(desiredAngle);
-        double angleDifference = desiredAngle - currentAngle;
-        double rampDownDifference = desiredAngle - rampDownAngle;
+    public boolean pivot(DriveTrain.PivotParams params) {
+        double currentAngle = imu.getZAngle(params.endAngle);
+        double angleDifference = params.endAngle - currentAngle;
+        double rampDownDifference = params.endAngle - params.rampDown;
         double power;
 
         // calculate power
         if (Math.abs(angleDifference) > Math.abs(rampDownDifference)) {
-            power = maxPower;
+            power = params.maxPower;
         } else {
-            power = (maxPower - minPower) / (Math.abs(rampDownDifference)) * Math.abs(angleDifference) + minPower;
+            power = (params.maxPower - params.minPower) / (Math.abs(rampDownDifference)) * Math.abs(angleDifference) + params.minPower;
         }
         // turn clockwise or counterclockwise depending on which side of desired angle
         // current angle is
-        if (direction == Direction.FASTEST || targetReached) {
+        if (params.direction == Direction.FASTEST || targetReached) {
             if (angleDifference > 0) {
                 this.setPowerAll(-power, -power, power, power);
             } else {
                 this.setPowerAll(power, power, -power, -power);
             }
-        } else if (direction == Direction.CLOCKWISE) {
+        } else if (params.direction == Direction.CLOCKWISE) {
             this.setPowerAll(-power, -power, power, power);
         } else {
             this.setPowerAll(power, power, -power, -power);
         }
 
         // determine if the pivoting angle is in the desired range
-        if (Math.abs(angleDifference) < correctionAngleError && !targetReached) {
+        if (Math.abs(angleDifference) < params.correctionAngleError && !targetReached) {
             pivotTime.reset();
             targetReached = true;
         }
-        if (targetReached && pivotTime.milliseconds() >= correctionTime) {
+        if (targetReached && pivotTime.milliseconds() >= params.correctionTime) {
             targetReached = false;
             this.stop();
             return false;

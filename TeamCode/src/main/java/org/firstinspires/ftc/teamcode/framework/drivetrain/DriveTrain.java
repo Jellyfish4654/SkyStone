@@ -52,26 +52,42 @@ public interface DriveTrain {
 
         /**
          * @param currentPosition The current robot position, returned by getEncoderDistance()
-         * @param params Parameters.
-         * @return Whether the robot is done moving.
+         * @param params Parameters
+         * @return whether the robot is done moving
          */
         boolean move(double currentPosition, MoveParams params);
+
+        public static class PivotParams {
+                public double endAngle;
+                public double rampDown;
+                public double maxPower;
+                public double minPower;
+                public double correctionTime;
+                public double correctionAngleError;
+                public Direction direction;
+
+                public PivotParams(double endAngle, Direction direction) {
+                        this.endAngle = endAngle;
+                        this.direction = direction;
+
+                        this.rampDown = (endAngle - 30) % 360;
+
+                        this.maxPower = 1.0;
+                        this.minPower = 0.1;
+
+                        this.correctionTime = 500;
+                        this.correctionAngleError = 10;
+                }
+        }
 
         /**
          * Pivots the robot to a desired angle. It uses a proportional control loop to
          * maintain the robot's speed
          * 
-         * @param desiredAngle         The angle to which to pivot to
-         * @param rampDownAngle        The angle at which to start slowing down
-         * @param maxPower             The max power to pivot at
-         * @param minPower             The min power to pivot at
-         * @param correctionTime       The amount of time to spend correcting to stay
-         *                             within the desired range, in milliseconds.
-         * @param correctionAngleError
-         * @return true if the motion is complete, false is the motion is ongoing
+         * @param params Parameters
+         * @return whether the robot is done moving
          */
-        boolean pivot(double desiredAngle, double rampDownAngle, double maxPower, double minPower,
-                        double correctionTime, double correctionAngleError, Direction direction);
+        boolean pivot(PivotParams params);
 
         /**
          * Reset encoder positions variables to 0.
