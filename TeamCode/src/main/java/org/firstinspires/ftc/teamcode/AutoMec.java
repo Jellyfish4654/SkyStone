@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
+import org.firstinspires.ftc.teamcode.framework.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Autonomous(name = "AutoMec")
 public class AutoMec extends BaseOpMode {
-    IDriveTrain drive;
+    DriveTrain drive;
     TFStoneDetector stoneDetector;
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime timer2 = new ElapsedTime();

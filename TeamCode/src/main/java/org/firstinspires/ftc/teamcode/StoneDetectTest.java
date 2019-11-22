@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
+import org.firstinspires.ftc.teamcode.framework.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 

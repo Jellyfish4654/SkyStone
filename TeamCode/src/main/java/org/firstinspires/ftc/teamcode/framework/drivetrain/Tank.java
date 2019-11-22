@@ -5,15 +5,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
+import org.firstinspires.ftc.teamcode.framework.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 import org.firstinspires.ftc.teamcode.framework.Utility;
 
 import java.util.List;
 
-/** Implements IDriveTrain without using Odometry. */
-public class Tank implements IDriveTrain {
+/** Implements DriveTrain without using Odometry. */
+public class Tank implements DriveTrain {
     private List<DcMotor> motors;
     private IMU imu;
 

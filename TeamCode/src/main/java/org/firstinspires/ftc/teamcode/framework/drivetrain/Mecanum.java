@@ -4,14 +4,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import org.firstinspires.ftc.teamcode.framework.drivetrain.IDriveTrain;
+import org.firstinspires.ftc.teamcode.framework.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.Utility;
 
 import java.util.List;
 
-public class Mecanum implements IDriveTrain {
+public class Mecanum implements DriveTrain {
     private List<DcMotor> motors;
     private List<DcMotor> encoders;
     private IMU imu;

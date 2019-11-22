@@ -8,7 +8,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
-import org.firstinspires.ftc.teamcode.framework.enums.Corner;
+import org.firstinspires.ftc.teamcode.framework.enums.Motor;
 import org.firstinspires.ftc.teamcode.framework.enums.StonePosition;
 import org.firstinspires.ftc.teamcode.logging.DoubleLogger;
 
@@ -26,7 +26,7 @@ public abstract class BaseOpMode extends LinearOpMode {
             hardwareMap.dcMotor.get("bl")
         };
 
-        motors[Corner.FR].setDirection(DcMotorSimple.Direction.REVERSE);
+        motors[Motor.FR].setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Initialize imu
         logger.addData("Status - ", "Initializing IMU");

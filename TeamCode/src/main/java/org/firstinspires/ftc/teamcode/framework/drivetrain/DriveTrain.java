@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.framework.drivetrain;
 
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 
-public interface IDriveTrain {
+public interface DriveTrain {
         /**
          * Moves the robot in a direction while maintaining a certain orientation
          *

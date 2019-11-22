@@ -27,7 +27,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
-import org.firstinspires.ftc.teamcode.framework.enums.Corner;
+import org.firstinspires.ftc.teamcode.framework.enums.Motor;
 
 @TeleOp(name = "JellyTele", group = "Iterative Opmode")
 public class JellyTele extends BaseOpMode {
@@ -92,10 +92,10 @@ public class JellyTele extends BaseOpMode {
     }
 
     private void setPowers(double mult, double frontRight, double backRight, double frontLeft, double backLeft) {
-        motors[Corner.FR].setPower(frontRight * mult);
-        motors[Corner.BR].setPower(backRight * mult);
-        motors[Corner.FL].setPower(frontLeft * mult);
-        motors[Corner.BL].setPower(backLeft * mult);
+        motors[Motor.FR].setPower(frontRight * mult);
+        motors[Motor.BR].setPower(backRight * mult);
+        motors[Motor.FL].setPower(frontLeft * mult);
+        motors[Motor.BL].setPower(backLeft * mult);
     }
 
     protected void setMecanumPowers(double mult, double angle, double power) {
