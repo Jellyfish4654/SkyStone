@@ -36,9 +36,7 @@ public interface DriveTrain {
                         this.moveAngle = moveAngle;
                         this.endAngle = endAngle;
 
-                        this.rampUp = 0.15 * targetPosition;
-                        this.rampDown = 0.85 * targetPosition;
-                        this.rampDownEnd = 0.95 * targetPosition;
+                        this.setRamping(0.15, 0.85, 0.95);
 
                         this.maxPower = 1.0;
                         this.minPower = 0.1;
@@ -47,6 +45,12 @@ public interface DriveTrain {
 
                         this.correctionTime = 500;
                         this.allowableDistanceError = 1;
+                }
+
+                public void setRamping(double rampUp, double rampDown, double rampDownEnd) {
+                        this.rampUp = rampUp * targetPosition;
+                        this.rampDown = rampDown * targetPosition;
+                        this.rampDownEnd = rampDownEnd * targetPosition;
                 }
         }
 

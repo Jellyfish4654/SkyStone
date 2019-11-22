@@ -29,7 +29,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 import org.firstinspires.ftc.teamcode.framework.enums.Motor;
 
-@TeleOp(name = "JellyTele", group = "Iterative Opmode")
+@TeleOp(name = "SkyStone JellyTele", group = "Iterative Opmode")
 public class JellyTele extends BaseOpMode {
     private static enum State {
         DRIVE, MECANUM, TANK, MECANUM2

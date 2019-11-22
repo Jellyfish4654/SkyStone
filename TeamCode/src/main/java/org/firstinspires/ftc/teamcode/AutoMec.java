@@ -20,58 +20,45 @@ public class AutoMec extends BaseOpMode {
     DriveTrain drive;
     TFStoneDetector stoneDetector;
     ElapsedTime timer = new ElapsedTime();
-    ElapsedTime timer2 = new ElapsedTime();
 
-    final double defaultMaxPower = .9;
-    final double defaultMinPower = .3;
-    final double defaultMinPowerPivot = .15;
-
-    final double defaultRampUpModifier = .1;
-    final double defaultRampDownModifer = .8;
-    final double defaultRampDownEndModifer = .9;
-    final double defaultErrorDistance = 10;
-    final double defaultCorrectionTime = 500; // ms
-
-    final double[] defaultPIDGain = { .02 };
     final double countsPerMM = 500; // change this
-
-    int stonePosition = StonePosition.LEFT; //This is the default if no stones are detected, or if neither of the stones detected are not skystones
 
     @Override
     public void runOpMode() throws InterruptedException {
-        logger.addData("Status - ", "Loading AutoMec");
+        logger.addData("auto status", "Loading AutoMec");
         initHardware();
         initVision();
 
         // Init Drivetrain Systems and IMU Params
-        logger.addData("Status - ", "Initializing Mecanum Drivetrain");
-        drive = new Mecanum(Arrays.asList(motors), imu, telemetry, Arrays.asList(motors));
+        logger.addData("auto status", "Initializing Mecanum Drivetrain");
+        drive = new Mecanum(Arrays.asList(motors), imu, logger, Arrays.asList(motors));
         drive.resetEncoders();
        
-        declareStonePositions();
-        logger.addData("Status - ", "Initialization Complete, Waiting for Start");
+        StonePosition stonePosition = getStonePosition();
+        logger.addData("auto status", "Initialization Complete, Waiting for Start");
         waitForStart();
+
         // ****START****
-
         // move to stones
-
         // collect and move to drop
-
         // move to stone position
 
+        while(opModeIsActive()) {
+            idle();
+        }
     }
 
-    public void declareStonePositions() {
-        logger.addData("Status - ", "Declaring Stone Positions");
+    public StonePosition getStonePosition() {
+        logger.addData("stone status", "Declaring Stone Positions");
         stoneDetector.activateTF();
-        logger.addData("Event - ", "TensorFlow Activated");
+        logger.addData("stone event", "TensorFlow Activated");
         logger.update();
 
         List<Recognition> updatedRecognitions = stoneDetector.detectStone();
         boolean validDetectionStatus = false;
         timer.reset();
 
-        while (!validDetectionStatus && timer.milliseconds() < defaultCorrectionTime && !isStopRequested()) {
+        while (!validDetectionStatus && timer.milliseconds() < 500 && !isStopRequested()) {
             updatedRecognitions = stoneDetector.detectStone();
             if (updatedRecognitions != null) {
                 if (updatedRecognitions.size() == 2)
@@ -84,26 +71,33 @@ public class AutoMec extends BaseOpMode {
                 break;
         }
 
+        StonePosition stonePosition = null;
+
         if (validDetectionStatus){
-            logger.addData("Event - ", "Valid Detection Confirmed");
+            logger.addData("stone event", "Valid Detection Confirmed");
             logger.update();
             for(int i = 0; updatedRecognitions.size()>i; i++){
                 if(updatedRecognitions.get(i).getLabel()=="Skystone"){
-                    logger.addData("SkyStonePosition RightEdge - ", updatedRecognitions.get(i).getRight());
-                    if(updatedRecognitions.get(i).getRight()>=500){ // change this value
+                    logger.addData("stone status", "right edge %f", updatedRecognitions.get(i).getRight());
+                    if (updatedRecognitions.get(i).getRight()>=500){ // change this value
                         stonePosition = StonePosition.RIGHT;
-                        logger.addData("StonePosition - ", "RIGHT");
-                    }
-                    else
+                        logger.addData("stone status", "Stone = RIGHT");
+                    } else {
                         stonePosition = StonePosition.CENTER;
-                        logger.addData("StonePosition = ", "CENTER");
+                        logger.addData("stone status", "Stone = CENTER");
+                    }
                 }
             }
-        }
-        else{
-            logger.addData("Event - ", "Invalid Detection");
+            if (stonePosition == null) {
+                stonePosition = StonePosition.LEFT;
+                logger.addData("stone status", "Stone = LEFT");
+            }
+        } else {
+            logger.addData("stone status", "Invalid stone detection");
             logger.update();
         }
+
+        return stonePosition;
 
         // Reset origin, Check position one, if can be determined return
         // DO NOT RESET ORIGIN Check position two, if can be determined return
@@ -112,7 +106,7 @@ public class AutoMec extends BaseOpMode {
     }
 
     public void initVision() {
-        logger.addData("Status - ", "Initializing Vision");
+        logger.addData("auto status", "Initializing Vision");
         // Init Stone Detector
         stoneDetector = new TFStoneDetector();
         stoneDetector.initVuforia(this);
