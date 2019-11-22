@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.logging;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import java.util.Date;
+import java.util.Calendar;
 
 /** Logs both to Telemetry and to the filesystem. */
 public class DoubleLogger {
@@ -15,11 +15,15 @@ public class DoubleLogger {
         FileLogger.addData(label, o);
     }
 
+    public void addData(String label, String format, Object... args) {
+        this.addData(label, String.format(format, args));
+    }
+
     public void update() {
         telemetry.update();
 
-        Date now = new Date();
-        String timestamp = String.format("%2d:%2d:%2d", now.getHours(), now.getMinutes(), now.getSeconds());
+        Calendar now = Calendar.getInstance();
+        String timestamp = String.format("%2d:%2d:%2d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
         FileLogger.addLine("=== " + timestamp + " UPDATE ===");
     }
 }

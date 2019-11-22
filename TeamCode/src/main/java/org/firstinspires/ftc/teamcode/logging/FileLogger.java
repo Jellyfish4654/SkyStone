@@ -5,14 +5,14 @@ import java.util.Random;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.Date;
+import java.util.Calendar;
 
 public class FileLogger {
     private static OutputStream file;
     static {
         try {
-            Date now = new Date();
-            String dateString = String.format("%4d-%2d-%2d", now.getYear() + 1900, now.getMonth() + 1, now.getDate());
+            Calendar now = Calendar.getInstance();
+            String dateString = String.format("%4d-%2d-%2d", now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
             String random = Long.toString(new Random().nextLong(), 36);
             File dir = new File(Environment.getExternalStorageDirectory(), ".skystone-logs/" + dateString);
             dir.mkdirs();
@@ -32,8 +32,8 @@ public class FileLogger {
     }
 
     public static boolean addData(String label, Object object) {
-        Date now = new Date();
-        String line = String.format("%2d:%2d:%2d ", now.getHours(), now.getMinutes(), now.getSeconds());
+        Calendar now = Calendar.getInstance();
+        String line = String.format("%2d:%2d:%2d ", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
         if (label.isEmpty()) {
             line += object.toString() + "\n";
         } else {

@@ -70,7 +70,6 @@ public class AutoMec extends BaseOpMode {
         List<Recognition> updatedRecognitions = stoneDetector.detectStone();
         boolean validDetectionStatus = false;
         timer.reset();
-        timer2.reset();
 
         while (!validDetectionStatus && timer.milliseconds() < defaultCorrectionTime && !isStopRequested()) {
             updatedRecognitions = stoneDetector.detectStone();
@@ -81,7 +80,7 @@ public class AutoMec extends BaseOpMode {
                     validDetectionStatus = false;
             } else
                 validDetectionStatus = false;
-            if (timer2.seconds() > 5)
+            if (timer.seconds() > 5)
                 break;
         }
 
