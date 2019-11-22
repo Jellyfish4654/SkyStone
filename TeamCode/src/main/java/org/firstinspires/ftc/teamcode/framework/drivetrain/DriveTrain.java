@@ -3,37 +3,59 @@ package org.firstinspires.ftc.teamcode.framework.drivetrain;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 
 public interface DriveTrain {
+        public static class MoveParams {
+                /** Angle that robot is facing at end */
+                public double endAngle;
+                /** Direction that robot should move */
+                public double moveAngle;
+                /** Distance that robot should move */
+                public double targetPosition;
+
+                /** Position where robot stops ramping up */
+                public double rampUp;
+                /** Position where robot starts ramping down */
+                public double rampDown;
+                /** Position where robot stops ramping down (at min power) */
+                public double rampDownEnd;
+
+                /** Maximum motor power, from 0.0 to 1.0 */
+                public double maxPower;
+                /** Minimum motor power, from 0.0 to 1.0 */
+                public double minPower;
+
+                /** int[3] */
+                public double[] pidGain;
+
+                /** Amount of time to spend correcting, in milliseconds. */
+                public double correctionTime;
+
+                public double allowableDistanceError;
+
+                public MoveParams(double targetPosition, double moveAngle, double endAngle) {
+                        this.targetPosition = targetPosition;
+                        this.moveAngle = moveAngle;
+                        this.endAngle = endAngle;
+
+                        this.rampUp = 0.15 * targetPosition;
+                        this.rampDown = 0.85 * targetPosition;
+                        this.rampDownEnd = 0.95 * targetPosition;
+
+                        this.maxPower = 1.0;
+                        this.minPower = 0.1;
+
+                        this.pidGain = new double[]{0.01, 0.01, 0.01};
+
+                        this.correctionTime = 500;
+                        this.allowableDistanceError = 1;
+                }
+        }
+
         /**
-         * Moves the robot in a direction while maintaining a certain orientation
-         *
-         * The first five parameters are in the same unit.
-         * 
-         * @param currentPosition        The current position of robot in any unit eg.
-         *                               encoder counts, sensor distances...
-         * @param targetPosition         The target position of the robot
-         * @param rampUpTargetPosition   Position at which the robot will stop ramping
-         *                               up in power
-         * @param rampDownTargetPosition Position at which the robot will start ramping
-         *                               down
-         * @param rampDownEnd            Position at which the robot will stop ramping
-         *                               down
-         * @param maxPower               The maximum power the robot will move at,
-         *                               ranging from 0.0 to 1.0
-         * @param lowPower               The lowest power the robot will move at,
-         *                               ranging from 0.0 to 1.0
-         * @param moveAngle              The angle at which the robot will move in the
-         *                               frame of reference of the starting position
-         * @param PIDGain                Three gains to control PID feedback loop for
-         *                               Orientation correction
-         * @param endOrientationAngle    The Direction the robot is facing at the end
-         * @param correctionTime         The amount of time to spend correcting to stay
-         *                               within the desired range, in milliseconds.
-         * @return true if the motion is complete, false is the motion is ongoing
+         * @param currentPosition The current robot position, returned by getEncoderDistance()
+         * @param params Parameters.
+         * @return Whether the robot is done moving.
          */
-        boolean move(double currentPosition, double targetPosition, double rampDownTargetPosition,
-                        double rampUpTargetPosition, double rampDownEnd, double maxPower, double lowPower,
-                        double moveAngle, double[] PIDGain, double endOrientationAngle, double allowableDistanceError,
-                        double correctiontime);
+        boolean move(double currentPosition, MoveParams params);
 
         /**
          * Pivots the robot to a desired angle. It uses a proportional control loop to

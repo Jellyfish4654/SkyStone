@@ -123,13 +123,11 @@ public class Mecanum implements DriveTrain {
     }
 
     // checks whether it needs to continue moving or stop, then calls rawSlide
-    public boolean move(double currentPosition, double targetPosition, double rampDownTargetPosition,
-            double rampUpTargetPosition, double rampDownEnd, double maxPower, double lowPower, double moveAngle,
-            double[] PIDGain, double endOrientationAngle, double allowableDistanceError, double correctionTime) {
-        double positionDifference = targetPosition - currentPosition;
+    public boolean move(double currentPosition, DriveTrain.MoveParams params) {
+        double positionDifference = params.targetPosition - currentPosition;
 
         // if it's within allowableDistanceError of the end, stop moving
-        if (Math.abs(positionDifference) <= allowableDistanceError) {
+        if (Math.abs(positionDifference) <= params.allowableDistanceError) {
             this.stop();
 
             if (!targetReached) {
@@ -138,25 +136,25 @@ public class Mecanum implements DriveTrain {
                 return true;
             }
         } else {
-            double rampDownDifference = targetPosition - rampDownTargetPosition;
-            double rampDownEndDifference = targetPosition - rampDownEnd;
+            double rampDownDifference = params.targetPosition - params.rampDown;
+            double rampDownEndDifference = params.targetPosition - params.rampDownEnd;
 
             double power;
             if (rampDownEndDifference >= Math.abs(positionDifference)) {
-                power = lowPower;
+                power = params.minPower;
                 // if current position is between rampDown and rampEnd gradually ramp down
             } else if (rampDownDifference > Math.abs(positionDifference)) {
                 power = Math.abs((positionDifference) - rampDownDifference)
-                        * ((maxPower - lowPower) / (rampDownDifference - rampDownEndDifference)) + maxPower;
+                        * ((params.maxPower - params.minPower) / (rampDownDifference - rampDownEndDifference)) + params.maxPower;
                 // if current position is before rampEnd, set to max power
             } else {
-                power = maxPower;
+                power = params.maxPower;
             }
 
             // get current IMU angle **MAY NEED TO ALTER ANGLE BASED ON HUB ORIENTATION**
-            double currentAngle = imu.getZAngle(endOrientationAngle);
+            double currentAngle = imu.getZAngle(params.endAngle);
 
-            moveAngle = moveAngle - currentAngle;
+            double moveAngle = params.moveAngle - currentAngle;
 
             if (moveAngle <= -180) {
                 moveAngle += 360;
@@ -170,11 +168,11 @@ public class Mecanum implements DriveTrain {
             // y vector movement
             double vertical = Utility.roundTwoDec(calculateY(moveAngle, power));
             // correction
-            double pivotCorrection = ((currentAngle - endOrientationAngle) * PIDGain[0]);
+            double pivotCorrection = ((currentAngle - params.endAngle) * params.pidGain[0]);
 
             rawSlide(horizontal, vertical, pivotCorrection, power);
         }
-        if (targetReached && distanceCorrectionTimer.milliseconds() >= correctionTime) {
+        if (targetReached && distanceCorrectionTimer.milliseconds() >= params.correctionTime) {
             this.stop();
             targetReached = false;
             return false;
