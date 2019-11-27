@@ -32,13 +32,13 @@ public abstract class AutoOpMode extends BaseOpMode {
 
         StonePosition stonePosition = null;
 
-        if (validDetectionStatus){
+        if (validDetectionStatus) {
             logger.addData("stone event", "Valid Detection Confirmed");
             logger.update();
-            for(int i = 0; updatedRecognitions.size()>i; i++){
-                if(updatedRecognitions.get(i).getLabel()=="Skystone"){
+            for (int i = 0; updatedRecognitions.size() > i; i++) {
+                if (updatedRecognitions.get(i).getLabel() == "Skystone") {
                     logger.addData("stone status", "right edge %f", updatedRecognitions.get(i).getRight());
-                    if (updatedRecognitions.get(i).getRight()>=500){ // change this value
+                    if (updatedRecognitions.get(i).getRight() >= 500) { // change this value
                         stonePosition = StonePosition.RIGHT;
                         logger.addData("stone status", "Stone = RIGHT");
                     } else {
@@ -67,9 +67,19 @@ public abstract class AutoOpMode extends BaseOpMode {
 
     protected void getSkyStone() {
         StonePosition stonePosition = getStonePosition();
-        while (opModeIsRunning()) {
-            if (stonePosition == )
-            idle();
+        switch (stonePosition) {
+        case StonePosition.LEFT:
+
+            break;
+        case StonePosition.CENTER:
+
+            break;
+        case StonePosition.RIGHT:
+            
+            break;
+        default:
+            logger.addData("stone status", "Something is very wrong and broken. This should NEVER happen");
+            break;
         }
     }
 }
