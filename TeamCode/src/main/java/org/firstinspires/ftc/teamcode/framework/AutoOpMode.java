@@ -1,4 +1,11 @@
+package org.firstinspires.ftc.teamcode.framework;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
+import org.firstinspires.ftc.teamcode.framework.enums.StonePosition;
+
+import java.util.List;
 
 public abstract class AutoOpMode extends BaseOpMode {
     protected static enum Team {
@@ -68,13 +75,13 @@ public abstract class AutoOpMode extends BaseOpMode {
     protected void getSkyStone() {
         StonePosition stonePosition = getStonePosition();
         switch (stonePosition) {
-        case StonePosition.LEFT:
+        case LEFT:
 
             break;
-        case StonePosition.CENTER:
+        case CENTER:
 
             break;
-        case StonePosition.RIGHT:
+        case RIGHT:
             
             break;
         default:

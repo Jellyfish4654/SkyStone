@@ -2,24 +2,22 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.framework.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
+import org.firstinspires.ftc.teamcode.framework.AutoOpMode;
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
-import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 import org.firstinspires.ftc.teamcode.framework.enums.StonePosition;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
+
 
 import java.util.Arrays;
 import java.util.List;
 
 @Autonomous(name = "AutoMec")
-public class AutoMec extends BaseOpMode {
+public class AutoMec extends AutoOpMode {
     DriveTrain drive;
-    TFStoneDetector stoneDetector;
-    ElapsedTime timer = new ElapsedTime();
 
     final double countsPerMM = 500; // change this
 

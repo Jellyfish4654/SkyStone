@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.framework;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -9,13 +10,19 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
 import org.firstinspires.ftc.teamcode.framework.enums.Motor;
-import org.firstinspires.ftc.teamcode.framework.enums.StonePosition;
+
 import org.firstinspires.ftc.teamcode.logging.DoubleLogger;
+
+import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 
 public abstract class BaseOpMode extends LinearOpMode {
     protected DcMotor[] motors;
+    protected DcMotor[] intake;
     protected IMU imu;
     protected DoubleLogger logger;
+    
+    public ElapsedTime timer = new ElapsedTime();
+    public TFStoneDetector stoneDetector;
 
     protected void initHardware() {
         logger.addData("Status - ", "Intitalizing Hardware");
@@ -23,10 +30,10 @@ public abstract class BaseOpMode extends LinearOpMode {
                 hardwareMap.dcMotor.get("fl"), hardwareMap.dcMotor.get("bl") };
 
         intake = new DcMotor[] { hardwareMap.dcMotor.get("il"), hardwareMap.dcMotor.get("ir") };
-        
+
         for (DcMotor motor : intake) {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motor.setMode(DcMotor.RunMode.RUN_WITH_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
         motors[Motor.FR].setDirection(DcMotorSimple.Direction.REVERSE);
@@ -40,6 +47,8 @@ public abstract class BaseOpMode extends LinearOpMode {
     }
 
     protected void intake(int power) {
-
+        for (DcMotor motor : intake) {
+            motor.setPower(power);
+        }
     }
 }
