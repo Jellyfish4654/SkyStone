@@ -3,12 +3,11 @@ package org.firstinspires.ftc.teamcode.framework.drivetrain;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import org.firstinspires.ftc.teamcode.framework.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 import org.firstinspires.ftc.teamcode.framework.Utility;
+import org.firstinspires.ftc.teamcode.logging.DoubleLogger;
 
 import java.util.List;
 
@@ -30,18 +29,17 @@ public class Tank implements DriveTrain {
     private double flEncoder = 0;
     private double blEncoder = 0;
 
-    Telemetry telemetry;
-
+    DoubleLogger logger;
     /**
      * Constructor function
      * 
      * @param motors List of 4 motors.
      */
-    public Tank(List<DcMotor> motors, IMU imu, Telemetry telemetry) {
+    public Tank(List<DcMotor> motors, IMU imu, DoubleLogger logger) {
         this.motors = motors;
         this.imu = imu;
         this.imu.initialize();
-        this.telemetry = telemetry;
+        this.logger = logger;
         pivotTime = new ElapsedTime();
         distanceCorrectionTimer = new ElapsedTime();
     }

@@ -45,6 +45,7 @@ public class JellyTele extends BaseOpMode {
         Acceleration gravity;
 
         State state = State.DRIVE;
+
         while (opModeIsActive()) {
             if (gamepad1.dpad_up)
                 state = State.DRIVE;
@@ -86,6 +87,8 @@ public class JellyTele extends BaseOpMode {
                 setPowers(mult, right, right, left, left);
                 break;
             }
+
+            intake(gamepad2.left_trigger);
 
             idle();
         }

@@ -10,17 +10,15 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
 import org.firstinspires.ftc.teamcode.framework.enums.Motor;
-
-import org.firstinspires.ftc.teamcode.logging.DoubleLogger;
-
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
+import org.firstinspires.ftc.teamcode.logging.DoubleLogger;
 
 public abstract class BaseOpMode extends LinearOpMode {
     protected DcMotor[] motors;
     protected DcMotor[] intake;
     protected IMU imu;
     protected DoubleLogger logger;
-    
+
     public ElapsedTime timer = new ElapsedTime();
     public TFStoneDetector stoneDetector;
 
@@ -46,7 +44,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         logger = new DoubleLogger(telemetry);
     }
 
-    protected void intake(int power) {
+    protected void intake(float power) {
         for (DcMotor motor : intake) {
             motor.setPower(power);
         }
