@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 import org.firstinspires.ftc.teamcode.framework.enums.StonePosition;
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 
-
 import java.util.Arrays;
 import java.util.List;
 

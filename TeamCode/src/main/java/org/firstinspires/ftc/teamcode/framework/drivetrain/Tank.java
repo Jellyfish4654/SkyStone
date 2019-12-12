@@ -30,6 +30,7 @@ public class Tank implements DriveTrain {
     private double blEncoder = 0;
 
     DoubleLogger logger;
+
     /**
      * Constructor function
      * 
@@ -65,7 +66,8 @@ public class Tank implements DriveTrain {
                 // if current position is between rampDown and rampEnd gradually ramp down
             } else if (rampDownDifference > Math.abs(positionDifference)) {
                 power = Math.abs((positionDifference) - rampDownDifference)
-                        * ((params.maxPower - params.minPower) / (rampDownDifference - rampDownEndDifference)) + params.maxPower;
+                        * ((params.maxPower - params.minPower) / (rampDownDifference - rampDownEndDifference))
+                        + params.maxPower;
                 // if current position is before rampEnd, set to max power
             } else {
                 power = params.maxPower;
@@ -98,7 +100,8 @@ public class Tank implements DriveTrain {
         if (Math.abs(angleDifference) > Math.abs(rampDownDifference)) {
             power = params.maxPower;
         } else {
-            power = (params.maxPower - params.minPower) / (Math.abs(rampDownDifference)) * Math.abs(angleDifference) + params.minPower;
+            power = (params.maxPower - params.minPower) / (Math.abs(rampDownDifference)) * Math.abs(angleDifference)
+                    + params.minPower;
         }
         // turn clockwise or counterclockwise depending on which side of desired angle
         // current angle is
@@ -152,7 +155,7 @@ public class Tank implements DriveTrain {
         encoderSum += (motors.get(1).getCurrentPosition() - brEncoder);
         encoderSum += (motors.get(2).getCurrentPosition() - flEncoder);
         encoderSum += (motors.get(3).getCurrentPosition() - blEncoder);
-        return (encoderSum/motors.size());
+        return (encoderSum / motors.size());
     }
 
     @Override

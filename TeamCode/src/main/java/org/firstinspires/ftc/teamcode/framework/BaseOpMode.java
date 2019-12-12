@@ -35,6 +35,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         }
 
         motors[Motor.FR].setDirection(DcMotorSimple.Direction.REVERSE);
+        motors[Motor.BR].setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Initialize imu
         logger.addData("Status - ", "Initializing IMU");
