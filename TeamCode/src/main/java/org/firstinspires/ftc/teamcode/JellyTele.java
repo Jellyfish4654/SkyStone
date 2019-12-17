@@ -28,6 +28,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 import org.firstinspires.ftc.teamcode.framework.enums.Motor;
+import org.firstinspires.ftc.teamcode.framework.enums.DebugMode;
 
 @TeleOp(name = "SkyStone JellyTele", group = "Iterative Opmode")
 public class JellyTele extends BaseOpMode {
@@ -37,24 +38,43 @@ public class JellyTele extends BaseOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        logger.addData("Op Status", "Loading JellyTele");
         initHardware();
         waitForStart();
 
-        // State used for updating telemetry
         Orientation angles;
         Acceleration gravity;
 
         State state = State.DRIVE;
 
+        while(!opModeIsActive()){
+            if (gamepad1.dpad_up){
+                debugMode = DebugMode.NONE;
+            }
+            if(gamepad1.dpad_right){
+                debugMode = DebugMode.MECANUM;
+            }
+            if(gamepad1.dpad_down){
+                debugMode = DebugMode.TANK;
+            }
+        }
+
+        //START
+        logger.addData("Op Status", "Running JellyTele");
         while (opModeIsActive()) {
-            if (gamepad1.dpad_up)
+            if (gamepad1.dpad_up) {
                 state = State.DRIVE;
-            else if (gamepad1.dpad_right)
+                logger.addData("Drive State", "DRIVE");
+            } else if (gamepad1.dpad_right) {
                 state = State.MECANUM;
-            else if (gamepad1.dpad_down)
+                logger.addData("Drive State", "MECANUM");
+            } else if (gamepad1.dpad_down) {
                 state = State.TANK;
-            else if (gamepad1.dpad_left)
+                logger.addData("Drive State", "TANK");
+            } else if (gamepad1.dpad_left) {
                 state = State.MECANUM2;
+                logger.addData("Drive State", "MECANUM2");
+            }
 
             double mult = gamepad1.left_bumper ? 0.5 : (gamepad1.right_bumper ? 0.2 : 1.0);
             double x = gamepad1.left_stick_x, y = gamepad1.left_stick_y;

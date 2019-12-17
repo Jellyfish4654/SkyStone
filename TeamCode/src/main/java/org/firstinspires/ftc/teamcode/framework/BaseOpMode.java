@@ -10,6 +10,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
 import org.firstinspires.ftc.teamcode.framework.enums.Motor;
+import org.firstinspires.ftc.teamcode.framework.enums.DebugMode;
 import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 import org.firstinspires.ftc.teamcode.logging.DoubleLogger;
 
@@ -21,6 +22,8 @@ public abstract class BaseOpMode extends LinearOpMode {
 
     public ElapsedTime timer = new ElapsedTime();
     public TFStoneDetector stoneDetector;
+
+    public DebugMode debugMode = DebugMode.NONE;
 
     protected void initHardware() {
         logger.addData("Status - ", "Intitalizing Hardware");
