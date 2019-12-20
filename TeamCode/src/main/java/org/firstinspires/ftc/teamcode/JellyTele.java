@@ -37,7 +37,7 @@ public class JellyTele extends BaseOpMode {
     public void runOpMode() throws InterruptedException {
         logger.addData("Op Status", "Loading JellyTele");
         initHardware();
-        
+
         logger.addData("Status", "Initializing IMU (Part 2)");
         imu.initialize();
 
@@ -45,19 +45,19 @@ public class JellyTele extends BaseOpMode {
 
         State state = State.DRIVE;
 
-        while(!opModeIsActive()){
-            if (gamepad1.dpad_up){
+        while (!opModeIsActive()) {
+            if (gamepad1.dpad_up) {
                 debugMode = DebugMode.NONE;
             }
-            if(gamepad1.dpad_right){
+            if (gamepad1.dpad_right) {
                 debugMode = DebugMode.MECANUM;
             }
-            if(gamepad1.dpad_down){
+            if (gamepad1.dpad_down) {
                 debugMode = DebugMode.TANK;
             }
         }
 
-        //START
+        // START
         logger.addData("Op Status", "Running JellyTele");
         while (opModeIsActive()) {
             if (gamepad1.dpad_up) {
@@ -106,9 +106,8 @@ public class JellyTele extends BaseOpMode {
                 break;
             }
 
-            intake(gamepad2.left_trigger);
+            intake(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
 
-            idle();
         }
     }
 
