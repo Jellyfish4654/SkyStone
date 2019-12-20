@@ -18,7 +18,7 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected DcMotor[] motors;
     protected DcMotor[] intake;
     protected IMU imu;
-    protected DoubleLogger logger;
+    protected DoubleLogger logger = new DoubleLogger(telemetry);
 
     public ElapsedTime timer = new ElapsedTime();
     public TFStoneDetector stoneDetector;
@@ -34,18 +34,16 @@ public abstract class BaseOpMode extends LinearOpMode {
 
         for (DcMotor motor : intake) {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
-        motors[Motor.FR].setDirection(DcMotorSimple.Direction.REVERSE);
         motors[Motor.BR].setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Initialize imu
         logger.addData("Status - ", "Initializing IMU");
         BNO055IMU imuHardware = hardwareMap.get(BNO055IMU.class, "imu");
         imu = new BNO055(imuHardware);
-
-        logger = new DoubleLogger(telemetry);
     }
 
     protected void intake(float power) {

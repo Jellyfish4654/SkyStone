@@ -18,15 +18,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
+import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
+import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
+
 import org.firstinspires.ftc.teamcode.framework.enums.Motor;
 import org.firstinspires.ftc.teamcode.framework.enums.DebugMode;
 
@@ -36,14 +31,17 @@ public class JellyTele extends BaseOpMode {
         DRIVE, MECANUM, TANK, MECANUM2
     }
 
+    boolean fieldCentric = true;
+
     @Override
     public void runOpMode() throws InterruptedException {
         logger.addData("Op Status", "Loading JellyTele");
         initHardware();
-        waitForStart();
+        
+        logger.addData("Status", "Initializing IMU (Part 2)");
+        imu.initialize();
 
-        Orientation angles;
-        Acceleration gravity;
+        waitForStart();
 
         State state = State.DRIVE;
 
