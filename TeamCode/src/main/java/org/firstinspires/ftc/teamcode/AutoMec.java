@@ -44,35 +44,80 @@ public class AutoMec extends AutoOpMode {
         while (!opModeIsActive() && !isStopRequested()) {
             updatedRecognitions = stoneDetector.detectStoneSilent();
             team = gamepad1.dpad_up ? team.RED : (gamepad1.dpad_down ? team.BLUE : team);
-            side = gamepad1.dpad_left ? side.STONE : (gamepad1.dpad_left ? side.FOUNDATION : side);
+            side = gamepad1.dpad_left ? side.STONE : (gamepad1.dpad_right ? side.FOUNDATION : side);
 
             telemetry.addData("Team", team);
             telemetry.addData("Side", side);
             telemetry.update();
         }
 
+        // ***START***//
         waitForStart();
-        // ****START****
+        timer.reset();
         logger.addDataUpdate("Status", "AutoMec Start - " + team + " Team, " + side + " Side");
 
-        getStonePositions();
-        // move to stones
-        // collect and move to drop
-        // move to stone position
+        if (side == side.STONE) {
+            getStonePositions();
+            stoneDetector.shutdownTF();
 
-        params = new DriveTrain.MoveParams(24 * countsPerInch, 20, 10);
-        drive.softEncoderReset();
-        while (drive.move(drive.getEncoderDistance(), params))
-            ;
+            intake(0.75);
 
-        // Testing for continuous motion with turn
-        params = new DriveTrain.MoveParams(24 * countsPerInch, 20, 10);
-        drive.softEncoderReset();
-        while (drive.move(drive.getEncoderDistance(), params) & drive.getEncoderDistance() / countsPerInch < 12)
-            ;
-        params.moveAngle = 50;
-        while (drive.move(drive.getEncoderDistance(), params))
-            ;
+            if (team == team.RED) {
+
+                switch (skyStonePosition) {
+                case skyStonePosition.LEFT:
+
+                    break;
+                case skyStonePosition.CENTER:
+
+                    break;
+                default:
+
+                    break;
+                }
+
+                // move to stones
+                // collect and move to drop
+                // move to stone position
+
+                params = new DriveTrain.MoveParams(24 * countsPerInch, 20, 10);
+                drive.softEncoderReset();
+                while (drive.move(drive.getEncoderDistance(), params))
+                    ;
+                // Testing for continuous motion with turn
+                params = new DriveTrain.MoveParams(24 * countsPerInch, 20, 10);
+                drive.softEncoderReset();
+                while (drive.move(drive.getEncoderDistance(), params) & drive.getEncoderDistance() / countsPerInch < 12)
+                    ;
+                params.moveAngle = 50;
+                while (drive.move(drive.getEncoderDistance(), params))
+                    ;
+            } else if (team == team.BLUE) {
+
+                switch (skyStonePosition) {
+                case skyStonePosition.LEFT:
+
+                    break;
+                case skyStonePosition.CENTER:
+
+                    break;
+                default:
+
+                    break;
+                }
+            }
+        } else if (side == side.FOUNDATION) {
+            stoneDetector.shutdownTF();
+
+            while (timer.seconds() < 25)
+                ;
+
+            if (team == team.RED) {
+
+            } else if (team == team.BLUE) {
+
+            }
+        }
         // End
         while (opModeIsActive()) {
             idle();

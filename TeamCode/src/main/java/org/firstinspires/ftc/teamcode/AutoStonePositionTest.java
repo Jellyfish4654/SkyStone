@@ -44,7 +44,7 @@ public class AutoStonePositionTest extends AutoOpMode {
         while (!opModeIsActive() && !isStopRequested()) {
             updatedRecognitions = stoneDetector.detectStoneSilent();
             team = gamepad1.dpad_up ? team.RED : (gamepad1.dpad_down ? team.BLUE : team);
-            side = gamepad1.dpad_left ? side.STONE : (gamepad1.dpad_left ? side.FOUNDATION : side);
+            side = gamepad1.dpad_left ? side.STONE : (gamepad1.dpad_right ? side.FOUNDATION : side);
 
             telemetry.addData("Team", team);
             telemetry.addData("Side", side);
@@ -56,6 +56,8 @@ public class AutoStonePositionTest extends AutoOpMode {
         logger.addDataUpdate("Status", "AutoMec Start - " + team + " Team, " + side + " Side");
 
         getStonePositions();
+        stoneDetector.shutdownTF();
+
         // move to stones
         // collect and move to drop
         // move to stone position
