@@ -4,7 +4,7 @@ Hi yes code works. V5.3
 
 #### Auto Settings Override:
 ##### Teams:
-	Gamepad 1, DPad UP: RED
+		Gamepad 1, DPad UP: RED
 		Gamepad 1, DPad DOWN: BLUE
 ##### Side: 
 		Gamepad 1, DPad LEFT: STONE
