@@ -17,8 +17,8 @@ import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 import java.util.Arrays;
 import java.util.List;
 
-@Autonomous(name = "AutoMec")
-public class AutoMec extends AutoOpMode {
+@Autonomous(name = "StoePosition Test")
+public class AutoStonePositionTest extends AutoOpMode {
     DriveTrain drive;
     DriveTrain.MoveParams params;
 
@@ -60,19 +60,6 @@ public class AutoMec extends AutoOpMode {
         // collect and move to drop
         // move to stone position
 
-        params = new DriveTrain.MoveParams(24 * countsPerInch, 20, 10);
-        drive.softEncoderReset();
-        while (drive.move(drive.getEncoderDistance(), params))
-            ;
-
-        // Testing for continuous motion with turn
-        params = new DriveTrain.MoveParams(24 * countsPerInch, 20, 10);
-        drive.softEncoderReset();
-        while (drive.move(drive.getEncoderDistance(), params) & drive.getEncoderDistance() / countsPerInch < 12)
-            ;
-        params.moveAngle = 50;
-        while (drive.move(drive.getEncoderDistance(), params))
-            ;
         // End
         while (opModeIsActive()) {
             idle();

@@ -3,90 +3,78 @@ package org.firstinspires.ftc.teamcode.framework;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
-import org.firstinspires.ftc.teamcode.framework.enums.StonePosition;
+import org.firstinspires.ftc.teamcode.framework.subsystems.vision.TFStoneDetector;
+
+import org.firstinspires.ftc.teamcode.framework.enums.SkyStonePosition;
+import org.firstinspires.ftc.teamcode.framework.enums.Team;
+import org.firstinspires.ftc.teamcode.framework.enums.Side;
 
 import java.util.List;
 
 public abstract class AutoOpMode extends BaseOpMode {
-    protected static enum Team {
-        RED, BLUE
+
+    protected List<Recognition> updatedRecognitions;
+
+    protected Team team = Team.RED;
+    protected Side side = Side.STONE;
+    protected SkyStonePosition skyStonePosition = null;
+    protected TFStoneDetector stoneDetector = new TFStoneDetector();
+
+    protected static final String webCam = "Webcam 1";
+
+    public void initVision(double confidence) {
+        stoneDetector.initVuforia(this, webCam);
+        stoneDetector.initTfod(confidence); // 0.55?
     }
 
-    protected Team team;
+    public void getStonePositions() {
+        updatedRecognitions = stoneDetector.detectStone();
 
-    protected StonePosition getStonePosition() {
-        logger.addData("stone status", "Declaring Stone Positions");
-        stoneDetector.activateTF();
-        logger.addData("stone event", "TensorFlow Activated");
-        logger.update();
-
-        List<Recognition> updatedRecognitions = stoneDetector.detectStone();
-        boolean validDetectionStatus = false;
-        timer.reset();
-
-        while (!validDetectionStatus && timer.milliseconds() < 500 && !isStopRequested()) {
-            updatedRecognitions = stoneDetector.detectStone();
-            if (updatedRecognitions != null) {
-                if (updatedRecognitions.size() == 2)
-                    validDetectionStatus = true;
-                else
-                    validDetectionStatus = false;
-            } else
-                validDetectionStatus = false;
-            if (timer.seconds() > 5)
-                break;
+        // sort stones, right to left
+        for (int i = 0; updatedRecognitions.size() > i; i++) {
+            if (updatedRecognitions.get(i).getRight() > updatedRecognitions.get(0).getRight()) {
+                Recognition temp = updatedRecognitions.get(0);
+                updatedRecognitions.set(0, updatedRecognitions.get(i));
+                updatedRecognitions.set(i, temp);
+            }
         }
 
-        StonePosition stonePosition = null;
-
-        if (validDetectionStatus) {
-            logger.addData("stone event", "Valid Detection Confirmed");
-            logger.update();
+        // check for skystones, set default based on Team
+        if (team == team.RED) {
+            skyStonePosition = SkyStonePosition.LEFT;
             for (int i = 0; updatedRecognitions.size() > i; i++) {
                 if (updatedRecognitions.get(i).getLabel() == "Skystone") {
-                    logger.addData("stone status", "right edge %f", updatedRecognitions.get(i).getRight());
-                    if (updatedRecognitions.get(i).getRight() >= 500) { // change this value
-                        stonePosition = StonePosition.RIGHT;
-                        logger.addData("stone status", "Stone = RIGHT");
-                    } else {
-                        stonePosition = StonePosition.CENTER;
-                        logger.addData("stone status", "Stone = CENTER");
+                    switch (i) {
+                    case 0:
+                        skyStonePosition = SkyStonePosition.RIGHT;
+                        break;
+                    case 1:
+                        skyStonePosition = SkyStonePosition.CENTER;
+                    case 2:
+                        skyStonePosition = SkyStonePosition.LEFT;
+                    default:
+                        break;
                     }
                 }
             }
-            if (stonePosition == null) {
-                stonePosition = StonePosition.LEFT;
-                logger.addData("stone status", "Stone = LEFT");
+        } else if (team == team.BLUE) {
+            skyStonePosition = SkyStonePosition.RIGHT;
+            for (int i = 0; updatedRecognitions.size() > i; i++) {
+                if (updatedRecognitions.get(i).getLabel() == "Skystone") {
+                    switch (i) {
+                    case 0:
+                        skyStonePosition = SkyStonePosition.LEFT;
+                        break;
+                    case 1:
+                        skyStonePosition = SkyStonePosition.CENTER;
+                    case 2:
+                        skyStonePosition = SkyStonePosition.RIGHT;
+                    default:
+                        break;
+                    }
+                }
             }
-        } else {
-            logger.addData("stone status", "Invalid stone detection");
-            logger.update();
         }
-
-        return stonePosition;
-
-        // Overview
-        // Reset origin, Check position one, if can be determined return
-        // DO NOT RESET ORIGIN Check position two, if can be determined return
-        // DO NOT RESET ORIGIN Check position three, if can be determined return
-        // DO NOT RESET ORIGIN Move to last pos and return
-    }
-
-    protected void getSkyStone() {
-        StonePosition stonePosition = getStonePosition();
-        switch (stonePosition) {
-        case LEFT:
-
-            break;
-        case CENTER:
-
-            break;
-        case RIGHT:
-            
-            break;
-        default:
-            logger.addData("stone status", "Something is very wrong and broken. This should NEVER happen");
-            break;
-        }
+        logger.addDataUpdate("Skystone Position", skyStonePosition);
     }
 }

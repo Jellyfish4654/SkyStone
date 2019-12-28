@@ -35,10 +35,10 @@ public class JellyTele extends BaseOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        logger.addData("Op Status", "Loading JellyTele");
+        logger.addDataUpdate("Op Status", "Loading JellyTele");
         initHardware();
 
-        logger.addData("Status", "Initializing IMU (Part 2)");
+        logger.addDataUpdate("Status", "Initializing IMU (Part 2)");
         imu.initialize();
 
         waitForStart();
@@ -56,6 +56,13 @@ public class JellyTele extends BaseOpMode {
                 debugMode = DebugMode.TANK;
             }
         }
+
+        /*
+         ** Dpad** Up - DRIVE Down - TANK Left - Mecanum2 Right Mecanum
+         ** 
+         * Intake** Left Trigger (G2) Reverse with A + Left Trigger (G2)
+         * 
+         */
 
         // START
         logger.addData("Op Status", "Running JellyTele");
@@ -99,7 +106,6 @@ public class JellyTele extends BaseOpMode {
                 setPowers(mult, power2 * cos2 - turn, power2 * sin2 - turn, power2 * sin2 + turn, power2 * cos2 + turn);
                 break;
             case TANK:
-                // left is y
                 double left = gamepad1.left_stick_y;
                 double right = gamepad1.right_stick_y;
                 setPowers(mult, right, right, left, left);
@@ -109,6 +115,7 @@ public class JellyTele extends BaseOpMode {
             intake(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
 
         }
+        logger.update();
     }
 
     private void setPowers(double mult, double frontRight, double backRight, double frontLeft, double backLeft) {
@@ -116,6 +123,7 @@ public class JellyTele extends BaseOpMode {
         motors[Motor.BR].setPower(backRight * mult);
         motors[Motor.FL].setPower(frontLeft * mult);
         motors[Motor.BL].setPower(backLeft * mult);
+        logger.addData("Power State", mult);
     }
 
     protected void setMecanumPowers(double mult, double angle, double power) {

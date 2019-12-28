@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.framework.subsystems;
+package org.firstinspires.ftc.teamcode.framework.subsystems.vision;
 
 import java.util.List;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -23,9 +23,11 @@ public class TFStoneDetector {
     TFObjectDetector tfod;
     WebcamName webcamName;
 
+    List<Recognition> updatedRecognitions;
+
     private LinearOpMode linearOpMode;
 
-    public void initVuforia(LinearOpMode opmode) {
+    public void initVuforia(LinearOpMode opmode, String webcam) {
         linearOpMode = opmode;
 
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -35,7 +37,7 @@ public class TFStoneDetector {
         
         // Phone cam and webcam
         //parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        parameters.cameraName = linearOpMode.hardwareMap.get(WebcamName.class, "Webcam 1");
+        parameters.cameraName = linearOpMode.hardwareMap.get(WebcamName.class, webcam);  // "Webcam 1"
       
         // Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -71,7 +73,7 @@ public class TFStoneDetector {
     }
 
     public List<Recognition> detectStone() {
-        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+        updatedRecognitions = tfod.getUpdatedRecognitions();
         if (updatedRecognitions != null) {
             linearOpMode.telemetry.addData("# Object Detected", updatedRecognitions.size());
             // step through the list of recognitions and display boundary info.
@@ -85,6 +87,11 @@ public class TFStoneDetector {
             }
             linearOpMode.telemetry.update();
         }
+        return updatedRecognitions;
+    }
+
+    public List<Recognition> detectStoneSilent(){
+        updatedRecognitions = tfod.getUpdatedRecognitions();
         return updatedRecognitions;
     }
 

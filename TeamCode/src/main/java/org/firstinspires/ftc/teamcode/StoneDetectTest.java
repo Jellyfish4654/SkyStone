@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.framework.drivetrain.DriveTrain;
 import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
-import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
+import org.firstinspires.ftc.teamcode.framework.subsystems.vision.TFStoneDetector;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -16,10 +16,12 @@ public class StoneDetectTest extends LinearOpMode {
     TFStoneDetector stoneDetector = new TFStoneDetector();
 
     public void runOpMode() {
-        stoneDetector.initVuforia(this);
+        stoneDetector.initVuforia(this, "Webcam 1");
         stoneDetector.initTfod(0.55); // Lower confidence can distinguish between individual stones better
         stoneDetector.activateTF();
-
+        while (!opModeIsActive() && !isStopRequested()) {
+            stoneDetector.detectStoneSilent();
+        }
         waitForStart();
 
         while (opModeIsActive()) {

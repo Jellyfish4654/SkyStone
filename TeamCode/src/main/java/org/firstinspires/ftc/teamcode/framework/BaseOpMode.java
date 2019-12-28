@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
 import org.firstinspires.ftc.teamcode.framework.enums.Motor;
 import org.firstinspires.ftc.teamcode.framework.enums.DebugMode;
-import org.firstinspires.ftc.teamcode.framework.subsystems.TFStoneDetector;
 import org.firstinspires.ftc.teamcode.logging.DoubleLogger;
 
 public abstract class BaseOpMode extends LinearOpMode {
@@ -21,12 +20,11 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected DoubleLogger logger = new DoubleLogger(telemetry);
 
     public ElapsedTime timer = new ElapsedTime();
-    public TFStoneDetector stoneDetector;
 
     public DebugMode debugMode = DebugMode.NONE;
 
     protected void initHardware() {
-        logger.addData("Status - ", "Intitalizing Hardware");
+        logger.addDataUpdate("Status", "Intitalizing Hardware");
         motors = new DcMotor[] { hardwareMap.dcMotor.get("fr"), hardwareMap.dcMotor.get("br"),
                 hardwareMap.dcMotor.get("fl"), hardwareMap.dcMotor.get("bl") };
 
@@ -41,7 +39,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         motors[Motor.BR].setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Initialize imu
-        logger.addData("Status - ", "Initializing IMU");
+        logger.addDataUpdate("Status", "Initializing IMU");
         BNO055IMU imuHardware = hardwareMap.get(BNO055IMU.class, "imu");
         imu = new BNO055(imuHardware);
     }

@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.framework.enums;
 
-public enum StonePosition {
+public enum SkyStonePosition {
     LEFT,
     CENTER,
     RIGHT
