@@ -2,20 +2,20 @@
 
 Hi yes code works. V5.3
 
-Auto Settings Override:
-	Teams:
-		Gamepad 1, DPad UP: RED
+#### Auto Settings Override:
+##### Teams:
+	Gamepad 1, DPad UP: RED
 		Gamepad 1, DPad DOWN: BLUE
-	Side: 
+##### Side: 
 		Gamepad 1, DPad LEFT: STONE
 		Gamepad 1, DPad RIGHT: FOUNDATION
 		
-Tele Controls:
-	Drive Mode:
+#### Tele Controls:
+##### Drive Mode:
 		Gamepad 1, DPad UP: DRIVE
 		Gamepad 1, DPad DOWN: TANK
 		Gamepad 1, DPad LEFT: MECANUM
 		Gamepad 1, DPad RIGHT: MECANUM2
-	Intake:
+##### Intake:
 		Gamepad 2, Left Trigger: Intake
 		Gamepad 2, A + Left Trigger: Reverse Intake
