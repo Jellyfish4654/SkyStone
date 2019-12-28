@@ -1,4 +1,7 @@
-## JELLYFISH Team 4654 - SKYSTONE (2019-2020)
+## [JELLYFISH Team 4654 - SKYSTONE (2019-2020)](https://jellyfishbbhs.com/)
+![alt text](https://jellyfishbbhs.com/wp-content/uploads/2019/01/cropped-jellyfishlong.png)
+
+
 
 Hi yes code works. V5.3
 
@@ -19,3 +22,4 @@ Hi yes code works. V5.3
 ##### Intake:
 		Gamepad 2, Left Trigger: Intake
 		Gamepad 2, A + Left Trigger: Reverse Intake
+
