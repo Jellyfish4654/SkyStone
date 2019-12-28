@@ -60,15 +60,15 @@ public class AutoMec extends AutoOpMode {
             getStonePositions();
             stoneDetector.shutdownTF();
 
-            intake(0.75);
+            intake((float)0.75);
 
             if (team == team.RED) {
 
                 switch (skyStonePosition) {
-                case skyStonePosition.LEFT:
+                case LEFT:
 
                     break;
-                case skyStonePosition.CENTER:
+                case CENTER:
 
                     break;
                 default:
@@ -95,10 +95,10 @@ public class AutoMec extends AutoOpMode {
             } else if (team == team.BLUE) {
 
                 switch (skyStonePosition) {
-                case skyStonePosition.LEFT:
+                case LEFT:
 
                     break;
-                case skyStonePosition.CENTER:
+                case CENTER:
 
                     break;
                 default:
