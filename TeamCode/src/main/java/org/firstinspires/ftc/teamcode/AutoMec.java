@@ -60,7 +60,7 @@ public class AutoMec extends AutoOpMode {
             getStonePositions();
             stoneDetector.shutdownTF();
 
-            intake((float)0.75);
+            intake((float) 0.75);
 
             if (team == team.RED) {
 
