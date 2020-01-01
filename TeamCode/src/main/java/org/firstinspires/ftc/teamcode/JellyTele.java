@@ -28,7 +28,7 @@ import org.firstinspires.ftc.teamcode.framework.enums.DebugMode;
 @TeleOp(name = "SkyStone JellyTele", group = "Iterative Opmode")
 public class JellyTele extends BaseOpMode {
     private static enum State {
-        DRIVE, MECANUM, TANK, MECANUM2
+        DRIVE, MECANUM, TANK
     }
 
     boolean fieldCentric = true;
@@ -70,15 +70,12 @@ public class JellyTele extends BaseOpMode {
             if (gamepad1.dpad_up) {
                 state = State.DRIVE;
                 logger.addData("Drive State", "DRIVE");
-            } else if (gamepad1.dpad_right) {
-                state = State.MECANUM;
-                logger.addData("Drive State", "MECANUM");
             } else if (gamepad1.dpad_down) {
                 state = State.TANK;
                 logger.addData("Drive State", "TANK");
             } else if (gamepad1.dpad_left) {
-                state = State.MECANUM2;
-                logger.addData("Drive State", "MECANUM2");
+                state = State.MECANUM;
+                logger.addData("Drive State", "MECANUM");
             }
 
             double mult = gamepad1.left_bumper ? 0.5 : (gamepad1.right_bumper ? 0.2 : 1.0);
@@ -88,14 +85,6 @@ public class JellyTele extends BaseOpMode {
                 setPowers(mult, y + x, y + x, y - x, y - x);
                 break;
             case MECANUM:
-                double power = Math.sqrt(x * x + y * y);
-                double angle = Math.atan2(y, x);
-                double sin = Math.sin(angle - Math.PI / 4);
-                double cos = Math.cos(angle - Math.PI / 4);
-
-                setPowers(mult * power, cos, sin, sin, cos);
-                break;
-            case MECANUM2:
                 double power2 = Math.sqrt(x * x + y * y);
                 double angle2 = Math.atan2(y, x);
                 double sin2 = Math.sin(angle2 - Math.PI / 4);
