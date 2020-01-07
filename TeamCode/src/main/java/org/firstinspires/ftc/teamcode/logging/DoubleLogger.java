@@ -23,6 +23,7 @@ public class DoubleLogger {
     public void addDataUpdate(String label, Object o) {
         telemetry.addData(label, o);
         FileLogger.addData(label, o);
+        telemetry.update();
     }
 
     public void addDataUpdate(String label, String format, Object... args) {
@@ -35,7 +36,7 @@ public class DoubleLogger {
         Calendar now = Calendar.getInstance();
         String timestamp = String.format("%2d:%2d:%2d", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE),
                 now.get(Calendar.SECOND));
-        FileLogger.addLine("=== " + timestamp + " UPDATE ===");
+        FileLogger.addLine("=== " + timestamp + " UPDATE ===\n");
 
     }
 }

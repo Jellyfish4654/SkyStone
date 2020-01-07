@@ -37,25 +37,13 @@ public class JellyTele extends BaseOpMode {
     public void runOpMode() throws InterruptedException {
         logger.addDataUpdate("Op Status", "Loading JellyTele");
         initHardware();
-
         logger.addDataUpdate("Status", "Initializing IMU (Part 2)");
         imu.initialize();
 
         waitForStart();
-
+        initGlobalPosition();
         State state = State.DRIVE;
 
-        while (!opModeIsActive()) {
-            if (gamepad1.dpad_up) {
-                debugMode = DebugMode.NONE;
-            }
-            if (gamepad1.dpad_right) {
-                debugMode = DebugMode.MECANUM;
-            }
-            if (gamepad1.dpad_down) {
-                debugMode = DebugMode.TANK;
-            }
-        }
 
         /*
          ** Dpad** Up - DRIVE Down - TANK Left - Mecanum2 Right Mecanum
@@ -77,8 +65,16 @@ public class JellyTele extends BaseOpMode {
                 state = State.MECANUM;
                 logger.addData("Drive State", "MECANUM");
             }
+           
+            telemetry.addData("X Position", globalPositionUpdate.returnXCoordinate() / countsPerInch);
+            telemetry.addData("Y Position", globalPositionUpdate.returnYCoordinate() / countsPerInch);
+            telemetry.addData("Orientation (Degrees)", globalPositionUpdate.returnOrientation());
+            telemetry.addData("Vertical left encoder position", verticalLeft.getCurrentPosition());
+            telemetry.addData("Vertical right encoder position", verticalRight.getCurrentPosition());
+            telemetry.addData("Horizontal encoder position", horizontal.getCurrentPosition());
+            
 
-            double mult = gamepad1.left_bumper ? 0.5 : (gamepad1.right_bumper ? 0.2 : 1.0);
+            double mult = gamepad1.left_bumper ? -0.5 : (gamepad1.right_bumper ? -0.2 : -1.0);
             double x = gamepad1.left_stick_x, y = gamepad1.left_stick_y;
             switch (state) {
             case DRIVE:

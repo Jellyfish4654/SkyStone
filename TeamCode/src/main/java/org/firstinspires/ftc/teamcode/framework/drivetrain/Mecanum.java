@@ -124,12 +124,16 @@ public class Mecanum implements DriveTrain {
 
     // checks whether it needs to continue moving or stop, then calls rawSlide
     public boolean move(double currentPosition, DriveTrain.MoveParams params) {
-        double positionDifference = params.targetPosition - currentPosition;
-
+        double positionDifference = params.targetPosition -  currentPosition;
+        logger.addData("targetReached", targetReached);
+        logger.addData("positionDiff", Math.abs(positionDifference));
+        logger.addData("IMU data", imu.getZAngle(params.endAngle));
+        logger.addData("imu x", imu.getXAngle());
+        logger.addDataUpdate("imu y", imu.getYAngle());
         // if it's within allowableDistanceError of the end, stop moving
         if (Math.abs(positionDifference) <= params.allowableDistanceError) {
             this.stop();
-
+           
             if (!targetReached) {
                 targetReached = true;
                 distanceCorrectionTimer.reset();
@@ -142,10 +146,12 @@ public class Mecanum implements DriveTrain {
             double power;
             if (rampDownEndDifference >= Math.abs(positionDifference)) {
                 power = params.minPower;
+                logger.addData("power","min");
                 // if current position is between rampDown and rampEnd gradually ramp down
             } else if (rampDownDifference > Math.abs(positionDifference)) {
                 power = Math.abs((positionDifference) - rampDownDifference)
-                        * ((params.maxPower - params.minPower) / (rampDownDifference - rampDownEndDifference)) + params.maxPower;
+                        * ((params.maxPower - params.minPower) / (rampDownDifference - rampDownEndDifference))
+                        + params.maxPower;
                 // if current position is before rampEnd, set to max power
             } else {
                 power = params.maxPower;
@@ -154,19 +160,21 @@ public class Mecanum implements DriveTrain {
             // get current IMU angle **MAY NEED TO ALTER ANGLE BASED ON HUB ORIENTATION**
             double currentAngle = imu.getZAngle(params.endAngle);
 
-            double moveAngle = params.moveAngle - currentAngle;
+            params.moveAngle = params.moveAngle - currentAngle;
 
-            if (moveAngle <= -180) {
-                moveAngle += 360;
+            if (params.moveAngle <= -180) {
+                params.moveAngle += 360;
             }
             if (positionDifference < 0) {
-                moveAngle += 180;
+                params.moveAngle += 180;
             }
 
+            logger.addData("moveangle",params.moveAngle);
+
             // x vector movement
-            double horizontal = Utility.roundTwoDec(calculateX(moveAngle, power));
+            double horizontal = Utility.roundTwoDec(calculateX(params.moveAngle, power));
             // y vector movement
-            double vertical = Utility.roundTwoDec(calculateY(moveAngle, power));
+            double vertical = Utility.roundTwoDec(calculateY(params.moveAngle, power));
             // correction
             double pivotCorrection = ((currentAngle - params.endAngle) * params.pidGain[0]);
 
@@ -191,7 +199,8 @@ public class Mecanum implements DriveTrain {
         if (Math.abs(angleDifference) > Math.abs(rampDownDifference)) {
             power = params.maxPower;
         } else {
-            power = (params.maxPower - params.minPower) / (Math.abs(rampDownDifference)) * Math.abs(angleDifference) + params.minPower;
+            power = (params.maxPower - params.minPower) / (Math.abs(rampDownDifference)) * Math.abs(angleDifference)
+                    + params.minPower;
         }
         // turn clockwise or counterclockwise depending on which side of desired angle
         // current angle is

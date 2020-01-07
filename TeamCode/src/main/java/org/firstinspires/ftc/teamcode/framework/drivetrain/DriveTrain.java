@@ -3,6 +3,40 @@ package org.firstinspires.ftc.teamcode.framework.drivetrain;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 
 public interface DriveTrain {
+
+        public static class DefaultParams {
+
+                public double defaultMaxPower;
+                public double defaultMinPower;
+
+                public double[] defaultPIDGain;
+
+                public double defaultCorrectionTime;
+                public double defaultAllowableDistanceError;
+
+                public double defaultRampUpModifier;
+                public double defaultRampDownModifier;
+                public double defaultRampDownEndModifier;
+
+                public DefaultParams(double defaultMaxPower, double defaultMinPower, double defaultRampUpModifier,
+                                double defaultRampDownModifier, double defaultRampDownEndModifier,
+                                double[] defaultPIDGain, double defaultCorrectionTime,
+                                double defaultAllowableDistanceError) {
+                        this.defaultMaxPower = defaultMaxPower;
+                        this.defaultMinPower = defaultMinPower;
+
+                        this.defaultRampUpModifier = defaultRampUpModifier;
+                        this.defaultRampDownModifier = defaultRampDownModifier;
+                        this.defaultRampDownEndModifier = defaultRampDownEndModifier;
+
+                        this.defaultPIDGain = defaultPIDGain;
+
+                        this.defaultCorrectionTime = defaultCorrectionTime;
+                        this.defaultAllowableDistanceError = defaultAllowableDistanceError;
+
+                }
+        }
+
         public static class MoveParams {
                 /** Angle that robot is facing at end */
                 public double endAngle;
@@ -31,20 +65,21 @@ public interface DriveTrain {
 
                 public double allowableDistanceError;
 
-                public MoveParams(double targetPosition, double moveAngle, double endAngle) {
+                public MoveParams(double targetPosition, double moveAngle, double endAngle, DefaultParams defaults) {
                         this.targetPosition = targetPosition;
                         this.moveAngle = moveAngle;
                         this.endAngle = endAngle;
 
-                        this.setRamping(0.15, 0.85, 0.95);
+                        this.maxPower = defaults.defaultMaxPower;
+                        this.minPower = defaults.defaultMinPower;
 
-                        this.maxPower = 1.0;
-                        this.minPower = 0.1;
+                        this.setRamping(defaults.defaultRampUpModifier, defaults.defaultRampDownModifier,
+                                        defaults.defaultRampDownEndModifier);
 
-                        this.pidGain = new double[]{0.01, 0.01, 0.01};
+                        this.pidGain = defaults.defaultPIDGain;
 
-                        this.correctionTime = 500;
-                        this.allowableDistanceError = 1;
+                        this.correctionTime = defaults.defaultCorrectionTime;
+                        this.allowableDistanceError = defaults.defaultAllowableDistanceError;
                 }
 
                 public void setRamping(double rampUp, double rampDown, double rampDownEnd) {
@@ -55,8 +90,9 @@ public interface DriveTrain {
         }
 
         /**
-         * @param currentPosition The current robot position, returned by getEncoderDistance()
-         * @param params Parameters
+         * @param currentPosition The current robot position, returned by
+         *                        getEncoderDistance()
+         * @param params          Parameters
          * @return whether the robot is done moving
          */
         boolean move(double currentPosition, MoveParams params);

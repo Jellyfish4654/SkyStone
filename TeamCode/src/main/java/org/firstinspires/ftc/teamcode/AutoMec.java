@@ -16,25 +16,18 @@ import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 @Autonomous(name = "AutoMec")
 public class AutoMec extends AutoOpMode {
-    DriveTrain drive;
-    DriveTrain.MoveParams params;
-
-    final double countsPerMM = 60 * Math.PI * 8192;
-    final double countsPerInch = countsPerMM / 25.4;
 
     @Override
     public void runOpMode() throws InterruptedException {
         logger.addDataUpdate("Status", "Loading AutoMec");
         initHardware();
         initVision(0.55);
-
         // Init Drivetrain Systems and IMU Params
-        logger.addDataUpdate("Status", "Initializing Mecanum Drivetrain");
-        drive = new Mecanum(Arrays.asList(motors), imu, logger, Arrays.asList(motors));
-        drive.resetEncoders();
+        initMecanum();
 
         logger.addDataUpdate("Status", "Activating Tensor Flow");
         stoneDetector.activateTF();
@@ -54,6 +47,8 @@ public class AutoMec extends AutoOpMode {
         // ***START***//
         waitForStart();
         timer.reset();
+        drive.resetEncoders();
+        initGlobalPosition();
         logger.addDataUpdate("Status", "AutoMec Start - " + team + " Team, " + side + " Side");
 
         if (side == side.STONE) {
@@ -80,18 +75,7 @@ public class AutoMec extends AutoOpMode {
                 // collect and move to drop
                 // move to stone position
 
-                params = new DriveTrain.MoveParams(24 * countsPerInch, 20, 10);
-                drive.softEncoderReset();
-                while (drive.move(drive.getEncoderDistance(), params))
-                    ;
-                // Testing for continuous motion with turn
-                params = new DriveTrain.MoveParams(24 * countsPerInch, 20, 10);
-                drive.softEncoderReset();
-                while (drive.move(drive.getEncoderDistance(), params) & drive.getEncoderDistance() / countsPerInch < 12)
-                    ;
-                params.moveAngle = 50;
-                while (drive.move(drive.getEncoderDistance(), params))
-                    ;
+                moveTest();
             } else if (team == team.BLUE) {
 
                 switch (skyStonePosition) {
@@ -113,15 +97,33 @@ public class AutoMec extends AutoOpMode {
                 ;
 
             if (team == team.RED) {
+                moveTest();
 
             } else if (team == team.BLUE) {
-
+                moveTest();
             }
         }
         // End
         while (opModeIsActive()) {
             idle();
         }
+    }
+
+    public void moveTest() {
+        params = new DriveTrain.MoveParams(5 * countsPerInch, 0, 0, defaultParams);
+        params.maxPower = 0.5;
+        drive.softEncoderReset();
+
+        while (drive.move(drive.getEncoderDistance(), params) && !isStopRequested()) {
+            // logger.addData("Data",drive.data());
+        }
+        // Testing for continuous motion with turn
+        /*
+         * params = new DriveTrain.MoveParams(24 * countsPerInch, 20, 10);
+         * drive.softEncoderReset(); while (drive.move(drive.getEncoderDistance(),
+         * params) & drive.getEncoderDistance() / countsPerInch < 12) ; params.moveAngle
+         * = 50; while (drive.move(drive.getEncoderDistance(), params)) ;
+         */
     }
 
 }
