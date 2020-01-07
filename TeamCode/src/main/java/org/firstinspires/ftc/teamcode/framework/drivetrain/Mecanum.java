@@ -42,7 +42,7 @@ public class Mecanum implements DriveTrain {
     public Mecanum(List<DcMotor> motors, IMU imu, DoubleLogger logger, List<DcMotor> encoders) {
         this.motors = motors;
         this.imu = imu;
-        this.imu.initialize();
+        //this.imu.initialize();
         this.logger = logger;
         this.encoders = encoders;
         pivotTime = new ElapsedTime();

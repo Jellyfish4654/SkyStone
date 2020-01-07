@@ -87,6 +87,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         logger.addDataUpdate("Status", "Initializing IMU");
         BNO055IMU imuHardware = hardwareMap.get(BNO055IMU.class, "imu");
         imu = new BNO055(imuHardware);
+        imu.initialize();
     }
 
     protected void initGlobalPosition() {

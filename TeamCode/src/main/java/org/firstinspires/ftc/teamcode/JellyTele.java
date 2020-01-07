@@ -38,8 +38,7 @@ public class JellyTele extends BaseOpMode {
         logger.addDataUpdate("Op Status", "Loading JellyTele");
         initHardware();
         logger.addDataUpdate("Status", "Initializing IMU (Part 2)");
-        imu.initialize();
-
+        
         waitForStart();
         initGlobalPosition();
         State state = State.DRIVE;
