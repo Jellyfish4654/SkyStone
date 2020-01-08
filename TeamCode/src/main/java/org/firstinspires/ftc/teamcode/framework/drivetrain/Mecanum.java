@@ -93,8 +93,8 @@ public class Mecanum implements DriveTrain {
                 powers[3] = powers[3] / maxCalculatedPower * maxPower;
 
             }
-            this.setPowerAll(powers[0], powers[1], powers[2], powers[3]);
         }
+        this.setPowerAll(powers[0], powers[1], powers[2], powers[3]);
     }
 
     // calculate power for x direction

@@ -30,7 +30,7 @@ Hi yes code works. V5.3
     	Gamepad 2, Left Trigger: Intake
     	Gamepad 2, A + Left Trigger: Reverse Intake
 
-#### Debug Modes:
+##### Debug Modes:
 
     	**During Init** Gamepad 2 DPad UP: NONE
     	**During Init** Gamepad 2 DPad LEFT: PARTIAL
