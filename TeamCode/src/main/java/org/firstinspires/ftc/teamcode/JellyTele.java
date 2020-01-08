@@ -35,14 +35,28 @@ public class JellyTele extends BaseOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        logger.addDataUpdate("Op Status", "Loading JellyTele");
+        logger.addDataUpdate("Status", "Loading JellyTele");
         initHardware();
-        logger.addDataUpdate("Status", "Initializing IMU (Part 2)");
-        
+
+        logger.addDataUpdate("Status", "Initialization Complete");
+        while (!opModeIsActive()) {
+            telemetry.addData("Status", "Initialization Complete");
+
+            if (gamepad2.dpad_up){
+                debugMode = DebugMode.NONE;
+            } else if (gamepad2.dpad_left) {
+                debugMode = DebugMode.PARTIAL;
+            } else if (gamepad2.dpad_right) {
+                debugMode = DebugMode.ALL;
+            }
+
+            telemetry.addData("Debug Mode", debugMode);
+            telemetry.update();
+        }
+
         waitForStart();
         initGlobalPosition();
-        State state = State.DRIVE;
-
+        State state = State.MECANUM;
 
         /*
          ** Dpad** Up - DRIVE Down - TANK Left - Mecanum2 Right Mecanum
@@ -52,7 +66,7 @@ public class JellyTele extends BaseOpMode {
          */
 
         // START
-        logger.addData("Op Status", "Running JellyTele");
+        logger.addData("Status", "JellyTele Active");
         while (opModeIsActive()) {
             if (gamepad1.dpad_up) {
                 state = State.DRIVE;
@@ -64,14 +78,13 @@ public class JellyTele extends BaseOpMode {
                 state = State.MECANUM;
                 logger.addData("Drive State", "MECANUM");
             }
-           
-            telemetry.addData("X Position", globalPositionUpdate.returnXCoordinate() / countsPerInch);
-            telemetry.addData("Y Position", globalPositionUpdate.returnYCoordinate() / countsPerInch);
-            telemetry.addData("Orientation (Degrees)", globalPositionUpdate.returnOrientation());
-            telemetry.addData("Vertical left encoder position", verticalLeft.getCurrentPosition());
-            telemetry.addData("Vertical right encoder position", verticalRight.getCurrentPosition());
-            telemetry.addData("Horizontal encoder position", horizontal.getCurrentPosition());
-            
+
+            telemetry.addData("Drive State", state);
+
+            if (debugMode != DebugMode.NONE)
+                positionTelemetry();
+            if (debugMode != DebugMode.NONE && debugMode != DebugMode.PARTIAL && gamepad2.start)
+                positionSave();
 
             double mult = gamepad1.left_bumper ? -0.5 : (gamepad1.right_bumper ? -0.2 : -1.0);
             double x = gamepad1.left_stick_x, y = gamepad1.left_stick_y;
@@ -97,9 +110,8 @@ public class JellyTele extends BaseOpMode {
             }
 
             intake(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
-
+            logger.update();
         }
-        logger.update();
     }
 
     private void setPowers(double mult, double frontRight, double backRight, double frontLeft, double backLeft) {
@@ -107,7 +119,6 @@ public class JellyTele extends BaseOpMode {
         motors[Motor.BR].setPower(backRight * mult);
         motors[Motor.FL].setPower(frontLeft * mult);
         motors[Motor.BL].setPower(backLeft * mult);
-        logger.addData("Power State", mult);
     }
 
     protected void setMecanumPowers(double mult, double angle, double power) {

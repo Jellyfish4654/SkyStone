@@ -28,6 +28,10 @@ public class Mecanum implements DriveTrain {
     private double rightVerticalLastEncoder = 0;
     private double horizontalLastEncoder = 0;
 
+    private int leftVerticalMultiplier = 1;
+    private int rightVerticalMultiplier = 1;
+    private int normalMultiplier = 1;
+
     DoubleLogger logger;
 
     /**
@@ -42,11 +46,13 @@ public class Mecanum implements DriveTrain {
     public Mecanum(List<DcMotor> motors, IMU imu, DoubleLogger logger, List<DcMotor> encoders) {
         this.motors = motors;
         this.imu = imu;
-        //this.imu.initialize();
+        // this.imu.initialize();
         this.logger = logger;
         this.encoders = encoders;
         pivotTime = new ElapsedTime();
         distanceCorrectionTimer = new ElapsedTime();
+
+        reverseRightEncoder();
     }
 
     /**
@@ -124,16 +130,21 @@ public class Mecanum implements DriveTrain {
 
     // checks whether it needs to continue moving or stop, then calls rawSlide
     public boolean move(double currentPosition, DriveTrain.MoveParams params) {
-        double positionDifference = params.targetPosition -  currentPosition;
-        logger.addData("targetReached", targetReached);
-        logger.addData("positionDiff", Math.abs(positionDifference));
-        logger.addData("IMU data", imu.getZAngle(params.endAngle));
-        logger.addData("imu x", imu.getXAngle());
-        logger.addDataUpdate("imu y", imu.getYAngle());
+        double positionDifference = params.targetPosition - currentPosition;
+        
+        if (params.debugMove) {
+            logger.addData("TargetReached", targetReached);
+            logger.addData("PositionDiff", Math.abs(positionDifference));
+            logger.addData("Moveangle", params.moveAngle);
+            logger.addData("IMU data", imu.getZAngle(params.endAngle));
+            logger.addData("Imu x", imu.getXAngle());
+            logger.addDataUpdate("Imu y", imu.getYAngle());
+        }
+       
         // if it's within allowableDistanceError of the end, stop moving
         if (Math.abs(positionDifference) <= params.allowableDistanceError) {
             this.stop();
-           
+
             if (!targetReached) {
                 targetReached = true;
                 distanceCorrectionTimer.reset();
@@ -146,7 +157,7 @@ public class Mecanum implements DriveTrain {
             double power;
             if (rampDownEndDifference >= Math.abs(positionDifference)) {
                 power = params.minPower;
-                logger.addData("power","min");
+                logger.addData("power", "min");
                 // if current position is between rampDown and rampEnd gradually ramp down
             } else if (rampDownDifference > Math.abs(positionDifference)) {
                 power = Math.abs((positionDifference) - rampDownDifference)
@@ -168,8 +179,6 @@ public class Mecanum implements DriveTrain {
             if (positionDifference < 0) {
                 params.moveAngle += 180;
             }
-
-            logger.addData("moveangle",params.moveAngle);
 
             // x vector movement
             double horizontal = Utility.roundTwoDec(calculateX(params.moveAngle, power));
@@ -238,9 +247,10 @@ public class Mecanum implements DriveTrain {
     }
 
     private double[] getEncoderPositions() {
-        double[] encoders = { this.encoders.get(0).getCurrentPosition() - leftVerticalLastEncoder,
-                this.encoders.get(1).getCurrentPosition() - rightVerticalLastEncoder,
-                this.encoders.get(2).getCurrentPosition() - horizontalLastEncoder };
+        double[] encoders = {
+                (leftVerticalMultiplier * this.encoders.get(0).getCurrentPosition()) - leftVerticalLastEncoder,
+                (rightVerticalMultiplier * this.encoders.get(1).getCurrentPosition()) - rightVerticalLastEncoder,
+                (normalMultiplier * this.encoders.get(2).getCurrentPosition()) - horizontalLastEncoder };
         return encoders;
     }
 
@@ -261,6 +271,30 @@ public class Mecanum implements DriveTrain {
         double distance = Math.sqrt(Math.pow(y, 2) + Math.pow(x, 2));
 
         return distance;
+    }
+
+    private void reverseLeftEncoder() {
+        if (leftVerticalMultiplier == 1) {
+            leftVerticalMultiplier = -1;
+        } else {
+            leftVerticalMultiplier = 1;
+        }
+    }
+
+    private void reverseRightEncoder() {
+        if (rightVerticalMultiplier == 1) {
+            rightVerticalMultiplier = -1;
+        } else {
+            rightVerticalMultiplier = 1;
+        }
+    }
+
+    private void reverseNormalEncoder() {
+        if (normalMultiplier == 1) {
+            normalMultiplier = -1;
+        } else {
+            normalMultiplier = 1;
+        }
     }
 
     @Override

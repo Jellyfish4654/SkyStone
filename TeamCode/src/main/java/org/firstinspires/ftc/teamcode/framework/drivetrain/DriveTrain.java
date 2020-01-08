@@ -65,6 +65,8 @@ public interface DriveTrain {
 
                 public double allowableDistanceError;
 
+                public boolean debugMove;
+
                 public MoveParams(double targetPosition, double moveAngle, double endAngle, DefaultParams defaults) {
                         this.targetPosition = targetPosition;
                         this.moveAngle = moveAngle;
@@ -80,6 +82,8 @@ public interface DriveTrain {
 
                         this.correctionTime = defaults.defaultCorrectionTime;
                         this.allowableDistanceError = defaults.defaultAllowableDistanceError;
+
+                        this.debugMove = false;
                 }
 
                 public void setRamping(double rampUp, double rampDown, double rampDownEnd) {

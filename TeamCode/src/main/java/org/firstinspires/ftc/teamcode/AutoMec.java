@@ -38,6 +38,7 @@ public class AutoMec extends AutoOpMode {
             updatedRecognitions = stoneDetector.detectStoneSilent();
             team = gamepad1.dpad_up ? team.RED : (gamepad1.dpad_down ? team.BLUE : team);
             side = gamepad1.dpad_left ? side.STONE : (gamepad1.dpad_right ? side.FOUNDATION : side);
+            telemetry.addData("Status", "Initialization Complete, Awaiting Settings Override");
 
             telemetry.addData("Team", team);
             telemetry.addData("Side", side);
@@ -111,9 +112,9 @@ public class AutoMec extends AutoOpMode {
 
     public void moveTest() {
         params = new DriveTrain.MoveParams(5 * countsPerInch, 0, 0, defaultParams);
-        params.maxPower = 0.5;
+        params.debugMove = true;
+       
         drive.softEncoderReset();
-
         while (drive.move(drive.getEncoderDistance(), params) && !isStopRequested()) {
             // logger.addData("Data",drive.data());
         }

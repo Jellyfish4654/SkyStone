@@ -27,7 +27,7 @@ public class DoubleLogger {
     }
 
     public void addDataUpdate(String label, String format, Object... args) {
-        this.addData(label, String.format(format, args));
+        this.addDataUpdate(label, String.format(format, args));
     }
 
     public void update() {

@@ -50,7 +50,7 @@ public abstract class AutoOpMode extends BaseOpMode {
         drive = new Mecanum(Arrays.asList(motors), imu, logger, Arrays.asList(encoders));
         defaultParams = new DriveTrain.DefaultParams(defaultMaxPower, defaultMinPower, defaultRampUpModifier,
                 defaultRampDownModifier, defaultRampDownEndModifier, defaultPIDGain, defaultCorrectionTime,
-                defaultErrorDistance);
+                defaultErrorDistance);        
     }
 
     public void initVision(double confidence) {

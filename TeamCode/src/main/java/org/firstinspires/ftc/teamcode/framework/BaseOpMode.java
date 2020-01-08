@@ -13,6 +13,9 @@ import org.firstinspires.ftc.teamcode.framework.subsystems.GlobalPosition;
 import org.firstinspires.ftc.teamcode.framework.enums.Motor;
 import org.firstinspires.ftc.teamcode.framework.enums.DebugMode;
 import org.firstinspires.ftc.teamcode.logging.DoubleLogger;
+import org.firstinspires.ftc.teamcode.logging.FileLogger;
+
+import java.util.Calendar;
 
 public abstract class BaseOpMode extends LinearOpMode {
     protected DcMotor front_right, back_right, front_left, back_left;
@@ -23,11 +26,18 @@ public abstract class BaseOpMode extends LinearOpMode {
 
     protected IMU imu;
     protected GlobalPosition globalPositionUpdate;
+    protected Thread positionThread;
+
     protected DoubleLogger logger = new DoubleLogger(telemetry);
 
-    public ElapsedTime timer = new ElapsedTime();
+    protected ElapsedTime timer = new ElapsedTime();
+    protected ElapsedTime debugTimer = new ElapsedTime();
+    protected Calendar now = Calendar.getInstance();
 
-    protected final double countsPerMM = 60 * Math.PI * 8192; // 8192
+    protected DebugMode debugMode = DebugMode.NONE;
+    protected String lastPositionSave = "N/A";
+
+    protected final double countsPerMM = 8192 / (60 * Math.PI); // 8192
     protected final double countsPerInch = countsPerMM * 25.4;
 
     protected void initHardware() {
@@ -43,13 +53,15 @@ public abstract class BaseOpMode extends LinearOpMode {
         horizontal = hardwareMap.dcMotor.get("fl");// 2
         horizontal2 = hardwareMap.dcMotor.get("bl");// 3 EMPTY
 
-        // back_right.setDirection(DcMotorSimple.Direction.REVERSE); //backright was
-        // reversed but honestly it could be that all the others need to be reversed for
-        // auto code to work.
-
         front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.REVERSE);
         back_left.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        /*
+         * Just a test to // see if all the sperate encoder reversals are even needed.
+         * Test to see if the back_right motor is affected.
+         */
+        // verticalRight.setDirection(DCMotorSimple.Direction.REVERSE);
 
         front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -75,7 +87,7 @@ public abstract class BaseOpMode extends LinearOpMode {
 
         motors = new DcMotor[] { front_right, back_right, front_left, back_left };
 
-        intake = new DcMotor[] { hardwareMap.dcMotor.get("il"), hardwareMap.dcMotor.get("ir") };
+        intake = new DcMotor[] { hardwareMap.dcMotor.get("il"), hardwareMap.dcMotor.get("ir") }; // left 1, right 0
 
         for (DcMotor motor : intake) {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -92,8 +104,10 @@ public abstract class BaseOpMode extends LinearOpMode {
 
     protected void initGlobalPosition() {
         globalPositionUpdate = new GlobalPosition(verticalLeft, verticalRight, horizontal, countsPerInch, 75);
-        Thread positionThread = new Thread(globalPositionUpdate);
+        positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
+
+        globalPositionUpdate.reverseRightEncoder();
     }
 
     protected void intake(float power) {
@@ -101,4 +115,48 @@ public abstract class BaseOpMode extends LinearOpMode {
             motor.setPower(power);
         }
     }
+
+    protected void positionTelemetry() {
+        telemetry.addData("Last Position Save", lastPositionSave);
+
+        if (positionThread.isAlive()) {
+            telemetry.addData("X Position", globalPositionUpdate.returnXCoordinate() / countsPerInch);
+            telemetry.addData("Y Position", globalPositionUpdate.returnYCoordinate() / countsPerInch);
+            telemetry.addData("Orientation (Degrees)", globalPositionUpdate.returnOrientation());
+            telemetry.addData("Vertical left encoder position", verticalLeft.getCurrentPosition());
+            // Should be already software coded to be reversed in all instances.
+            telemetry.addData("Vertical right encoder position", -verticalRight.getCurrentPosition());
+            telemetry.addData("Horizontal encoder position", horizontal.getCurrentPosition());
+        }
+
+        telemetry.addData("Thread Active", positionThread.isAlive());
+        telemetry.update();
+    }
+
+    protected void positionSave() {
+        if (debugTimer.seconds() < 2 | debugMode != DebugMode.ALL) {
+        } else {
+            lastPositionSave = getTime();
+
+            if (positionThread.isAlive()) {
+                FileLogger.addData("X Position", globalPositionUpdate.returnXCoordinate() / countsPerInch);
+                FileLogger.addData("Y Position", globalPositionUpdate.returnYCoordinate() / countsPerInch);
+                FileLogger.addData("Orientation (Degrees)", globalPositionUpdate.returnOrientation());
+                FileLogger.addData("Vertical left encoder position", verticalLeft.getCurrentPosition());
+                // Should be already software coded to be reversed in all instances.
+                FileLogger.addData("Vertical right encoder position", -verticalRight.getCurrentPosition());
+                FileLogger.addData("Horizontal encoder position", horizontal.getCurrentPosition());
+            }
+
+            FileLogger.addData("Thread Active", positionThread.isAlive());
+
+            debugTimer.reset();
+        }
+    }
+
+    protected String getTime() {
+        return String.format("%2d:%2d:%2d ", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE),
+                now.get(Calendar.SECOND));
+    }
+
 }
