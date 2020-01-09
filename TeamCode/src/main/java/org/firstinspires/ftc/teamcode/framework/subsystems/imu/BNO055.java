@@ -90,7 +90,7 @@ public class BNO055 implements IMU {
     }
 
     @Override
-    public void setOffSet(double offset) {
+    public void setOffset(double offset) {
         this.offset = offset;
     }
 

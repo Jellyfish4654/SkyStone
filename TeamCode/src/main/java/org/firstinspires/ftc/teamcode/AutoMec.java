@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.teamcode.framework.AutoOpMode;
 import org.firstinspires.ftc.teamcode.framework.drivetrain.DriveTrain;
@@ -56,7 +57,7 @@ public class AutoMec extends AutoOpMode {
             getStonePositions();
             stoneDetector.shutdownTF();
 
-            intake((float) 0.75);
+            intake((float) 1);
 
             if (team == team.RED) {
 
@@ -75,7 +76,7 @@ public class AutoMec extends AutoOpMode {
                 // move to stones
                 // collect and move to drop
                 // move to stone position
-
+                waitMilliseconds(3000, timer);
                 moveTest();
             } else if (team == team.BLUE) {
 
@@ -90,12 +91,13 @@ public class AutoMec extends AutoOpMode {
 
                     break;
                 }
+                waitMilliseconds(3000, timer);
+                pivotTest();
             }
         } else if (side == side.FOUNDATION) {
             stoneDetector.shutdownTF();
 
-            while (timer.seconds() < 25)
-                ;
+            waitMilliseconds(25000, timer);
 
             if (team == team.RED) {
                 moveTest();
@@ -105,26 +107,70 @@ public class AutoMec extends AutoOpMode {
             }
         }
         // End
+        intake(0);
         while (opModeIsActive()) {
-            idle();
+            drive.stop();
+            ReadWriteFile.writeFile(autoIMUOffset, String.valueOf(imu.getZAngle() - 45));
+            telemetry.addData("Status", "Auto Complete, Idle Mode");
+            telemetry.update();
         }
     }
 
     public void moveTest() {
-        params = new DriveTrain.MoveParams(5 * countsPerInch, 0, 0, defaultParams);
-        params.debugMove = true;
-       
+        moveParams = new DriveTrain.MoveParams(5 * countsPerInch, 0, 0, defaultParams);
+        moveParams.debugMove = true;
+
         drive.softEncoderReset();
-        while (drive.move(drive.getEncoderDistance(), params) && !isStopRequested()) {
-            // logger.addData("Data",drive.data());
+        while (drive.move(drive.getEncoderDistance(), moveParams) && !isStopRequested()) {
         }
+        drive.stop();
+
         // Testing for continuous motion with turn
-        /*
-         * params = new DriveTrain.MoveParams(24 * countsPerInch, 20, 10);
-         * drive.softEncoderReset(); while (drive.move(drive.getEncoderDistance(),
-         * params) & drive.getEncoderDistance() / countsPerInch < 12) ; params.moveAngle
-         * = 50; while (drive.move(drive.getEncoderDistance(), params)) ;
-         */
+        waitMilliseconds(3000, timer);
+        moveParams = new DriveTrain.MoveParams(20 * countsPerInch, 65, -70, defaultParams);
+        drive.softEncoderReset();
+        logger.addDataUpdate("Encoder distance reset check", drive.getEncoderDistance());
+        waitMilliseconds(3000, timer);
+        while (drive.move(drive.getEncoderDistance(), moveParams) && !isStopRequested()) {
+            telemetry.addData("Status", "Executing trial movement 2");
+            telemetry.addData("Distance To Target", (moveParams.targetPosition / countsPerInch)
+                    - (Math.abs(drive.getEncoderDistance()) / countsPerInch));
+            telemetry.update();
+        }
+        drive.stop();
+    }
+
+    public void pivotTest() {
+        pivotParams = new DriveTrain.PivotParams(90, defaultParams);
+        while (drive.pivot(pivotParams) && opModeIsActive())
+            ;
+        drive.stop();
+
+        waitMilliseconds(3000, timer);
+
+        pivotParams = new DriveTrain.PivotParams(180, defaultParams);
+        while (drive.pivot(pivotParams) && opModeIsActive())
+            ;
+        drive.stop();
+
+        waitMilliseconds(3000, timer);
+
+        pivotParams = new DriveTrain.PivotParams(270, defaultParams);
+        while (drive.pivot(pivotParams) && opModeIsActive())
+            ;
+        drive.stop();
+
+        waitMilliseconds(3000, timer);
+
+        pivotParams = new DriveTrain.PivotParams(180, defaultParams);
+        while (drive.pivot(pivotParams) && opModeIsActive())
+            ;
+        drive.stop();
+
+        pivotParams = new DriveTrain.PivotParams(0, defaultParams);
+        while (drive.pivot(pivotParams) && opModeIsActive())
+            ;
+        drive.stop();
     }
 
 }

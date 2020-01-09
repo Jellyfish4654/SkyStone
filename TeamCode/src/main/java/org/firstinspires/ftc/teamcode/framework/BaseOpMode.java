@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
@@ -15,7 +16,10 @@ import org.firstinspires.ftc.teamcode.framework.enums.DebugMode;
 import org.firstinspires.ftc.teamcode.logging.DoubleLogger;
 import org.firstinspires.ftc.teamcode.logging.FileLogger;
 
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+
 import java.util.Calendar;
+import java.io.File;
 
 public abstract class BaseOpMode extends LinearOpMode {
     protected DcMotor front_right, back_right, front_left, back_left;
@@ -40,6 +44,25 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected final double countsPerMM = 8192 / (60 * Math.PI); // 8192
     protected final double countsPerInch = countsPerMM * 25.4;
 
+    protected File autoIMUOffset = AppUtil.getInstance().getSettingsFile("autoIMUOffset");
+    protected File liftEncoderPosition = AppUtil.getInstance().getSettingsFile("liftEncoderPosition.txt");
+
+    protected File redStoneLEFTPositions = AppUtil.getInstance().getSettingsFile("redStoneLEFTPositions.txt");
+    protected File redStoneCENTERPositions = AppUtil.getInstance().getSettingsFile("redStoneCENTERPositions.txt");
+    protected File redStoneRIGHTPositions = AppUtil.getInstance().getSettingsFile("redStoneRIGHTPositions.txt");
+    protected File redFoundationPositions = AppUtil.getInstance().getSettingsFile("redFoundationPositions.txt");
+
+    protected File blueStoneLEFTPositions = AppUtil.getInstance().getSettingsFile("blueStoneLEFTPositions.txt");
+    protected File blueStoneCENTERPositions = AppUtil.getInstance().getSettingsFile("blueStoneCENTERPositions.txt");
+    protected File blueStoneRIGHTPositions = AppUtil.getInstance().getSettingsFile("blueStoneRIGHTPositions.txt");
+    protected File blueFoundationPositions = AppUtil.getInstance().getSettingsFile("blueFoundationPositions.txt");
+
+    protected int X_POS_INDEX = 0;
+    protected int Y_POSTINDEX = 1;
+    protected int THETA_INDEX = 2;
+    protected int MAX_POWER_INDEX = 3;
+    protected int MIN_POWER_INDEX = 4;
+
     protected void initHardware() {
         logger.addDataUpdate("Status", "Intitalizing Hardware");
 
@@ -53,9 +76,10 @@ public abstract class BaseOpMode extends LinearOpMode {
         horizontal = hardwareMap.dcMotor.get("fl");// 2
         horizontal2 = hardwareMap.dcMotor.get("bl");// 3 EMPTY
 
-        front_right.setDirection(DcMotorSimple.Direction.REVERSE);
+        // front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.REVERSE);
         back_left.setDirection(DcMotorSimple.Direction.REVERSE);
+        back_right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*
          * Just a test to // see if all the sperate encoder reversals are even needed.
@@ -107,7 +131,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
 
-        globalPositionUpdate.reverseRightEncoder();
+        globalPositionUpdate.reverseLeftEncoder();
     }
 
     protected void intake(float power) {
@@ -142,9 +166,9 @@ public abstract class BaseOpMode extends LinearOpMode {
                 FileLogger.addData("X Position", globalPositionUpdate.returnXCoordinate() / countsPerInch);
                 FileLogger.addData("Y Position", globalPositionUpdate.returnYCoordinate() / countsPerInch);
                 FileLogger.addData("Orientation (Degrees)", globalPositionUpdate.returnOrientation());
-                FileLogger.addData("Vertical left encoder position", verticalLeft.getCurrentPosition());
+                FileLogger.addData("Vertical left encoder position", -verticalLeft.getCurrentPosition());
                 // Should be already software coded to be reversed in all instances.
-                FileLogger.addData("Vertical right encoder position", -verticalRight.getCurrentPosition());
+                FileLogger.addData("Vertical right encoder position", verticalRight.getCurrentPosition());
                 FileLogger.addData("Horizontal encoder position", horizontal.getCurrentPosition());
             }
 
@@ -157,6 +181,12 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected String getTime() {
         return String.format("%2d:%2d:%2d ", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE),
                 now.get(Calendar.SECOND));
+    }
+
+    protected void waitMilliseconds(double milliseconds, ElapsedTime timer) {
+        timer.reset();
+        while (opModeIsActive() && timer.milliseconds() < milliseconds)
+            ;
     }
 
 }

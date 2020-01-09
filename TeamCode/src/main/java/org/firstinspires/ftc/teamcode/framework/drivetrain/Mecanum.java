@@ -52,7 +52,7 @@ public class Mecanum implements DriveTrain {
         pivotTime = new ElapsedTime();
         distanceCorrectionTimer = new ElapsedTime();
 
-        reverseRightEncoder();
+        reverseLeftEncoder();
     }
 
     /**
@@ -73,6 +73,7 @@ public class Mecanum implements DriveTrain {
         double powers[] = { vertical - horizontal + pivot, vertical + horizontal + pivot, vertical + horizontal - pivot,
                 vertical - horizontal - pivot };
 
+        // Only do speed changes if there is positional movement
         if (horizontal != 0 || vertical != 0) {
             int max = 0;
             int counter = 0;
@@ -131,16 +132,17 @@ public class Mecanum implements DriveTrain {
     // checks whether it needs to continue moving or stop, then calls rawSlide
     public boolean move(double currentPosition, DriveTrain.MoveParams params) {
         double positionDifference = params.targetPosition - currentPosition;
-        
+
         if (params.debugMove) {
             logger.addData("TargetReached", targetReached);
             logger.addData("PositionDiff", Math.abs(positionDifference));
+            logger.addData("CurrentPosition", currentPosition);
             logger.addData("Moveangle", params.moveAngle);
             logger.addData("IMU data", imu.getZAngle(params.endAngle));
             logger.addData("Imu x", imu.getXAngle());
             logger.addDataUpdate("Imu y", imu.getYAngle());
         }
-       
+
         // if it's within allowableDistanceError of the end, stop moving
         if (Math.abs(positionDifference) <= params.allowableDistanceError) {
             this.stop();
@@ -163,9 +165,11 @@ public class Mecanum implements DriveTrain {
                 power = Math.abs((positionDifference) - rampDownDifference)
                         * ((params.maxPower - params.minPower) / (rampDownDifference - rampDownEndDifference))
                         + params.maxPower;
+                logger.addData("power ramp down",power);
                 // if current position is before rampEnd, set to max power
             } else {
                 power = params.maxPower;
+                logger.addData("power", "max");
             }
 
             // get current IMU angle **MAY NEED TO ALTER ANGLE BASED ON HUB ORIENTATION**

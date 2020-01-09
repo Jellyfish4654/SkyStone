@@ -14,26 +14,29 @@ public interface DriveTrain {
                 public double defaultCorrectionTime;
                 public double defaultAllowableDistanceError;
 
-                public double defaultRampUpModifier;
-                public double defaultRampDownModifier;
-                public double defaultRampDownEndModifier;
+                public double defaultRampUp;
+                public double defaultRampDown;
+                public double defaultRampDownEnd;
 
-                public DefaultParams(double defaultMaxPower, double defaultMinPower, double defaultRampUpModifier,
-                                double defaultRampDownModifier, double defaultRampDownEndModifier,
-                                double[] defaultPIDGain, double defaultCorrectionTime,
-                                double defaultAllowableDistanceError) {
+                public Direction defaultDirection;
+
+                public DefaultParams(double defaultMaxPower, double defaultMinPower, double defaultRampUp,
+                                double defaultRampDown, double defaultRampDownEnd, double[] defaultPIDGain,
+                                double defaultCorrectionTime, double defaultAllowableDistanceError,
+                                Direction defaultDirection) {
                         this.defaultMaxPower = defaultMaxPower;
                         this.defaultMinPower = defaultMinPower;
 
-                        this.defaultRampUpModifier = defaultRampUpModifier;
-                        this.defaultRampDownModifier = defaultRampDownModifier;
-                        this.defaultRampDownEndModifier = defaultRampDownEndModifier;
+                        this.defaultRampUp = defaultRampUp;
+                        this.defaultRampDown = defaultRampDown;
+                        this.defaultRampDownEnd = defaultRampDownEnd;
 
                         this.defaultPIDGain = defaultPIDGain;
 
                         this.defaultCorrectionTime = defaultCorrectionTime;
                         this.defaultAllowableDistanceError = defaultAllowableDistanceError;
 
+                        this.defaultDirection = defaultDirection;
                 }
         }
 
@@ -75,8 +78,7 @@ public interface DriveTrain {
                         this.maxPower = defaults.defaultMaxPower;
                         this.minPower = defaults.defaultMinPower;
 
-                        this.setRamping(defaults.defaultRampUpModifier, defaults.defaultRampDownModifier,
-                                        defaults.defaultRampDownEndModifier);
+                        this.setRamping(defaults.defaultRampUp, defaults.defaultRampDown, defaults.defaultRampDownEnd);
 
                         this.pidGain = defaults.defaultPIDGain;
 
@@ -87,9 +89,11 @@ public interface DriveTrain {
                 }
 
                 public void setRamping(double rampUp, double rampDown, double rampDownEnd) {
-                        this.rampUp = rampUp * targetPosition;
-                        this.rampDown = rampDown * targetPosition;
-                        this.rampDownEnd = rampDownEnd * targetPosition;
+                        this.rampUp = rampUp > targetPosition ? targetPosition : rampUp;
+
+                        this.rampDown = rampDown > targetPosition ? targetPosition : rampDown;
+
+                        this.rampDownEnd = rampDownEnd > targetPosition ? targetPosition : rampDown;
                 }
         }
 
@@ -110,16 +114,16 @@ public interface DriveTrain {
                 public double correctionAngleError;
                 public Direction direction;
 
-                public PivotParams(double endAngle, Direction direction) {
+                public PivotParams(double endAngle, DefaultParams defaults) {
                         this.endAngle = endAngle;
-                        this.direction = direction;
+                        this.direction = defaults.defaultDirection;
 
                         this.rampDown = (endAngle - 30) % 360;
 
-                        this.maxPower = 1.0;
-                        this.minPower = 0.1;
+                        this.maxPower = defaults.defaultMaxPower;
+                        this.minPower = defaults.defaultMinPower;
 
-                        this.correctionTime = 500;
+                        this.correctionTime = defaults.defaultCorrectionTime;
                         this.correctionAngleError = 10;
                 }
         }

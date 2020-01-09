@@ -37,3 +37,5 @@ Hi yes code works. V5.3
     	**During Init** Gamepad 2 DPad RIGHT: ALL
 
     	**Debug Mode ALL** Gamepad 2 Start: Save Positions
+
+~x,y,theta,max,min

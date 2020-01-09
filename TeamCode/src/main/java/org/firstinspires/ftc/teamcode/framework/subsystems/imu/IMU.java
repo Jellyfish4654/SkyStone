@@ -82,7 +82,7 @@ public interface IMU {
      * 
      * @param offset the offset to set
      */
-    void setOffSet(double offset);
+    void setOffset(double offset);
 
     /**
      * Set the current position as the zero position for the imu

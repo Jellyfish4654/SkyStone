@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.framework;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ReadWriteFile;
+
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 import org.firstinspires.ftc.teamcode.framework.subsystems.vision.TFStoneDetector;
@@ -10,6 +12,7 @@ import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
 import org.firstinspires.ftc.teamcode.framework.enums.SkyStonePosition;
 import org.firstinspires.ftc.teamcode.framework.enums.Team;
 import org.firstinspires.ftc.teamcode.framework.enums.Side;
+import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,34 +31,147 @@ public abstract class AutoOpMode extends BaseOpMode {
 
     protected DriveTrain.DefaultParams defaultParams;
     protected DriveTrain drive;
-    protected DriveTrain.MoveParams params;
+    protected DriveTrain.MoveParams moveParams;
+    protected DriveTrain.PivotParams pivotParams;
 
     protected final double defaultRampDownPos = 10 * countsPerInch;
     protected final double defaultRampDownEndPos = 5 * countsPerInch;
 
     protected final double defaultMaxPower = 1;
-    protected final double defaultMinPower = .4;
+    protected final double defaultMinPower = .35;
 
-    protected final double defaultRampUpModifier = .15;
-    protected final double defaultRampDownModifier = .85;
-    protected final double defaultRampDownEndModifier = .95;
+    protected final double defaultRampUp = 0 * countsPerInch;
+    protected final double defaultRampDown = 12 * countsPerInch;
+    protected final double defaultRampDownEnd = 6 * countsPerInch;
 
     protected final double[] defaultPIDGain = { .03, .03, .03 };
 
     protected final double defaultCorrectionTime = 500;
-    protected final double defaultErrorDistance = countsPerInch * .03;
+    protected final double defaultErrorDistance = countsPerInch * .3;
+
+    protected final Direction defaultDirection = Direction.FASTEST;
+
+    protected String fileText;
+    protected String[] inputs;
+
+    protected double[][] redStoneLEFT;
+    protected double[][] redStoneCENTER;
+    protected double[][] redStoneRIGHT;
+    protected double[][] redStoneFOUNDATION;
+
+    protected double[][] blueStoneLEFT;
+    protected double[][] blueStoneCENTER;
+    protected double[][] blueStoneRIGHT;
+    protected double[][] blueStoneFOUNDATION;
 
     public void initMecanum() {
         logger.addDataUpdate("Status", "Initializing Mecanum Drivetrain");
         drive = new Mecanum(Arrays.asList(motors), imu, logger, Arrays.asList(encoders));
-        defaultParams = new DriveTrain.DefaultParams(defaultMaxPower, defaultMinPower, defaultRampUpModifier,
-                defaultRampDownModifier, defaultRampDownEndModifier, defaultPIDGain, defaultCorrectionTime,
-                defaultErrorDistance);        
+        defaultParams = new DriveTrain.DefaultParams(defaultMaxPower, defaultMinPower, defaultRampUp, defaultRampDown,
+                defaultRampDownEnd, defaultPIDGain, defaultCorrectionTime, defaultErrorDistance, defaultDirection);
     }
 
     public void initVision(double confidence) {
         stoneDetector.initVuforia(this, webCam);
         stoneDetector.initTfod(confidence); // 0.55?
+    }
+
+    public void readFiles() {
+        logger.addDataUpdate("Status", "Reading Red Side, Left Skystone Position File");
+
+        fileText = ReadWriteFile.readFile(redStoneLEFTPositions);
+        inputs = fileText.split("~");
+        redStoneLEFT = new double[inputs.length][5];
+        for (int i = 0; i < inputs.length; i++) {
+            String[] params = inputs[i].split(",");
+            for (int j = 0; j < params.length; j++) {
+                redStoneLEFT[i][j] = Double.parseDouble(params[j]);
+            }
+        }
+
+        logger.addDataUpdate("Status", "Reading Red Side, Center Skystone Position File");
+
+        fileText = ReadWriteFile.readFile(redStoneCENTERPositions);
+        inputs = fileText.split("~");
+        redStoneCENTER = new double[inputs.length][5];
+        for (int i = 0; i < inputs.length; i++) {
+            String[] params = inputs[i].split(",");
+            for (int j = 0; j < params.length; j++) {
+                redStoneCENTER[i][j] = Double.parseDouble(params[j]);
+            }
+        }
+
+        logger.addDataUpdate("Status", "Reading Red Side, Right Skystone Position File");
+
+        fileText = ReadWriteFile.readFile(redStoneRIGHTPositions);
+        inputs = fileText.split("~");
+        redStoneRIGHT = new double[inputs.length][5];
+        for (int i = 0; i < inputs.length; i++) {
+            String[] params = inputs[i].split(",");
+            for (int j = 0; j < params.length; j++) {
+                redStoneRIGHT[i][j] = Double.parseDouble(params[j]);
+            }
+        }
+
+        logger.addDataUpdate("Status", "Reading Red Side, Foundation Side Position File");
+
+        fileText = ReadWriteFile.readFile(redFoundationPositions);
+        inputs = fileText.split("~");
+        redStoneFOUNDATION = new double[inputs.length][5];
+        for (int i = 0; i < inputs.length; i++) {
+            String[] params = inputs[i].split(",");
+            for (int j = 0; j < params.length; j++) {
+                redStoneFOUNDATION[i][j] = Double.parseDouble(params[j]);
+            }
+        }
+
+        logger.addDataUpdate("Status", "Reading blue Side, Left Skystone Position File");
+
+        fileText = ReadWriteFile.readFile(blueStoneLEFTPositions);
+        inputs = fileText.split("~");
+        blueStoneLEFT = new double[inputs.length][5];
+        for (int i = 0; i < inputs.length; i++) {
+            String[] params = inputs[i].split(",");
+            for (int j = 0; j < params.length; j++) {
+                blueStoneLEFT[i][j] = Double.parseDouble(params[j]);
+            }
+        }
+
+        logger.addDataUpdate("Status", "Reading blue Side, Center Skystone Position File");
+
+        fileText = ReadWriteFile.readFile(blueStoneCENTERPositions);
+        inputs = fileText.split("~");
+        blueStoneCENTER = new double[inputs.length][5];
+        for (int i = 0; i < inputs.length; i++) {
+            String[] params = inputs[i].split(",");
+            for (int j = 0; j < params.length; j++) {
+                blueStoneCENTER[i][j] = Double.parseDouble(params[j]);
+            }
+        }
+
+        logger.addDataUpdate("Status", "Reading Blue Side, Right Skystone Position File");
+
+        fileText = ReadWriteFile.readFile(blueStoneRIGHTPositions);
+        inputs = fileText.split("~");
+        blueStoneRIGHT = new double[inputs.length][5];
+        for (int i = 0; i < inputs.length; i++) {
+            String[] params = inputs[i].split(",");
+            for (int j = 0; j < params.length; j++) {
+                blueStoneRIGHT[i][j] = Double.parseDouble(params[j]);
+            }
+        }
+
+        logger.addDataUpdate("Status", "Reading Blue Side, Foundation Side Position File");
+
+        fileText = ReadWriteFile.readFile(blueFoundationPositions);
+        inputs = fileText.split("~");
+        blueStoneFOUNDATION = new double[inputs.length][5];
+        for (int i = 0; i < inputs.length; i++) {
+            String[] params = inputs[i].split(",");
+            for (int j = 0; j < params.length; j++) {
+                blueStoneFOUNDATION[i][j] = Double.parseDouble(params[j]);
+            }
+        }
     }
 
     public void getStonePositions() {
@@ -143,13 +259,20 @@ public abstract class AutoOpMode extends BaseOpMode {
 
         if (!(Math.abs(yDistance) < .75 * countsPerInch && Math.abs(xDistance) < .75 * countsPerInch
                 && Math.abs(robotOrientationDifference) < 5)) {
-            params = new DriveTrain.MoveParams(distance, moveAngle, targetOrientation, defaultParams);
-            params.maxPower = power;
-            params.minPower = power;
-            drive.move(0, params);
-            telemetry.addData("Encoder Distance", distance / countsPerInch);
-            telemetry.addData("X Distance", xDistance / countsPerInch);
-            telemetry.addData("Y Distance", yDistance / countsPerInch);
+            moveParams = new DriveTrain.MoveParams(distance, moveAngle, targetOrientation, defaultParams);
+
+            moveParams.maxPower = power;
+            moveParams.minPower = power;
+            moveParams.rampDown = distance;
+            moveParams.rampUp = 0;
+            moveParams.rampDownEnd = distance;
+
+            drive.move(0, moveParams);
+
+            telemetry.addData("Moving to Position", targetX + ", " + targetY);
+            telemetry.addData("Distance to Target", distance / countsPerInch);
+            telemetry.addData("X Distance to Target", xDistance / countsPerInch);
+            telemetry.addData("Y Distance to Target", yDistance / countsPerInch);
             telemetry.addData("Move Angle", moveAngle);
             telemetry.update();
             return true;

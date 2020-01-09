@@ -9,14 +9,16 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
@@ -28,21 +30,23 @@ import org.firstinspires.ftc.teamcode.framework.enums.DebugMode;
 @TeleOp(name = "SkyStone JellyTele", group = "Iterative Opmode")
 public class JellyTele extends BaseOpMode {
     private static enum State {
-        DRIVE, MECANUM, TANK
+        DRIVE, MECANUM, TANK, FIELDMECANUM
     }
 
-    boolean fieldCentric = true;
+    double imuOffset = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
         logger.addDataUpdate("Status", "Loading JellyTele");
         initHardware();
+        imuOffset = Double.parseDouble(ReadWriteFile.readFile(autoIMUOffset).trim());
+        imu.setOffset(-imuOffset);
 
         logger.addDataUpdate("Status", "Initialization Complete");
         while (!opModeIsActive()) {
             telemetry.addData("Status", "Initialization Complete");
 
-            if (gamepad2.dpad_up){
+            if (gamepad2.dpad_up) {
                 debugMode = DebugMode.NONE;
             } else if (gamepad2.dpad_left) {
                 debugMode = DebugMode.PARTIAL;
