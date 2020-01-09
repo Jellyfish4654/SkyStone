@@ -79,7 +79,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         // front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.REVERSE);
         back_left.setDirection(DcMotorSimple.Direction.REVERSE);
-        back_right.setDirection(DcMotorSimple.Direction.REVERSE);
+      //  back_right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*
          * Just a test to // see if all the sperate encoder reversals are even needed.
@@ -132,6 +132,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         positionThread.start();
 
         globalPositionUpdate.reverseLeftEncoder();
+        globalPositionUpdate.reverseRightEncoder();
     }
 
     protected void intake(float power) {
@@ -147,7 +148,7 @@ public abstract class BaseOpMode extends LinearOpMode {
             telemetry.addData("X Position", globalPositionUpdate.returnXCoordinate() / countsPerInch);
             telemetry.addData("Y Position", globalPositionUpdate.returnYCoordinate() / countsPerInch);
             telemetry.addData("Orientation (Degrees)", globalPositionUpdate.returnOrientation());
-            telemetry.addData("Vertical left encoder position", verticalLeft.getCurrentPosition());
+            telemetry.addData("Vertical left encoder position", -verticalLeft.getCurrentPosition());
             // Should be already software coded to be reversed in all instances.
             telemetry.addData("Vertical right encoder position", -verticalRight.getCurrentPosition());
             telemetry.addData("Horizontal encoder position", horizontal.getCurrentPosition());
@@ -168,7 +169,7 @@ public abstract class BaseOpMode extends LinearOpMode {
                 FileLogger.addData("Orientation (Degrees)", globalPositionUpdate.returnOrientation());
                 FileLogger.addData("Vertical left encoder position", -verticalLeft.getCurrentPosition());
                 // Should be already software coded to be reversed in all instances.
-                FileLogger.addData("Vertical right encoder position", verticalRight.getCurrentPosition());
+                FileLogger.addData("Vertical right encoder position", -verticalRight.getCurrentPosition());
                 FileLogger.addData("Horizontal encoder position", horizontal.getCurrentPosition());
             }
 

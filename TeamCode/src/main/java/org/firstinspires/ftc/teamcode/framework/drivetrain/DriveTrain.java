@@ -78,7 +78,11 @@ public interface DriveTrain {
                         this.maxPower = defaults.defaultMaxPower;
                         this.minPower = defaults.defaultMinPower;
 
-                        this.setRamping(defaults.defaultRampUp, defaults.defaultRampDown, defaults.defaultRampDownEnd);
+                        this.rampUp =defaults.defaultRampUp;
+                        this.rampDown = defaults.defaultRampDown;
+                        this.rampDownEnd = defaults.defaultRampDownEnd;
+
+                        //this.setRamping(defaults.defaultRampUp, defaults.defaultRampDown, defaults.defaultRampDownEnd);
 
                         this.pidGain = defaults.defaultPIDGain;
 
@@ -118,7 +122,7 @@ public interface DriveTrain {
                         this.endAngle = endAngle;
                         this.direction = defaults.defaultDirection;
 
-                        this.rampDown = (endAngle - 30) % 360;
+                        this.rampDown = 50;
 
                         this.maxPower = defaults.defaultMaxPower;
                         this.minPower = defaults.defaultMinPower;

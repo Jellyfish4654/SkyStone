@@ -35,16 +35,16 @@ public abstract class AutoOpMode extends BaseOpMode {
     protected DriveTrain.PivotParams pivotParams;
 
     protected final double defaultRampDownPos = 10 * countsPerInch;
-    protected final double defaultRampDownEndPos = 5 * countsPerInch;
+    protected final double defaultRampDownEndPos = 2 * countsPerInch;
 
     protected final double defaultMaxPower = 1;
-    protected final double defaultMinPower = .35;
+    protected final double defaultMinPower = .3;
 
     protected final double defaultRampUp = 0 * countsPerInch;
     protected final double defaultRampDown = 12 * countsPerInch;
     protected final double defaultRampDownEnd = 6 * countsPerInch;
 
-    protected final double[] defaultPIDGain = { .03, .03, .03 };
+    protected final double[] defaultPIDGain = { .03, .03, .03};
 
     protected final double defaultCorrectionTime = 500;
     protected final double defaultErrorDistance = countsPerInch * .3;

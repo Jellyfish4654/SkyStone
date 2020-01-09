@@ -129,6 +129,7 @@ public class AutoMec extends AutoOpMode {
         waitMilliseconds(3000, timer);
         moveParams = new DriveTrain.MoveParams(20 * countsPerInch, 65, -70, defaultParams);
         drive.softEncoderReset();
+        waitMilliseconds(3000, timer);
         logger.addDataUpdate("Encoder distance reset check", drive.getEncoderDistance());
         waitMilliseconds(3000, timer);
         while (drive.move(drive.getEncoderDistance(), moveParams) && !isStopRequested()) {

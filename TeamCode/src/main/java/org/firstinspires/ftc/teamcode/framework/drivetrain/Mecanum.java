@@ -53,6 +53,7 @@ public class Mecanum implements DriveTrain {
         distanceCorrectionTimer = new ElapsedTime();
 
         reverseLeftEncoder();
+        reverseRightEncoder();
     }
 
     /**
@@ -110,7 +111,7 @@ public class Mecanum implements DriveTrain {
 
     @Override
     public void resetEncoders() {
-        for (DcMotor motor : encoders) {
+        for (DcMotor motor : this.encoders) {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
@@ -120,7 +121,7 @@ public class Mecanum implements DriveTrain {
     }
 
     public void resetEncoders(DcMotor.RunMode endMode) {
-        for (DcMotor motor : encoders) {
+        for (DcMotor motor : this.encoders) {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(endMode);
         }
@@ -135,7 +136,7 @@ public class Mecanum implements DriveTrain {
 
         if (params.debugMove) {
             logger.addData("TargetReached", targetReached);
-            logger.addData("PositionDiff", Math.abs(positionDifference));
+            logger.addData("PositionDiff", positionDifference);
             logger.addData("CurrentPosition", currentPosition);
             logger.addData("Moveangle", params.moveAngle);
             logger.addData("IMU data", imu.getZAngle(params.endAngle));
@@ -157,15 +158,15 @@ public class Mecanum implements DriveTrain {
             double rampDownEndDifference = params.targetPosition - params.rampDownEnd;
 
             double power;
-            if (rampDownEndDifference >= Math.abs(positionDifference)) {
+            if (rampDownEndDifference <= Math.abs(positionDifference)) {
                 power = params.minPower;
                 logger.addData("power", "min");
                 // if current position is between rampDown and rampEnd gradually ramp down
-            } else if (rampDownDifference > Math.abs(positionDifference)) {
+            } else if (rampDownDifference < Math.abs(positionDifference)) {
                 power = Math.abs((positionDifference) - rampDownDifference)
                         * ((params.maxPower - params.minPower) / (rampDownDifference - rampDownEndDifference))
                         + params.maxPower;
-                logger.addData("power ramp down",power);
+                logger.addData("power ramp down", power);
                 // if current position is before rampEnd, set to max power
             } else {
                 power = params.maxPower;
@@ -175,19 +176,19 @@ public class Mecanum implements DriveTrain {
             // get current IMU angle **MAY NEED TO ALTER ANGLE BASED ON HUB ORIENTATION**
             double currentAngle = imu.getZAngle(params.endAngle);
 
-            params.moveAngle = params.moveAngle - currentAngle;
+            double moveAngle = params.moveAngle - currentAngle;
 
-            if (params.moveAngle <= -180) {
-                params.moveAngle += 360;
+            if (moveAngle <= -180) {
+                moveAngle += 360;
             }
             if (positionDifference < 0) {
-                params.moveAngle += 180;
+                moveAngle += 180;
             }
 
             // x vector movement
-            double horizontal = Utility.roundTwoDec(calculateX(params.moveAngle, power));
+            double horizontal = Utility.roundTwoDec(calculateX(moveAngle, power));
             // y vector movement
-            double vertical = Utility.roundTwoDec(calculateY(params.moveAngle, power));
+            double vertical = Utility.roundTwoDec(calculateY(moveAngle, power));
             // correction
             double pivotCorrection = ((currentAngle - params.endAngle) * params.pidGain[0]);
 
@@ -214,6 +215,7 @@ public class Mecanum implements DriveTrain {
         } else {
             power = (params.maxPower - params.minPower) / (Math.abs(rampDownDifference)) * Math.abs(angleDifference)
                     + params.minPower;
+            logger.addDataUpdate("Pivot Ramp Down", power);
         }
         // turn clockwise or counterclockwise depending on which side of desired angle
         // current angle is
@@ -245,9 +247,12 @@ public class Mecanum implements DriveTrain {
 
     @Override
     public void softEncoderReset() {
-        leftVerticalLastEncoder = encoders.get(0).getCurrentPosition();
-        rightVerticalLastEncoder = encoders.get(1).getCurrentPosition();
-        horizontalLastEncoder = encoders.get(2).getCurrentPosition();
+        leftVerticalLastEncoder = (leftVerticalMultiplier * this.encoders.get(0).getCurrentPosition());
+        rightVerticalLastEncoder = (rightVerticalMultiplier* this.encoders.get(1).getCurrentPosition());
+        horizontalLastEncoder = (normalMultiplier * this.encoders.get(2).getCurrentPosition());
+        logger.addData("encoders left", leftVerticalLastEncoder);
+        logger.addData("encoders right", rightVerticalLastEncoder);
+        logger.addDataUpdate("encoders horizontal", horizontalLastEncoder);
     }
 
     private double[] getEncoderPositions() {

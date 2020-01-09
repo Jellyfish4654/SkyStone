@@ -39,8 +39,8 @@ public class JellyTele extends BaseOpMode {
     public void runOpMode() throws InterruptedException {
         logger.addDataUpdate("Status", "Loading JellyTele");
         initHardware();
-        imuOffset = Double.parseDouble(ReadWriteFile.readFile(autoIMUOffset).trim());
-        imu.setOffset(-imuOffset);
+      //  imuOffset = Double.parseDouble(ReadWriteFile.readFile(autoIMUOffset).trim());
+        //imu.setOffset(-imuOffset);
 
         logger.addDataUpdate("Status", "Initialization Complete");
         while (!opModeIsActive()) {
