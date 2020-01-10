@@ -39,8 +39,8 @@ public class JellyTele extends BaseOpMode {
     public void runOpMode() throws InterruptedException {
         logger.addDataUpdate("Status", "Loading JellyTele");
         initHardware();
-      //  imuOffset = Double.parseDouble(ReadWriteFile.readFile(autoIMUOffset).trim());
-        //imu.setOffset(-imuOffset);
+        // imuOffset = Double.parseDouble(ReadWriteFile.readFile(autoIMUOffset).trim());
+        // imu.setOffset(-imuOffset);
 
         logger.addDataUpdate("Status", "Initialization Complete");
         while (!opModeIsActive()) {
@@ -114,6 +114,11 @@ public class JellyTele extends BaseOpMode {
             }
 
             intake(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
+
+            //Position save option
+            if (gamepad2.start && debugMode == DebugMode.ALL) {
+                positionSave();
+            }
             logger.update();
         }
     }

@@ -63,6 +63,15 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected int MAX_POWER_INDEX = 3;
     protected int MIN_POWER_INDEX = 4;
 
+    protected void initGlobalPosition() {
+        globalPositionUpdate = new GlobalPosition(verticalLeft, verticalRight, horizontal, countsPerInch, 70);
+        positionThread = new Thread(globalPositionUpdate);
+        positionThread.start();
+
+        globalPositionUpdate.reverseLeftEncoder();
+        globalPositionUpdate.reverseRightEncoder();
+    }
+    
     protected void initHardware() {
         logger.addDataUpdate("Status", "Intitalizing Hardware");
 
@@ -126,14 +135,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         imu.initialize();
     }
 
-    protected void initGlobalPosition() {
-        globalPositionUpdate = new GlobalPosition(verticalLeft, verticalRight, horizontal, countsPerInch, 70);
-        positionThread = new Thread(globalPositionUpdate);
-        positionThread.start();
 
-        globalPositionUpdate.reverseLeftEncoder();
-        globalPositionUpdate.reverseRightEncoder();
-    }
 
     protected void intake(float power) {
         for (DcMotor motor : intake) {

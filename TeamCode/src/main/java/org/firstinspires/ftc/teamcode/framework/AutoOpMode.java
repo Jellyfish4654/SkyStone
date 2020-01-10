@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.framework.enums.SkyStonePosition;
 import org.firstinspires.ftc.teamcode.framework.enums.Team;
 import org.firstinspires.ftc.teamcode.framework.enums.Side;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
+import org.firstinspires.ftc.teamcode.framework.enums.MoveIndex;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +26,7 @@ public abstract class AutoOpMode extends BaseOpMode {
     protected Team team = Team.RED;
     protected Side side = Side.STONE;
     protected SkyStonePosition skyStonePosition = null;
+
     protected TFStoneDetector stoneDetector = new TFStoneDetector();
 
     protected static final String webCam = "Webcam 1";
@@ -46,8 +48,8 @@ public abstract class AutoOpMode extends BaseOpMode {
 
     protected final double[] defaultPIDGain = { .03, .03, .03 };
 
-    protected final double defaultCorrectionTime = 500;
-    protected final double defaultErrorDistance = countsPerInch * .3;
+    protected final double defaultCorrectionTime = 350;
+    protected final double defaultErrorDistance = countsPerInch * .2;
 
     protected final Direction defaultDirection = Direction.FASTEST;
 
@@ -76,7 +78,7 @@ public abstract class AutoOpMode extends BaseOpMode {
 
     public void initVision(double confidence) {
         logger.addDataUpdate("Status", "Initializing Vision");
-        
+
         stoneDetector.initVuforia(this, webCam);
         stoneDetector.initTfod(confidence); // 0.55?
     }

@@ -15,13 +15,6 @@ import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 
 import java.io.File;
 
-/**
- * Created by Sarthak on 6/1/2019. Odometry system calibration. Run this OpMode
- * to generate the necessary constants to calculate the robot's global position
- * on the field. The Global Positioning Algorithm will not function and will
- * throw an error if this program is not run first
- */
-
  //RUNS CLOCKWISE
 @TeleOp(name = "Odometry System Calibration", group = "Calibration")
 public class OdometryCalibration extends BaseOpMode {
@@ -106,49 +99,6 @@ public class OdometryCalibration extends BaseOpMode {
             telemetry.update();
         }
     }
-
-    /*private void initHardwareMap(String rfName, String rbName, String lfName, String lbName, String vlEncoderName,
-            String vrEncoderName, String hEncoderName) {
-        right_front = hardwareMap.dcMotor.get(rfName);
-        right_back = hardwareMap.dcMotor.get(rbName);
-        left_front = hardwareMap.dcMotor.get(lfName);
-        left_back = hardwareMap.dcMotor.get(lbName);
-
-        verticalLeft = hardwareMap.dcMotor.get(vlEncoderName);
-        verticalRight = hardwareMap.dcMotor.get(vrEncoderName);
-        horizontal = hardwareMap.dcMotor.get(hEncoderName);
-
-        right_front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        right_back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        left_front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        left_back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        right_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        right_back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        left_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        left_back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        verticalLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        verticalRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        horizontal.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        verticalLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        verticalRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        horizontal.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        right_front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        right_back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        left_front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        left_back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        left_front.setDirection(DcMotorSimple.Direction.REVERSE);
-        right_front.setDirection(DcMotorSimple.Direction.REVERSE);
-        right_back.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        telemetry.addData("Status", "Hardware Map Init Complete");
-        telemetry.update();
-
-    }*/
 
     private void setPowerAll(double fr, double br, double fl, double bl) {
         front_right.setPower(fr);

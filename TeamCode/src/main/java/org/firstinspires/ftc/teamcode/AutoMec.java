@@ -66,7 +66,7 @@ public class AutoMec extends AutoOpMode {
 
                     break;
                 case CENTER:
-
+                    // goToPosition(redStoneCENTER[0][0],redStoneCENTER[0][1]);
                     break;
                 default:
 
@@ -77,7 +77,7 @@ public class AutoMec extends AutoOpMode {
                 // collect and move to drop
                 // move to stone position
                 waitMilliseconds(3000, timer);
-                moveTest();
+                moveCalibratedTest();
             } else if (team == team.BLUE) {
 
                 switch (skyStonePosition) {
@@ -117,7 +117,7 @@ public class AutoMec extends AutoOpMode {
     }
 
     public void moveTest() {
-        moveParams = new DriveTrain.MoveParams(5 * countsPerInch, 0, 0, defaultParams);
+        moveParams = new DriveTrain.MoveParams(20 * countsPerInch, 0, 0, defaultParams);
         moveParams.debugMove = true;
 
         drive.softEncoderReset();
