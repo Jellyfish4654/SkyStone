@@ -44,7 +44,7 @@ public abstract class AutoOpMode extends BaseOpMode {
     protected final double defaultRampDown = 12 * countsPerInch;
     protected final double defaultRampDownEnd = 6 * countsPerInch;
 
-    protected final double[] defaultPIDGain = { .03, .03, .03};
+    protected final double[] defaultPIDGain = { .03, .03, .03 };
 
     protected final double defaultCorrectionTime = 500;
     protected final double defaultErrorDistance = countsPerInch * .3;
@@ -64,6 +64,9 @@ public abstract class AutoOpMode extends BaseOpMode {
     protected double[][] blueStoneRIGHT;
     protected double[][] blueStoneFOUNDATION;
 
+    protected double xOffset = 0;
+    protected double yOffset = 0;
+
     public void initMecanum() {
         logger.addDataUpdate("Status", "Initializing Mecanum Drivetrain");
         drive = new Mecanum(Arrays.asList(motors), imu, logger, Arrays.asList(encoders));
@@ -72,6 +75,8 @@ public abstract class AutoOpMode extends BaseOpMode {
     }
 
     public void initVision(double confidence) {
+        logger.addDataUpdate("Status", "Initializing Vision");
+        
         stoneDetector.initVuforia(this, webCam);
         stoneDetector.initTfod(confidence); // 0.55?
     }
@@ -280,4 +285,17 @@ public abstract class AutoOpMode extends BaseOpMode {
             return false;
         }
     }
+
+    protected double calibratedCurrentPosition() {
+        double xDistance = globalPositionUpdate.returnXCoordinate() - xOffset;
+        double yDistance = globalPositionUpdate.returnYCoordinate() - yOffset;
+
+        return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+    }
+
+    protected void resetCalibratedPosition() {
+        xOffset = globalPositionUpdate.returnXCoordinate();
+        yOffset = globalPositionUpdate.returnYCoordinate();
+    }
+
 }

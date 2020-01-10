@@ -127,7 +127,7 @@ public abstract class BaseOpMode extends LinearOpMode {
     }
 
     protected void initGlobalPosition() {
-        globalPositionUpdate = new GlobalPosition(verticalLeft, verticalRight, horizontal, countsPerInch, 75);
+        globalPositionUpdate = new GlobalPosition(verticalLeft, verticalRight, horizontal, countsPerInch, 70);
         positionThread = new Thread(globalPositionUpdate);
         positionThread.start();
 

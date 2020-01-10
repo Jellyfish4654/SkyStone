@@ -33,8 +33,6 @@ public class TFStoneDetector {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-
-        
         // Phone cam and webcam
         //parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         parameters.cameraName = linearOpMode.hardwareMap.get(WebcamName.class, webcam);  // "Webcam 1"
@@ -51,11 +49,8 @@ public class TFStoneDetector {
             tfodParameters.minimumConfidence = minConfidence;
             tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
             tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-
-            linearOpMode.telemetry.addData(">>", "TensorFlow Init");
-            linearOpMode.telemetry.update();
         } else {
-            linearOpMode.telemetry.addData(">>", "Check Phone. TFOD Incompatibility Error");
+            linearOpMode.telemetry.addData("ERROR", "Check Phone. TFOD Incompatibility Error");
             linearOpMode.telemetry.update();
         }
     }

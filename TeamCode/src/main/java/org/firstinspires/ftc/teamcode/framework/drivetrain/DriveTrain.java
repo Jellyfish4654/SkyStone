@@ -122,13 +122,13 @@ public interface DriveTrain {
                         this.endAngle = endAngle;
                         this.direction = defaults.defaultDirection;
 
-                        this.rampDown = 50;
+                        this.rampDown = 90;
 
                         this.maxPower = defaults.defaultMaxPower;
                         this.minPower = defaults.defaultMinPower;
 
                         this.correctionTime = defaults.defaultCorrectionTime;
-                        this.correctionAngleError = 10;
+                        this.correctionAngleError = 5;
                 }
         }
 
