@@ -115,21 +115,30 @@ public class JellyTele extends BaseOpMode {
 
             intake(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
 
-            if(gamepad2.b){
-                if(stoneOutake.getPosition()!=stoneOutputOpen)
+            if (gamepad2.b) {
+                if (stoneOutake.getPosition() != stoneOutputOpen)
                     stoneOutake.setPosition(stoneOutputOpen);
                 else
                     stoneOutake.setPosition(stoneOutputLock);
             }
 
-            if(gamepad2.left_bumper){
+            if (gamepad2.left_bumper) {
                 foundation();
             }
 
-            //Position save option
+            // Position save option
             if (gamepad2.start && debugMode == DebugMode.ALL) {
                 positionSave();
             }
+
+            if (gamepad2.dpad_left) {
+                stoneIntake.setPosition(stoneIntakeExtend);
+            } else if (gamepad2.dpad_up) {
+                stoneIntake.setPosition(stoneIntakeLock);
+            } else if (gamepad2.dpad_right) {
+                stoneIntake.setPosition(stoneIntakeOpen);
+            }
+
             logger.update();
         }
     }

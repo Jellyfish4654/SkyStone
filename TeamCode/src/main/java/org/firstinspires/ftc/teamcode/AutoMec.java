@@ -120,66 +120,6 @@ public class AutoMec extends AutoOpMode {
         }
     }
 
-    public void moveCalibratedTest() {
-        moveParams = new DriveTrain.MoveParams(5 * countsPerInch, 0, 0, defaultParams);
-        moveParams.debugMove = true;
-
-        resetCalibratedPosition();
-        while (drive.move(calibratedCurrentPosition(), moveParams) && !isStopRequested()) {
-        }
-        drive.stop();
-
-        // Testing for continuous motion with turn
-        waitMilliseconds(3000, timer);
-        moveParams = new DriveTrain.MoveParams(20 * countsPerInch, 65, -70, defaultParams);
-        resetCalibratedPosition();
-        waitMilliseconds(3000, timer);
-        logger.addDataUpdate("Encoder distance reset check", calibratedCurrentPosition());
-        waitMilliseconds(3000, timer);
-        while (drive.move(calibratedCurrentPosition(), moveParams) && !isStopRequested()) {
-            telemetry.addData("Status", "Executing trial movement 2");
-            telemetry.addData("Distance To Target", (moveParams.targetPosition / countsPerInch)
-                    - (Math.abs(calibratedCurrentPosition()) / countsPerInch));
-            telemetry.update();
-        }
-        drive.stop();
-    }
-
-    public void pivotTest() {
-        pivotParams = new DriveTrain.PivotParams(90, defaultParams);
-        while (drive.pivot(pivotParams) && opModeIsActive())
-            ;
-        drive.stop();
-
-        waitMilliseconds(3000, timer);
-
-        pivotParams = new DriveTrain.PivotParams(180, defaultParams);
-        while (drive.pivot(pivotParams) && opModeIsActive())
-            ;
-        drive.stop();
-
-        waitMilliseconds(3000, timer);
-
-        pivotParams = new DriveTrain.PivotParams(270, defaultParams);
-        while (drive.pivot(pivotParams) && opModeIsActive())
-            ;
-        drive.stop();
-
-        waitMilliseconds(3000, timer);
-
-        pivotParams = new DriveTrain.PivotParams(180, defaultParams);
-        while (drive.pivot(pivotParams) && opModeIsActive())
-            ;
-        drive.stop();
-
-        waitMilliseconds(3000, timer);
-
-        pivotParams = new DriveTrain.PivotParams(0, defaultParams);
-        while (drive.pivot(pivotParams) && opModeIsActive())
-            ;
-        drive.stop();
-    }
-
     public void blueSideFoundation() {
         foundationLeft.setPosition(foundationLeftRetract);
         foundationRight.setPosition(foundationRightRetract);

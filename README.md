@@ -30,6 +30,20 @@ Hi yes code works. V5.3
     	Gamepad 2, Left Trigger: Intake
     	Gamepad 2, A + Left Trigger: Reverse Intake
 
+##### Foundation:
+
+    	Gamepad 2, Left Bumper: Retract/Extend (Toggle)
+
+##### Stone Outake:
+
+    	Gamepad 2, B: Open/Lock Open/Lock (Toggle)
+
+##### Stone Intake
+
+    	Gamepad 2, dPad LEFT: Extend
+    	Gamepad 2, dPad UP: Lock
+    	Gamepad 2, dPad RIGHT: Open
+
 ##### Debug Modes:
 
     	**During Init** Gamepad 2 DPad UP: NONE
