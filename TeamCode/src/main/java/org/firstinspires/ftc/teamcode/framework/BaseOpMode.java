@@ -68,18 +68,18 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected int MAX_POWER_INDEX = 3;
     protected int MIN_POWER_INDEX = 4;
 
-    protected final double foundationLeftRetract = .58;
-    protected final double foundationLeftExtend = .1;
+    protected final double foundationLeftExtend = .58;
+    protected final double foundationLeftRetract = .08;
 
-    protected final double foundationRightRetract = .08;
-    protected final double foundationRightExtend = .56;
+    protected final double foundationRightExtend = .08;
+    protected final double foundationRightRetract = .58;
 
-    protected final double stoneIntakeOpen = 0.77; // wrong
-    protected final double stoneIntakeLock = .5; // values
-    protected final double stoneIntakeExtend = .15; // here!
+    protected final double stoneIntakeOpen = 0.77;
+    protected final double stoneIntakeLock = .5;
+    protected final double stoneIntakeExtend = .15;
 
     protected final double stoneOutputLock = 0;
-    protected final double stoneOutputOpen = .5; // likely wrong
+    protected final double stoneOutputOpen = .5;
 
     protected void initGlobalPosition() {
         globalPositionUpdate = new GlobalPosition(verticalLeft, verticalRight, horizontal, countsPerInch, 70);
@@ -167,16 +167,6 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected void output() {
         stoneOutake.setPosition(stoneOutputOpen);
         stoneIntake.setPosition(stoneIntakeExtend);
-    }
-
-    protected void foundation() {
-        if (foundationLeft.getPosition() != foundationLeftExtend) {
-            foundationLeft.setPosition(foundationLeftExtend);
-            foundationRight.setPosition(foundationRightExtend);
-        } else {
-            foundationLeft.setPosition(foundationLeftRetract);
-            foundationRight.setPosition(foundationRightRetract);
-        }
     }
 
     protected void positionTelemetry() {

@@ -39,17 +39,19 @@ public abstract class AutoOpMode extends BaseOpMode {
     protected final double defaultRampDownPos = 10 * countsPerInch;
     protected final double defaultRampDownEndPos = 2 * countsPerInch;
 
-    protected final double defaultMaxPower = 1;
-    protected final double defaultMinPower = .3;
+    protected final double defaultMaxPower = 0.60;
+    protected final double defaultMinPower = 0.2;
 
+    // @Howard, I think these are reversed
+    // - Allen
     protected final double defaultRampUp = 0 * countsPerInch;
-    protected final double defaultRampDown = 12 * countsPerInch;
-    protected final double defaultRampDownEnd = 6 * countsPerInch;
+    protected final double defaultRampDown = 6 * countsPerInch;
+    protected final double defaultRampDownEnd = 12 * countsPerInch;
 
     protected final double[] defaultPIDGain = { .03, .03, .03 };
 
-    protected final double defaultCorrectionTime = 350;
-    protected final double defaultErrorDistance = countsPerInch * .2;
+    protected final double defaultCorrectionTime = 250; // changed
+    protected final double defaultErrorDistance = countsPerInch * 1; // changed
 
     protected final Direction defaultDirection = Direction.FASTEST;
 

@@ -60,9 +60,17 @@ public class AutoMec extends AutoOpMode {
         logger.addDataUpdate("Status", "AutoMec Start - " + team + " Team, " + side + " Side");
 
         if (side == side.STONE) {
-            getStonePositions();
+//            intake((float) 1);
+            waitMilliseconds(22000, timer);
+            moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
+            resetCalibratedPosition();
+            while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
+            }
+            drive.stop();
+
+//            getStonePositions();
             stoneDetector.shutdownTF();
-            intake((float) 1);
+/*
             if (team == team.RED) {
 
                 switch (skyStonePosition) {
@@ -96,20 +104,21 @@ public class AutoMec extends AutoOpMode {
                 }
 
                 waitMilliseconds(3000, timer);
-            }
+            } */
         } else if (side == side.FOUNDATION) {
             stoneDetector.shutdownTF();
+//           moveParams = new DriveTrain.MoveParams(16 * countsPerInch, 90);
 
-          //  waitMilliseconds(25000, timer);
+            waitMilliseconds(22000, timer);
 
             if (team == team.RED) {
-                moveParams = new DriveTrain.MoveParams(12 * countsPerInch, 0, 0, defaultParams);
+                moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
                 resetCalibratedPosition();
                 while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
                 }
                 drive.stop();
             } else if (team == team.BLUE) {
-                moveParams = new DriveTrain.MoveParams(12 * countsPerInch, 0, 0, defaultParams);
+                moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
                 resetCalibratedPosition();
                 while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
                 }
