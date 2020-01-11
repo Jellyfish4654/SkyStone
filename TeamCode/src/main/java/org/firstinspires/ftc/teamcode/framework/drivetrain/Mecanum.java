@@ -246,6 +246,49 @@ public class Mecanum implements DriveTrain {
     }
 
     @Override
+    public boolean widePivot(DriveTrain.PivotParams params) {
+        double currentAngle = imu.getZAngle(params.endAngle);
+        double angleDifference = params.endAngle - currentAngle;
+        double rampDownDifference = params.endAngle - params.rampDown;
+        double power;
+
+        // calculate power
+        if (Math.abs(angleDifference) > Math.abs(rampDownDifference)) {
+            power = params.maxPower;
+        } else {
+            power = (params.maxPower - params.minPower) / (Math.abs(rampDownDifference)) * Math.abs(angleDifference)
+                    + params.minPower;
+            logger.addDataUpdate("Pivot Ramp Down", power);
+        }
+        // turn clockwise or counterclockwise depending on which side of desired angle
+        // current angle is
+        if (params.direction == Direction.FASTEST || targetReached) {
+            if (angleDifference > 0) {
+                this.setPowerAll(-power, -power, 0, 0);
+            } else {
+                this.setPowerAll(0, 0, -power, -power);
+            }
+        } else if (params.direction == Direction.CLOCKWISE) {
+            this.setPowerAll(-power, -power, 0, 0);
+        } else {
+            this.setPowerAll(0, 0, -power, -power);
+        }
+
+        // determine if the pivoting angle is in the desired range
+        if (Math.abs(angleDifference) < params.correctionAngleError && !targetReached) {
+            pivotTime.reset();
+            targetReached = true;
+        }
+        if (targetReached && pivotTime.milliseconds() >= params.correctionTime) {
+            targetReached = false;
+            this.stop();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
     public void softEncoderReset() {
         leftVerticalLastEncoder = (leftVerticalMultiplier * this.encoders.get(0).getCurrentPosition());
         rightVerticalLastEncoder = (rightVerticalMultiplier* this.encoders.get(1).getCurrentPosition());

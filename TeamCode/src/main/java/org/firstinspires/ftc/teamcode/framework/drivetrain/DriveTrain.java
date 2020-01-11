@@ -141,6 +141,8 @@ public interface DriveTrain {
          */
         boolean pivot(PivotParams params);
 
+        boolean widePivot(PivotParams params);
+
         /**
          * Reset encoder positions variables to 0.
          */

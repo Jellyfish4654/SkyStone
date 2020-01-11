@@ -163,6 +163,10 @@ public class Tank implements DriveTrain {
         this.setPowerAll(0, 0, 0, 0);
     }
 
+    @Override
+    public boolean widePivot(DriveTrain.PivotParams params){
+return false;
+    }
     private void setPowerAll(double frPower, double brPower, double flPower, double blPower) {
         motors.get(0).setPower(frPower);
         motors.get(1).setPower(brPower);

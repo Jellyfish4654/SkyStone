@@ -56,9 +56,7 @@ public class AutoMec extends AutoOpMode {
         if (side == side.STONE) {
             getStonePositions();
             stoneDetector.shutdownTF();
-
             intake((float) 1);
-
             if (team == team.RED) {
 
                 switch (skyStonePosition) {
@@ -77,7 +75,6 @@ public class AutoMec extends AutoOpMode {
                 // collect and move to drop
                 // move to stone position
                 waitMilliseconds(3000, timer);
-                moveCalibratedTest();
             } else if (team == team.BLUE) {
 
                 switch (skyStonePosition) {
@@ -91,8 +88,8 @@ public class AutoMec extends AutoOpMode {
 
                     break;
                 }
+
                 waitMilliseconds(3000, timer);
-                pivotTest();
             }
         } else if (side == side.FOUNDATION) {
             stoneDetector.shutdownTF();
@@ -100,10 +97,17 @@ public class AutoMec extends AutoOpMode {
             waitMilliseconds(25000, timer);
 
             if (team == team.RED) {
-                moveTest();
-
+                moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
+                resetCalibratedPosition();
+                while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
+                }
+                drive.stop();
             } else if (team == team.BLUE) {
-                moveTest();
+                moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
+                resetCalibratedPosition();
+                while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
+                }
+                drive.stop();
             }
         }
         // End
@@ -114,31 +118,6 @@ public class AutoMec extends AutoOpMode {
             telemetry.addData("Status", "Auto Complete, Idle Mode");
             telemetry.update();
         }
-    }
-
-    public void moveTest() {
-        moveParams = new DriveTrain.MoveParams(20 * countsPerInch, 0, 0, defaultParams);
-        moveParams.debugMove = true;
-
-        drive.softEncoderReset();
-        while (drive.move(drive.getEncoderDistance(), moveParams) && !isStopRequested()) {
-        }
-        drive.stop();
-
-        // Testing for continuous motion with turn
-        waitMilliseconds(3000, timer);
-        moveParams = new DriveTrain.MoveParams(20 * countsPerInch, 65, -70, defaultParams);
-        drive.softEncoderReset();
-        waitMilliseconds(3000, timer);
-        logger.addDataUpdate("Encoder distance reset check", drive.getEncoderDistance());
-        waitMilliseconds(3000, timer);
-        while (drive.move(drive.getEncoderDistance(), moveParams) && !isStopRequested()) {
-            telemetry.addData("Status", "Executing trial movement 2");
-            telemetry.addData("Distance To Target", (moveParams.targetPosition / countsPerInch)
-                    - (Math.abs(drive.getEncoderDistance()) / countsPerInch));
-            telemetry.update();
-        }
-        drive.stop();
     }
 
     public void moveCalibratedTest() {
@@ -198,6 +177,81 @@ public class AutoMec extends AutoOpMode {
         pivotParams = new DriveTrain.PivotParams(0, defaultParams);
         while (drive.pivot(pivotParams) && opModeIsActive())
             ;
+        drive.stop();
+    }
+
+    public void blueSideFoundation() {
+        foundationLeft.setPosition(foundationLeftRetract);
+        foundationRight.setPosition(foundationRightRetract);
+
+        moveParams = new DriveTrain.MoveParams(24 * countsPerInch, 0, 0, defaultParams);
+        resetCalibratedPosition();
+        while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
+        }
+        drive.stop();
+
+        foundationLeft.setPosition(foundationLeftExtend);
+        foundationRight.setPosition(foundationRightExtend);
+
+        pivotParams = new DriveTrain.PivotParams(-90, defaultParams);
+        while (drive.pivot(pivotParams) && opModeIsActive())
+            ;
+        drive.stop();
+
+        moveParams = new DriveTrain.MoveParams(24 * countsPerInch, -67.5, 0, defaultParams);
+        resetCalibratedPosition();
+        while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
+        }
+        drive.stop();
+
+        foundationLeft.setPosition(foundationLeftRetract);
+        foundationRight.setPosition(foundationRightRetract);
+
+        while(goToPosition(0, 0, 90, 1, .35) && opModeIsActive());
+        drive.stop();
+
+        moveParams = new DriveTrain.MoveParams(24 * countsPerInch, 0, 0, defaultParams);
+        resetCalibratedPosition();
+        while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
+        }
+        drive.stop();
+
+    }
+
+    public void redSideFoundation() {
+        foundationLeft.setPosition(foundationLeftRetract);
+        foundationRight.setPosition(foundationRightRetract);
+
+        moveParams = new DriveTrain.MoveParams(24 * countsPerInch, 0, 0, defaultParams);
+        resetCalibratedPosition();
+        while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
+        }
+        drive.stop();
+
+        foundationLeft.setPosition(foundationLeftExtend);
+        foundationRight.setPosition(foundationRightExtend);
+
+        pivotParams = new DriveTrain.PivotParams(90, defaultParams);
+        while (drive.pivot(pivotParams) && opModeIsActive())
+            ;
+        drive.stop();
+
+        moveParams = new DriveTrain.MoveParams(24 * countsPerInch, 67.5, 0, defaultParams);
+        resetCalibratedPosition();
+        while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
+        }
+        drive.stop();
+
+        foundationLeft.setPosition(foundationLeftRetract);
+        foundationRight.setPosition(foundationRightRetract);
+
+        while(goToPosition(0,0,-90,1,.35)&& opModeIsActive());
+        drive.stop();
+
+        moveParams = new DriveTrain.MoveParams(24 * countsPerInch, 0, 0, defaultParams);
+        resetCalibratedPosition();
+        while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
+        }
         drive.stop();
     }
 

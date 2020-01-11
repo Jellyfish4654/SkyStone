@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
@@ -24,6 +26,9 @@ import java.io.File;
 public abstract class BaseOpMode extends LinearOpMode {
     protected DcMotor front_right, back_right, front_left, back_left;
     protected DcMotor verticalLeft, verticalRight, horizontal, horizontal2;
+
+    protected Servo foundationLeft, foundationRight;
+    protected Servo stoneIntake, stoneOutake;
 
     protected DcMotor[] motors, encoders;
     protected DcMotor[] intake;
@@ -63,6 +68,19 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected int MAX_POWER_INDEX = 3;
     protected int MIN_POWER_INDEX = 4;
 
+    protected final double foundationLeftRetract = .56;
+    protected final double foundationLeftExtend = .1;
+
+    protected final double foundationRightRetract = .1;
+    protected final double foundationRightExtend = .56;
+
+    protected final double stoneIntakeOpen = 0; //wrong
+    protected final double stoneIntakeLock = .5; //values
+    protected final double stoneIntakeExtend = 1; //here!
+   
+    protected final double stoneOutputLock = 0; 
+    protected final double stoneOutputOpen = .6; //likely wrong
+
     protected void initGlobalPosition() {
         globalPositionUpdate = new GlobalPosition(verticalLeft, verticalRight, horizontal, countsPerInch, 70);
         positionThread = new Thread(globalPositionUpdate);
@@ -71,7 +89,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         globalPositionUpdate.reverseLeftEncoder();
         globalPositionUpdate.reverseRightEncoder();
     }
-    
+
     protected void initHardware() {
         logger.addDataUpdate("Status", "Intitalizing Hardware");
 
@@ -85,10 +103,15 @@ public abstract class BaseOpMode extends LinearOpMode {
         horizontal = hardwareMap.dcMotor.get("fl");// 2
         horizontal2 = hardwareMap.dcMotor.get("bl");// 3 EMPTY
 
+        foundationLeft = hardwareMap.servo.get("lFoundation"); // 3
+        foundationRight = hardwareMap.servo.get("rFoundation"); // 2
+        stoneIntake = hardwareMap.servo.get("sI"); // 0
+        stoneOutake = hardwareMap.servo.get("sO"); // 1
+
         // front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.REVERSE);
         back_left.setDirection(DcMotorSimple.Direction.REVERSE);
-      //  back_right.setDirection(DcMotorSimple.Direction.REVERSE);
+        // back_right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /*
          * Just a test to // see if all the sperate encoder reversals are even needed.
@@ -135,11 +158,24 @@ public abstract class BaseOpMode extends LinearOpMode {
         imu.initialize();
     }
 
-
-
     protected void intake(float power) {
         for (DcMotor motor : intake) {
             motor.setPower(power);
+        }
+    }
+
+    protected void output() {
+        stoneOutake.setPosition(stoneOutputOpen);
+        stoneIntake.setPosition(stoneIntakeExtend);
+    }
+
+    protected void foundation() {
+        if (foundationLeft.getPosition() != foundationLeftExtend) {
+            foundationLeft.setPosition(foundationLeftExtend);
+            foundationRight.setPosition(foundationRightExtend);
+        }else{
+            foundationLeft.setPosition(foundationLeftRetract);
+            foundationRight.setPosition(foundationRightRetract);
         }
     }
 
