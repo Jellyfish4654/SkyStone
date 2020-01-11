@@ -33,6 +33,12 @@ public class AutoMec extends AutoOpMode {
         logger.addDataUpdate("Status", "Activating Tensor Flow");
         stoneDetector.activateTF();
 
+        foundationLeft.setPosition(foundationLeftRetract);
+        foundationRight.setPosition(foundationRightRetract);
+
+        stoneIntake.setPosition(stoneIntakeLock);
+        stoneOutake.setPosition(stoneOutputLock);
+
         logger.addDataUpdate("Status", "Initialization Complete, Awaiting Settings Override");
 
         while (!opModeIsActive() && !isStopRequested()) {
@@ -94,16 +100,16 @@ public class AutoMec extends AutoOpMode {
         } else if (side == side.FOUNDATION) {
             stoneDetector.shutdownTF();
 
-            waitMilliseconds(25000, timer);
+          //  waitMilliseconds(25000, timer);
 
             if (team == team.RED) {
-                moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
+                moveParams = new DriveTrain.MoveParams(12 * countsPerInch, 0, 0, defaultParams);
                 resetCalibratedPosition();
                 while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
                 }
                 drive.stop();
             } else if (team == team.BLUE) {
-                moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
+                moveParams = new DriveTrain.MoveParams(12 * countsPerInch, 0, 0, defaultParams);
                 resetCalibratedPosition();
                 while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
                 }
@@ -147,7 +153,8 @@ public class AutoMec extends AutoOpMode {
         foundationLeft.setPosition(foundationLeftRetract);
         foundationRight.setPosition(foundationRightRetract);
 
-        while(goToPosition(0, 0, 90, 1, .35) && opModeIsActive());
+        while (goToPosition(0, 0, 90, 1, .35) && opModeIsActive())
+            ;
         drive.stop();
 
         moveParams = new DriveTrain.MoveParams(24 * countsPerInch, 0, 0, defaultParams);
@@ -185,7 +192,8 @@ public class AutoMec extends AutoOpMode {
         foundationLeft.setPosition(foundationLeftRetract);
         foundationRight.setPosition(foundationRightRetract);
 
-        while(goToPosition(0,0,-90,1,.35)&& opModeIsActive());
+        while (goToPosition(0, 0, -90, 1, .35) && opModeIsActive())
+            ;
         drive.stop();
 
         moveParams = new DriveTrain.MoveParams(24 * countsPerInch, 0, 0, defaultParams);

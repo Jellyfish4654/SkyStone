@@ -68,18 +68,18 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected int MAX_POWER_INDEX = 3;
     protected int MIN_POWER_INDEX = 4;
 
-    protected final double foundationLeftRetract = .56;
+    protected final double foundationLeftRetract = .58;
     protected final double foundationLeftExtend = .1;
 
-    protected final double foundationRightRetract = .1;
+    protected final double foundationRightRetract = .08;
     protected final double foundationRightExtend = .56;
 
-    protected final double stoneIntakeOpen = 0; //wrong
-    protected final double stoneIntakeLock = .5; //values
-    protected final double stoneIntakeExtend = 1; //here!
-   
-    protected final double stoneOutputLock = 0; 
-    protected final double stoneOutputOpen = .6; //likely wrong
+    protected final double stoneIntakeOpen = 0.77; // wrong
+    protected final double stoneIntakeLock = .5; // values
+    protected final double stoneIntakeExtend = .15; // here!
+
+    protected final double stoneOutputLock = 0;
+    protected final double stoneOutputOpen = .5; // likely wrong
 
     protected void initGlobalPosition() {
         globalPositionUpdate = new GlobalPosition(verticalLeft, verticalRight, horizontal, countsPerInch, 70);
@@ -173,7 +173,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         if (foundationLeft.getPosition() != foundationLeftExtend) {
             foundationLeft.setPosition(foundationLeftExtend);
             foundationRight.setPosition(foundationRightExtend);
-        }else{
+        } else {
             foundationLeft.setPosition(foundationLeftRetract);
             foundationRight.setPosition(foundationRightRetract);
         }
