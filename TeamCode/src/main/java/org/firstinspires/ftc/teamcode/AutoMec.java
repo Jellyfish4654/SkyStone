@@ -62,7 +62,7 @@ public class AutoMec extends AutoOpMode {
         if (side == side.STONE) {
 //            intake((float) 1);
             waitMilliseconds(22000, timer);
-            moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
+            moveParams = new DriveTrain.MoveParams(36 * countsPerInch, 0, 0, defaultParams);
             resetCalibratedPosition();
             while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
             }
@@ -112,13 +112,13 @@ public class AutoMec extends AutoOpMode {
             waitMilliseconds(22000, timer);
 
             if (team == team.RED) {
-                moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
+                moveParams = new DriveTrain.MoveParams(36 * countsPerInch, 0, 0, defaultParams);
                 resetCalibratedPosition();
                 while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
                 }
                 drive.stop();
             } else if (team == team.BLUE) {
-                moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
+                moveParams = new DriveTrain.MoveParams(36 * countsPerInch, 0, 0, defaultParams);
                 resetCalibratedPosition();
                 while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
                 }

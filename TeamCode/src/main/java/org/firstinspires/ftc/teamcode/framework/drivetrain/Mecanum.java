@@ -158,11 +158,11 @@ public class Mecanum implements DriveTrain {
             double rampDownEndDifference = params.targetPosition - params.rampDownEnd;
 
             double power;
-            if (rampDownEndDifference <= Math.abs(positionDifference)) {
+            if (rampDownEndDifference >= Math.abs(positionDifference)) {
                 power = params.minPower;
                 logger.addData("power", "min");
                 // if current position is between rampDown and rampEnd gradually ramp down
-            } else if (rampDownDifference < Math.abs(positionDifference)) {
+            } else if (rampDownDifference > Math.abs(positionDifference)) {
                 power = Math.abs((positionDifference) - rampDownDifference)
                         * ((params.maxPower - params.minPower) / (rampDownDifference - rampDownEndDifference))
                         + params.maxPower;

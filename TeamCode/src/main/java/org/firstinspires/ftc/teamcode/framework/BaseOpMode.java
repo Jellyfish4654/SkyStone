@@ -164,11 +164,6 @@ public abstract class BaseOpMode extends LinearOpMode {
         }
     }
 
-    protected void output() {
-        stoneOutake.setPosition(stoneOutputOpen);
-        stoneIntake.setPosition(stoneIntakeExtend);
-    }
-
     protected void positionTelemetry() {
         telemetry.addData("Last Position Save", lastPositionSave);
 
@@ -206,6 +201,8 @@ public abstract class BaseOpMode extends LinearOpMode {
             debugTimer.reset();
         }
     }
+
+    //move this into utility eventually
 
     protected String getTime() {
         return String.format("%2d:%2d:%2d ", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE),

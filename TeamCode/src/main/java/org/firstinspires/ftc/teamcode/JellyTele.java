@@ -121,33 +121,31 @@ public class JellyTele extends BaseOpMode {
                 stoneOutake.setPosition(stoneOutputLock);
 
             }
-        }
 
-        if (gamepad2.left_bumper) {
-            foundationLeft.setPosition(foundationLeftExtend);
-            foundationRight.setPosition(foundationRightExtend);
-        } else if (gamepad2.right_bumper) {
-            foundationLeft.setPosition(foundationLeftRetract);
-            foundationRight.setPosition(foundationRightRetract);
-        }
+            if (gamepad2.left_bumper) {
+                foundationLeft.setPosition(foundationLeftExtend);
+                foundationRight.setPosition(foundationRightExtend);
+            } else if (gamepad2.right_bumper) {
+                foundationLeft.setPosition(foundationLeftRetract);
+                foundationRight.setPosition(foundationRightRetract);
+            }
 
-        // Position save option
-        if (gamepad2.start && debugMode == DebugMode.ALL) {
-            positionSave();
-        }
+            // Position save option
+            if (gamepad2.start && debugMode == DebugMode.ALL) {
+                positionSave();
+            }
 
-        if (gamepad2.dpad_left) {
-            stoneIntake.setPosition(stoneIntakeExtend);
-        } else if (gamepad2.dpad_up) {
-            stoneIntake.setPosition(stoneIntakeLock);
-        } else if (gamepad2.dpad_right) {
-            stoneIntake.setPosition(stoneIntakeOpen);
-        }
+            if (gamepad2.dpad_left) {
+                stoneIntake.setPosition(stoneIntakeExtend);
+            } else if (gamepad2.dpad_up) {
+                stoneIntake.setPosition(stoneIntakeLock);
+            } else if (gamepad2.dpad_right) {
+                stoneIntake.setPosition(stoneIntakeOpen);
+            }
 
-        logger.update();
+            logger.update();
+        }
     }
-
-    
 
     private void setPowers(double mult, double frontRight, double backRight, double frontLeft, double backLeft) {
         motors[Motor.FR].setPower(frontRight * mult);
