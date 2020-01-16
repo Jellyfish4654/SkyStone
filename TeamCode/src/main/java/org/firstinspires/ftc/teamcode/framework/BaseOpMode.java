@@ -20,7 +20,6 @@ import org.firstinspires.ftc.teamcode.logging.FileLogger;
 
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
-import java.util.Calendar;
 import java.io.File;
 
 public abstract class BaseOpMode extends LinearOpMode {
@@ -41,7 +40,6 @@ public abstract class BaseOpMode extends LinearOpMode {
 
     protected ElapsedTime timer = new ElapsedTime();
     protected ElapsedTime debugTimer = new ElapsedTime();
-    protected Calendar now = Calendar.getInstance();
 
     protected DebugMode debugMode = DebugMode.NONE;
     protected String lastPositionSave = "N/A";
@@ -184,7 +182,7 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected void positionSave() {
         if (debugTimer.seconds() < 2 | debugMode != DebugMode.ALL) {
         } else {
-            lastPositionSave = getTime();
+            lastPositionSave = Utility.getTime();
 
             if (positionThread.isAlive()) {
                 FileLogger.addData("X Position", globalPositionUpdate.returnXCoordinate() / countsPerInch);
@@ -202,17 +200,9 @@ public abstract class BaseOpMode extends LinearOpMode {
         }
     }
 
-    //move this into utility eventually
-
-    protected String getTime() {
-        return String.format("%2d:%2d:%2d ", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE),
-                now.get(Calendar.SECOND));
-    }
-
-    protected void waitMilliseconds(double milliseconds, ElapsedTime timer) {
+    public void waitMilliseconds(double milliseconds, ElapsedTime timer) {
         timer.reset();
         while (opModeIsActive() && timer.milliseconds() < milliseconds)
             ;
     }
-
 }
