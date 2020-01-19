@@ -207,9 +207,12 @@ public abstract class AutoOpMode extends BaseOpMode {
                             break;
                         case 1:
                             skyStonePosition = SkyStonePosition.CENTER;
+                            break;
                         case 2:
                             skyStonePosition = SkyStonePosition.LEFT;
+                            break;
                         default:
+                            skyStonePosition = SkyStonePosition.RIGHT;
                             break;
                         }
                     }
@@ -224,9 +227,12 @@ public abstract class AutoOpMode extends BaseOpMode {
                             break;
                         case 1:
                             skyStonePosition = SkyStonePosition.CENTER;
+                            break;
                         case 2:
                             skyStonePosition = SkyStonePosition.RIGHT;
+                            break;
                         default:
+                            skyStonePosition = SkyStonePosition.LEFT;
                             break;
                         }
                     }
@@ -234,7 +240,7 @@ public abstract class AutoOpMode extends BaseOpMode {
             }
             logger.addDataUpdate("Skystone Position", skyStonePosition);
         } catch (NullPointerException nullPointer) {
-            skyStonePosition = team == team.RED ? SkyStonePosition.LEFT : SkyStonePosition.RIGHT;
+            skyStonePosition = team == team.RED ? SkyStonePosition.RIGHT : SkyStonePosition.LEFT;
             logger.addDataUpdate("Error", "No skystone detected. Selecting default positions. - " + skyStonePosition);
         }
     }

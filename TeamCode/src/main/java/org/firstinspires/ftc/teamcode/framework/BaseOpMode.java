@@ -116,7 +116,7 @@ public abstract class BaseOpMode extends LinearOpMode {
          * Test to see if the back_right motor is affected.
          */
         // verticalRight.setDirection(DCMotorSimple.Direction.REVERSE);
-
+        
         front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -131,7 +131,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         verticalRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         horizontal.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         horizontal2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        
         encoders = new DcMotor[] { verticalLeft, verticalRight, horizontal, horizontal2 };
 
         front_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -140,15 +140,15 @@ public abstract class BaseOpMode extends LinearOpMode {
         back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         motors = new DcMotor[] { front_right, back_right, front_left, back_left };
-
+        
         intake = new DcMotor[] { hardwareMap.dcMotor.get("il"), hardwareMap.dcMotor.get("ir") }; // left 1, right 0
-
+        
         for (DcMotor motor : intake) {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             motor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
-
+        
         // Initialize imu
         logger.addDataUpdate("Status", "Initializing IMU");
         BNO055IMU imuHardware = hardwareMap.get(BNO055IMU.class, "imu");
@@ -161,6 +161,8 @@ public abstract class BaseOpMode extends LinearOpMode {
             motor.setPower(power);
         }
     }
+
+    
 
     protected void positionTelemetry() {
         telemetry.addData("Last Position Save", lastPositionSave);
