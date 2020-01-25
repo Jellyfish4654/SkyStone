@@ -130,6 +130,8 @@ public abstract class BaseOpMode extends LinearOpMode {
         // front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.REVERSE);
         back_left.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        lift.setDirection(DcMotorSimple.DirectionREVERSE);
         // back_right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
