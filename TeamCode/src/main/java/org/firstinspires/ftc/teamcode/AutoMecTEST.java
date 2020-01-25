@@ -31,7 +31,6 @@ public class AutoMecTEST extends AutoOpMode {
     public void runOpMode() throws InterruptedException {
         logger.addDataUpdate("Status", "Loading AutoMec TEST. DO NOT USE FOR COMP");
         initHardware();
-        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         initVision(0.55);
         // Init Drivetrain Systems and IMU Params
         initMecanum();
@@ -39,8 +38,8 @@ public class AutoMecTEST extends AutoOpMode {
         logger.addDataUpdate("Status", "Activating Tensor Flow");
         stoneDetector.activateTF();
 
-        grabber.setPosition(grabberRelease);
-        bar.setPosition(0.5);
+      //  grabber.setPosition(grabberRelease);
+     //   bar.setPosition(0.5);
 
         foundationLeft.setPosition(foundationLeftRetract);
         foundationRight.setPosition(foundationRightRetract);

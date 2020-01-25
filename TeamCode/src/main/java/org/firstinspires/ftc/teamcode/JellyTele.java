@@ -89,8 +89,8 @@ public class JellyTele extends BaseOpMode {
             if (debugMode != DebugMode.NONE && debugMode != DebugMode.PARTIAL && gamepad2.start)
                 positionSave();
 
-            double mult = gamepad1.left_bumper ? -0.5 : (gamepad1.right_bumper ? -0.2 : -1.0);
-            double x = gamepad1.left_stick_x, y = gamepad1.left_stick_y;
+            double mult = gamepad1.left_bumper ? 0.5 : (gamepad1.right_bumper ? 0.2 : 1.0);
+            double x = -gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
             switch (state) {
             case DRIVE:
                 setPowers(mult, y + x, y + x, y - x, y - x);

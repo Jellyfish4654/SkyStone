@@ -53,7 +53,7 @@ public class Mecanum implements DriveTrain {
         distanceCorrectionTimer = new ElapsedTime();
 
         reverseLeftEncoder();
-        reverseRightEncoder();
+        reverseNormalEncoder();
     }
 
     /**
@@ -291,7 +291,7 @@ public class Mecanum implements DriveTrain {
     @Override
     public void softEncoderReset() {
         leftVerticalLastEncoder = (leftVerticalMultiplier * this.encoders.get(0).getCurrentPosition());
-        rightVerticalLastEncoder = (rightVerticalMultiplier* this.encoders.get(1).getCurrentPosition());
+        rightVerticalLastEncoder = (rightVerticalMultiplier * this.encoders.get(1).getCurrentPosition());
         horizontalLastEncoder = (normalMultiplier * this.encoders.get(2).getCurrentPosition());
         logger.addData("encoders left", leftVerticalLastEncoder);
         logger.addData("encoders right", rightVerticalLastEncoder);

@@ -73,11 +73,11 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected int MAX_POWER_INDEX = 3;
     protected int MIN_POWER_INDEX = 4;
 
-    protected final double foundationLeftExtend = 0;
-    protected final double foundationLeftRetract = 1;
+    protected final double foundationLeftExtend = 1;
+    protected final double foundationLeftRetract = 0;
 
-    protected final double foundationRightExtend = 1;
-    protected final double foundationRightRetract = 0;
+    protected final double foundationRightExtend = 0;
+    protected final double foundationRightRetract = 1;
 
     protected double grabberLock = 1;
     protected double grabberRelease = 0;
@@ -96,6 +96,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         positionThread.start();
 
         globalPositionUpdate.reverseLeftEncoder();
+        globalPositionUpdate.reverseNormalEncoder();
         //globalPositionUpdate.reverseRightEncoder();
     }
 
@@ -226,7 +227,7 @@ public abstract class BaseOpMode extends LinearOpMode {
                 FileLogger.addData("Vertical left encoder position", -verticalLeft.getCurrentPosition());
                 // Should be already software coded to be reversed in all instances.
                 FileLogger.addData("Vertical right encoder position", -verticalRight.getCurrentPosition());
-                FileLogger.addData("Horizontal encoder position", horizontal.getCurrentPosition());
+                FileLogger.addData("Horizontal encoder position", -horizontal.getCurrentPosition());
             }
 
             FileLogger.addData("Thread Active", positionThread.isAlive());
