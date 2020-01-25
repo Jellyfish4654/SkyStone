@@ -127,9 +127,10 @@ public abstract class BaseOpMode extends LinearOpMode {
 
         // led = (RevBlinkinLedDriver) hardwareMap.get("led");
 
-        // front_right.setDirection(DcMotorSimple.Direction.REVERSE);
-        front_left.setDirection(DcMotorSimple.Direction.REVERSE);
-        back_left.setDirection(DcMotorSimple.Direction.REVERSE);
+        front_right.setDirection(DcMotorSimple.Direction.REVERSE);
+        back_right.setDirection(DcMotorSimple.Direction.REVERSE);
+       // front_left.setDirection(DcMotorSimple.Direction.REVERSE);
+       // back_left.setDirection(DcMotorSimple.Direction.REVERSE);
 
         lift.setDirection(DcMotorSimple.DirectionREVERSE);
         // back_right.setDirection(DcMotorSimple.Direction.REVERSE);
