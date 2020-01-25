@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
@@ -28,6 +31,7 @@ public class AutoMec extends AutoOpMode {
     public void runOpMode() throws InterruptedException {
         logger.addDataUpdate("Status", "Loading AutoMec");
         initHardware();
+        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         initVision(0.55);
         // Init Drivetrain Systems and IMU Params
         initMecanum();
@@ -35,11 +39,14 @@ public class AutoMec extends AutoOpMode {
         logger.addDataUpdate("Status", "Activating Tensor Flow");
         stoneDetector.activateTF();
 
+        grabber.setPosition(grabberRelease);
+        bar.setPosition(0.5);
+
         foundationLeft.setPosition(foundationLeftRetract);
         foundationRight.setPosition(foundationRightRetract);
 
-        stoneIntake.setPosition(stoneIntakeLock);
-        stoneOutake.setPosition(stoneOutputLock);
+        // stoneIntake.setPosition(stoneIntakeLock);
+        // stoneOutake.setPosition(stoneOutputLock);
 
         logger.addDataUpdate("Status", "Initialization Complete, Awaiting Settings Override");
 
@@ -62,7 +69,7 @@ public class AutoMec extends AutoOpMode {
         logger.addDataUpdate("Status", "AutoMec Start - " + team + " Team, " + side + " Side");
 
         if (side == side.STONE) {
-//            intake((float) 1);
+            // intake((float) 1);
             waitMilliseconds(22000, timer);
             moveParams = new DriveTrain.MoveParams(36 * countsPerInch, 0, 0, defaultParams);
             resetCalibratedPosition();
@@ -70,46 +77,34 @@ public class AutoMec extends AutoOpMode {
             }
             drive.stop();
 
-//            getStonePositions();
+            // getStonePositions();
             stoneDetector.shutdownTF();
-/*
-            if (team == team.RED) {
-
-                switch (skyStonePosition) {
-                case LEFT:
-
-                    break;
-                case CENTER:
-                    // goToPosition(redStoneCENTER[0][0],redStoneCENTER[0][1]);
-                    break;
-                default:
-
-                    break;
-                }
-
-                // move to stones
-                // collect and move to drop
-                // move to stone position
-                waitMilliseconds(3000, timer);
-            } else if (team == team.BLUE) {
-
-                switch (skyStonePosition) {
-                case LEFT:
-
-                    break;
-                case CENTER:
-
-                    break;
-                default:
-
-                    break;
-                }
-
-                waitMilliseconds(3000, timer);
-            } */
+            /*
+             * if (team == team.RED) {
+             * 
+             * switch (skyStonePosition) { case LEFT:
+             * 
+             * break; case CENTER: //
+             * goToPosition(redStoneCENTER[0][0],redStoneCENTER[0][1]); break; default:
+             * 
+             * break; }
+             * 
+             * // move to stones // collect and move to drop // move to stone position
+             * waitMilliseconds(3000, timer); } else if (team == team.BLUE) {
+             * 
+             * switch (skyStonePosition) { case LEFT:
+             * 
+             * break; case CENTER:
+             * 
+             * break; default:
+             * 
+             * break; }
+             * 
+             * waitMilliseconds(3000, timer); }
+             */
         } else if (side == side.FOUNDATION) {
             stoneDetector.shutdownTF();
-//           moveParams = new DriveTrain.MoveParams(16 * countsPerInch, 90);
+            // moveParams = new DriveTrain.MoveParams(16 * countsPerInch, 90);
 
             waitMilliseconds(22000, timer);
 

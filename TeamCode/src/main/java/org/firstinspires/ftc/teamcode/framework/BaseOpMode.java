@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
@@ -25,14 +27,18 @@ import java.io.File;
 public abstract class BaseOpMode extends LinearOpMode {
     protected DcMotor front_right, back_right, front_left, back_left;
     protected DcMotor verticalLeft, verticalRight, horizontal, horizontal2;
+    protected DcMotor intakeLeft, intakeRight;
+    protected DcMotor lift;
 
     protected Servo foundationLeft, foundationRight;
-    protected Servo stoneIntake, stoneOutake;
+    protected Servo grabber, bar;
 
     protected DcMotor[] motors, encoders;
     protected DcMotor[] intake;
 
     protected IMU imu;
+    protected RevBlinkinLedDriver led;
+
     protected GlobalPosition globalPositionUpdate;
     protected Thread positionThread;
 
@@ -72,13 +78,16 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected final double foundationRightExtend = .08;
     protected final double foundationRightRetract = .58;
 
-    protected final double stoneIntakeOpen = 0.77;
-    protected final double stoneIntakeLock = .5;
-    protected final double stoneIntakeExtend = .15;
+    protected double grabberLock = 1; 
+    protected double grabberRelease = 0; 
 
-    protected final double stoneOutputLock = 0;
-    protected final double stoneOutputOpen = .5;
+    protected double barMove = 0.5; // ?
+    protected double barMax = 1; //?
+    protected double barMin = 0; //?
 
+    protected final double liftMaxPosition = 100;
+    protected final double liftMinPosition = 0;
+    protected final double liftMultiplier = 0.4;
     protected void initGlobalPosition() {
         globalPositionUpdate = new GlobalPosition(verticalLeft, verticalRight, horizontal, countsPerInch, 70);
         positionThread = new Thread(globalPositionUpdate);
@@ -96,31 +105,40 @@ public abstract class BaseOpMode extends LinearOpMode {
         front_left = hardwareMap.dcMotor.get("fl"); // 2
         back_left = hardwareMap.dcMotor.get("bl"); // 3
 
-        verticalLeft = hardwareMap.dcMotor.get("fr"); // 0
-        verticalRight = hardwareMap.dcMotor.get("br"); // 1
-        horizontal = hardwareMap.dcMotor.get("fl");// 2
+        verticalLeft = hardwareMap.dcMotor.get("il"); // 0 **SHARES INTAKE**
+        verticalRight = hardwareMap.dcMotor.get("ir"); // 1 **SHARES INTAKE**
+        horizontal = hardwareMap.dcMotor.get("eH");// 2 **BY ITSELF**
         horizontal2 = hardwareMap.dcMotor.get("bl");// 3 EMPTY
+
+        intakeLeft = hardwareMap.dcMotor.get("il"); //
+        intakeRight = hardwareMap.dcMotor.get("ir"); //
+
+        lift = hardwareMap.dcMotor.get("lift"); // 3
 
         foundationLeft = hardwareMap.servo.get("lFoundation"); // 3
         foundationRight = hardwareMap.servo.get("rFoundation"); // 2
-        stoneIntake = hardwareMap.servo.get("sI"); // 0
-        stoneOutake = hardwareMap.servo.get("sO"); // 1
+
+        grabber = hardwareMap.servo.get("grabber");
+        
+        // stoneIntake = hardwareMap.servo.get("sI"); // 0
+        // stoneOutake = hardwareMap.servo.get("sO"); // 1
+
+       // led = (RevBlinkinLedDriver) hardwareMap.get("led");
 
         // front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.REVERSE);
         back_left.setDirection(DcMotorSimple.Direction.REVERSE);
         // back_right.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        /*
-         * Just a test to // see if all the sperate encoder reversals are even needed.
-         * Test to see if the back_right motor is affected.
-         */
-        // verticalRight.setDirection(DCMotorSimple.Direction.REVERSE);
-        
         front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        front_right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        back_right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        front_left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        back_left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         verticalLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         verticalRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -131,7 +149,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         verticalRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         horizontal.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         horizontal2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        
+
         encoders = new DcMotor[] { verticalLeft, verticalRight, horizontal, horizontal2 };
 
         front_right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -140,15 +158,18 @@ public abstract class BaseOpMode extends LinearOpMode {
         back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         motors = new DcMotor[] { front_right, back_right, front_left, back_left };
-        
-        intake = new DcMotor[] { hardwareMap.dcMotor.get("il"), hardwareMap.dcMotor.get("ir") }; // left 1, right 0
-        
+
+        intake = new DcMotor[] { intakeLeft, intakeRight };
+
         for (DcMotor motor : intake) {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             motor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
+
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         
+
         // Initialize imu
         logger.addDataUpdate("Status", "Initializing IMU");
         BNO055IMU imuHardware = hardwareMap.get(BNO055IMU.class, "imu");
@@ -162,7 +183,12 @@ public abstract class BaseOpMode extends LinearOpMode {
         }
     }
 
-    
+    protected void setPower(double[] motorPowers) {
+        motors[Motor.FR].setPower(motorPowers[Motor.FR]);
+        motors[Motor.BR].setPower(motorPowers[Motor.BR]);
+        motors[Motor.FL].setPower(motorPowers[Motor.FL]);
+        motors[Motor.BL].setPower(motorPowers[Motor.BL]);
+    }
 
     protected void positionTelemetry() {
         telemetry.addData("Last Position Save", lastPositionSave);
@@ -176,9 +202,8 @@ public abstract class BaseOpMode extends LinearOpMode {
             telemetry.addData("Vertical right encoder position", -verticalRight.getCurrentPosition());
             telemetry.addData("Horizontal encoder position", horizontal.getCurrentPosition());
         }
-
         telemetry.addData("Thread Active", positionThread.isAlive());
-        telemetry.update();
+        telemetry.addData("Lift position", lift.getCurrentPosition());
     }
 
     protected void positionSave() {

@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.framework.drivetrain.DriveTrain;
@@ -14,6 +16,7 @@ import org.firstinspires.ftc.teamcode.framework.enums.SkyStonePosition;
 import java.util.Arrays;
 import java.util.List;
 
+@Disabled
 @Autonomous(name = "AutoTank")
 public class AutoTank extends AutoOpMode {
     DriveTrain drive;

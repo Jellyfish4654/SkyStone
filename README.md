@@ -25,6 +25,16 @@ Hi yes code works. V5.3
     	Gamepad 1, DPad LEFT: MECANUM
     	Gamepad 1, DPad RIGHT: MECANUM2
 
+		Gamepad 1, DPad Left: Field Centric AUTO SETTINGS
+		Gamepad 1, DPad Down + A: Field Centric SET TO CURRENT POSITION
+		Gamepad 1, DPad Right: Field Centric OFF
+
+##### Forebar:
+		Gamepad 2, Left Stick Y: Sets position relative to deviation from 0 position; (0.5 servo at 0)
+
+##### Lift:
+		Gamepad 2, Right Stick Y:  Up is Up, Down is Down
+
 ##### Intake:
 
     	Gamepad 2, Left Trigger: Intake
@@ -32,17 +42,11 @@ Hi yes code works. V5.3
 
 ##### Foundation:
 
-    	Gamepad 2, Left Bumper: Retract/Extend (Toggle)
+    	Gamepad 2, Left Bumper: Retract/Extend (Deadman switch) - Default Retract
 
-##### Stone Outake:
+##### Stone Grabber:
 
     	Gamepad 2, B: Open/Lock Open/Lock (Toggle)
-
-##### Stone Intake
-
-    	Gamepad 2, dPad LEFT: Extend
-    	Gamepad 2, dPad UP: Lock
-    	Gamepad 2, dPad RIGHT: Open
 
 ##### Debug Modes:
 

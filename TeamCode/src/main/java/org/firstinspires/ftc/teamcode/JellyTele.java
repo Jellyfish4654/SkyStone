@@ -113,35 +113,27 @@ public class JellyTele extends BaseOpMode {
             }
 
             intake(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
-
-            if (gamepad2.x) {
-                stoneOutake.setPosition(stoneOutputOpen);
-            } else if (gamepad2.y) {
-                stoneOutake.setPosition(stoneOutputLock);
-
-            }
-
-            if (gamepad2.left_bumper) {
-                foundationLeft.setPosition(foundationLeftExtend);
-                foundationRight.setPosition(foundationRightExtend);
-            } else if (gamepad2.right_bumper) {
-                foundationLeft.setPosition(foundationLeftRetract);
-                foundationRight.setPosition(foundationRightRetract);
-            }
-
+            /*
+             * if (gamepad2.x) { stoneOutake.setPosition(stoneOutputOpen); } else if
+             * (gamepad2.y) { stoneOutake.setPosition(stoneOutputLock);
+             * 
+             * }
+             * 
+             * if (gamepad2.left_bumper) { foundationLeft.setPosition(foundationLeftExtend);
+             * foundationRight.setPosition(foundationRightExtend); } else if
+             * (gamepad2.right_bumper) { foundationLeft.setPosition(foundationLeftRetract);
+             * foundationRight.setPosition(foundationRightRetract); }
+             */
             // Position save option
             if (gamepad2.start && debugMode == DebugMode.ALL) {
                 positionSave();
             }
 
-            if (gamepad2.dpad_left) {
-                stoneIntake.setPosition(stoneIntakeExtend);
-            } else if (gamepad2.dpad_up) {
-                stoneIntake.setPosition(stoneIntakeLock);
-            } else if (gamepad2.dpad_right) {
-                stoneIntake.setPosition(stoneIntakeOpen);
-            }
-
+            /*
+             * if (gamepad2.dpad_left) { stoneIntake.setPosition(stoneIntakeExtend); } else
+             * if (gamepad2.dpad_up) { stoneIntake.setPosition(stoneIntakeLock); } else if
+             * (gamepad2.dpad_right) { stoneIntake.setPosition(stoneIntakeOpen); }
+             */
             logger.update();
         }
     }

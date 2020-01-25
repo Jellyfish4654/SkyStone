@@ -31,19 +31,18 @@ public abstract class AutoOpMode extends BaseOpMode {
 
     protected static final String webCam = "Webcam 1";
 
-    protected DriveTrain.DefaultParams defaultParams;
     protected DriveTrain drive;
+
+    protected DriveTrain.DefaultParams defaultParams;
     protected DriveTrain.MoveParams moveParams;
     protected DriveTrain.PivotParams pivotParams;
 
     protected final double defaultRampDownPos = 10 * countsPerInch;
-    protected final double defaultRampDownEndPos = 2 * countsPerInch;
+    protected final double defaultRampDownEndPos = 3 * countsPerInch;
 
-    protected final double defaultMaxPower = 0.80;
-    protected final double defaultMinPower = 0.3;
+    protected final double defaultMaxPower = 0.90;
+    protected final double defaultMinPower = 0.35;
 
-    // @Howard, I think these are reversed
-    // - Allen
     protected final double defaultRampUp = 0 * countsPerInch;
     protected final double defaultRampDown = 6 * countsPerInch;
     protected final double defaultRampDownEnd = 12 * countsPerInch;
@@ -51,22 +50,16 @@ public abstract class AutoOpMode extends BaseOpMode {
     protected final double[] defaultPIDGain = { .03, .03, .03 };
 
     protected final double defaultCorrectionTime = 350; // changed
-    protected final double defaultErrorDistance = countsPerInch * .5; // changed
+    protected final double defaultErrorDistance = countsPerInch * .3; // changed
 
     protected final Direction defaultDirection = Direction.FASTEST;
 
     protected String fileText;
     protected String[] inputs;
 
-    protected double[][] redStoneLEFT;
-    protected double[][] redStoneCENTER;
-    protected double[][] redStoneRIGHT;
-    protected double[][] redStoneFOUNDATION;
+    protected double[][] redStoneLEFT, redStoneCENTER,redStoneRIGHT, redStoneFOUNDATION;
 
-    protected double[][] blueStoneLEFT;
-    protected double[][] blueStoneCENTER;
-    protected double[][] blueStoneRIGHT;
-    protected double[][] blueStoneFOUNDATION;
+    protected double[][] blueStoneLEFT, blueStoneCENTER, blueStoneRIGHT,blueStoneFOUNDATION;
 
     protected double xOffset = 0;
     protected double yOffset = 0;
@@ -241,7 +234,7 @@ public abstract class AutoOpMode extends BaseOpMode {
             logger.addDataUpdate("Skystone Position", skyStonePosition);
         } catch (NullPointerException nullPointer) {
             skyStonePosition = team == team.RED ? SkyStonePosition.RIGHT : SkyStonePosition.LEFT;
-            logger.addDataUpdate("Error", "No skystone detected. Selecting default positions. - " + skyStonePosition);
+            logger.addDataUpdate("Error", "No stones detected. Selecting default positions. - " + skyStonePosition);
         }
     }
 
