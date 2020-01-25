@@ -24,12 +24,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
-@Autonomous(name = "AutoMec")
-public class AutoMec extends AutoOpMode {
+@Autonomous(name = "AutoMecTEST")
+public class AutoMecTEST extends AutoOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        logger.addDataUpdate("Status", "Loading AutoMec");
+        logger.addDataUpdate("Status", "Loading AutoMec TEST. DO NOT USE FOR COMP");
         initHardware();
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         initVision(0.55);
@@ -106,20 +106,12 @@ public class AutoMec extends AutoOpMode {
             stoneDetector.shutdownTF();
             // moveParams = new DriveTrain.MoveParams(16 * countsPerInch, 90);
 
-            waitMilliseconds(22000, timer);
+        //    waitMilliseconds(22000, timer);
 
             if (team == team.RED) {
-                moveParams = new DriveTrain.MoveParams(36 * countsPerInch, 0, 0, defaultParams);
-                resetCalibratedPosition();
-                while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
-                }
-                drive.stop();
+                foundationRedTest();
             } else if (team == team.BLUE) {
-                moveParams = new DriveTrain.MoveParams(36 * countsPerInch, 0, 0, defaultParams);
-                resetCalibratedPosition();
-                while (drive.move(calibratedCurrentPosition(), moveParams) && opModeIsActive()) {
-                }
-                drive.stop();
+             foundationBlueTest();  
             }
         }
         // End
@@ -142,8 +134,8 @@ public class AutoMec extends AutoOpMode {
         }
         drive.stop();
 
-        foundationLeft.setPosition(foundationLeftExtend);
-        foundationRight.setPosition(foundationRightExtend);
+       // foundationLeft.setPosition(foundationLeftExtend);
+        //foundationRight.setPosition(foundationRightExtend);
 
         pivotParams = new DriveTrain.PivotParams(-90, defaultParams);
         while (drive.pivot(pivotParams) && opModeIsActive())
@@ -156,8 +148,8 @@ public class AutoMec extends AutoOpMode {
         }
         drive.stop();
 
-        foundationLeft.setPosition(foundationLeftRetract);
-        foundationRight.setPosition(foundationRightRetract);
+      //  foundationLeft.setPosition(foundationLeftRetract);
+        //foundationRight.setPosition(foundationRightRetract);
 
         while (goToPosition(0, 0, 90, 1, .35) && opModeIsActive())
             ;
