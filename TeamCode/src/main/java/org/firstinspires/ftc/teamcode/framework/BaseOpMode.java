@@ -110,15 +110,16 @@ public abstract class BaseOpMode extends LinearOpMode {
         horizontal = hardwareMap.dcMotor.get("eH");// 2 **BY ITSELF**
         horizontal2 = hardwareMap.dcMotor.get("bl");// 3 EMPTY
 
-        intakeLeft = hardwareMap.dcMotor.get("il"); //
-        intakeRight = hardwareMap.dcMotor.get("ir"); //
+        intakeLeft = hardwareMap.dcMotor.get("il"); // 0
+        intakeRight = hardwareMap.dcMotor.get("ir"); // 1
 
         lift = hardwareMap.dcMotor.get("lift"); // 3
 
         foundationLeft = hardwareMap.servo.get("lFoundation"); // 3
         foundationRight = hardwareMap.servo.get("rFoundation"); // 2
 
-        grabber = hardwareMap.servo.get("grabber");
+        grabber = hardwareMap.servo.get("grabber");//0
+        bar = hardwareMap.servo.get("bar"); //1
         
         // stoneIntake = hardwareMap.servo.get("sI"); // 0
         // stoneOutake = hardwareMap.servo.get("sO"); // 1
