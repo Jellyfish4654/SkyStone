@@ -72,22 +72,23 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected int MAX_POWER_INDEX = 3;
     protected int MIN_POWER_INDEX = 4;
 
-    protected final double foundationLeftExtend = .58;
-    protected final double foundationLeftRetract = .08;
+    protected final double foundationLeftExtend = 1;
+    protected final double foundationLeftRetract = 0;
 
-    protected final double foundationRightExtend = .08;
-    protected final double foundationRightRetract = .58;
+    protected final double foundationRightExtend = 1;
+    protected final double foundationRightRetract = 0;
 
-    protected double grabberLock = 1; 
-    protected double grabberRelease = 0; 
+    protected double grabberLock = 1;
+    protected double grabberRelease = 0;
 
     protected double barMove = 0.5; // ?
-    protected double barMax = 1; //?
-    protected double barMin = 0; //?
+    protected double barMax = 1; // ?
+    protected double barMin = 0; // ?
 
-    protected final double liftMaxPosition = 100;
-    protected final double liftMinPosition = 0;
-    protected final double liftMultiplier = 0.4;
+    protected final double liftMaxPosition = 1000;
+    protected final double liftMinPosition = -1000;
+    protected final double liftMultiplier = 0.2;
+
     protected void initGlobalPosition() {
         globalPositionUpdate = new GlobalPosition(verticalLeft, verticalRight, horizontal, countsPerInch, 70);
         positionThread = new Thread(globalPositionUpdate);
@@ -118,13 +119,13 @@ public abstract class BaseOpMode extends LinearOpMode {
         foundationLeft = hardwareMap.servo.get("lFoundation"); // 3
         foundationRight = hardwareMap.servo.get("rFoundation"); // 2
 
-        grabber = hardwareMap.servo.get("grabber");//0
-        bar = hardwareMap.servo.get("bar"); //1
-        
+        grabber = hardwareMap.servo.get("grabber");// 0
+        bar = hardwareMap.servo.get("bar"); // 1
+
         // stoneIntake = hardwareMap.servo.get("sI"); // 0
         // stoneOutake = hardwareMap.servo.get("sO"); // 1
 
-       // led = (RevBlinkinLedDriver) hardwareMap.get("led");
+        // led = (RevBlinkinLedDriver) hardwareMap.get("led");
 
         // front_right.setDirection(DcMotorSimple.Direction.REVERSE);
         front_left.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -158,6 +159,8 @@ public abstract class BaseOpMode extends LinearOpMode {
         front_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         back_left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        intakeLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
         motors = new DcMotor[] { front_right, back_right, front_left, back_left };
 
         intake = new DcMotor[] { intakeLeft, intakeRight };
@@ -165,11 +168,9 @@ public abstract class BaseOpMode extends LinearOpMode {
         for (DcMotor motor : intake) {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            motor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        
 
         // Initialize imu
         logger.addDataUpdate("Status", "Initializing IMU");
