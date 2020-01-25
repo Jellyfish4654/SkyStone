@@ -72,8 +72,8 @@ public abstract class BaseOpMode extends LinearOpMode {
     protected int MAX_POWER_INDEX = 3;
     protected int MIN_POWER_INDEX = 4;
 
-    protected final double foundationLeftExtend = 1;
-    protected final double foundationLeftRetract = 0;
+    protected final double foundationLeftExtend = 0;
+    protected final double foundationLeftRetract = 1;
 
     protected final double foundationRightExtend = 1;
     protected final double foundationRightRetract = 0;
@@ -95,7 +95,7 @@ public abstract class BaseOpMode extends LinearOpMode {
         positionThread.start();
 
         globalPositionUpdate.reverseLeftEncoder();
-        globalPositionUpdate.reverseRightEncoder();
+        //globalPositionUpdate.reverseRightEncoder();
     }
 
     protected void initHardware() {
@@ -127,12 +127,12 @@ public abstract class BaseOpMode extends LinearOpMode {
 
         // led = (RevBlinkinLedDriver) hardwareMap.get("led");
 
-        front_right.setDirection(DcMotorSimple.Direction.REVERSE);
-        back_right.setDirection(DcMotorSimple.Direction.REVERSE);
-       // front_left.setDirection(DcMotorSimple.Direction.REVERSE);
-       // back_left.setDirection(DcMotorSimple.Direction.REVERSE);
+       // front_right.setDirection(DcMotorSimple.Direction.REVERSE);
+        //back_right.setDirection(DcMotorSimple.Direction.REVERSE);
+       front_left.setDirection(DcMotorSimple.Direction.REVERSE);
+        back_left.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        lift.setDirection(DcMotorSimple.DirectionREVERSE);
+        lift.setDirection(DcMotorSimple.Direction.REVERSE);
         // back_right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -140,10 +140,10 @@ public abstract class BaseOpMode extends LinearOpMode {
         front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        front_right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        back_right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        front_left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        back_left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        front_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        back_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        front_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        back_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         verticalLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         verticalRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -204,7 +204,7 @@ public abstract class BaseOpMode extends LinearOpMode {
             telemetry.addData("Orientation (Degrees)", globalPositionUpdate.returnOrientation());
             telemetry.addData("Vertical left encoder position", -verticalLeft.getCurrentPosition());
             // Should be already software coded to be reversed in all instances.
-            telemetry.addData("Vertical right encoder position", -verticalRight.getCurrentPosition());
+            telemetry.addData("Vertical right encoder position", verticalRight.getCurrentPosition());
             telemetry.addData("Horizontal encoder position", horizontal.getCurrentPosition());
         }
         telemetry.addData("Thread Active", positionThread.isAlive());

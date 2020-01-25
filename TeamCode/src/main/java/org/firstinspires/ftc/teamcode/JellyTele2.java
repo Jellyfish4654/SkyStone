@@ -80,7 +80,7 @@ public class JellyTele2 extends BaseOpMode {
             }
 
             xLeft1 = gamepad1.left_stick_x;
-            yLeft1 = gamepad1.left_stick_y;
+            yLeft1 = -gamepad1.left_stick_y;
             pivot = gamepad1.right_stick_x;
             barMove = gamepad2.left_stick_y * 0.5;
 
