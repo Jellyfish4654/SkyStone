@@ -84,10 +84,7 @@ public class JellyTele2 extends BaseOpMode {
             pivot = gamepad1.right_stick_x;
             barMove = gamepad2.left_stick_y * 0.5;
 
-            if (barMove >= 0)
-                bar.setPosition(barMove + 0.5);
-            else if (barMove < 0)
-                bar.setPosition(0.5 - Math.abs(barMove));
+            barCR.setPower(barMove);
 
             if (gamepad2.right_stick_y > 0) {
                 lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
