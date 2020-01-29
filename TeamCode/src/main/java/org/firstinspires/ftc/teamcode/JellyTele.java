@@ -125,8 +125,6 @@ public class JellyTele extends BaseOpMode {
             if (gamepad2.start && debugMode == DebugMode.ALL) {
                 positionSave();
             }
-
-          
             logger.update();
         }
     }

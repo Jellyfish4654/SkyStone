@@ -15,6 +15,8 @@ import org.firstinspires.ftc.teamcode.framework.enums.Side;
 import org.firstinspires.ftc.teamcode.framework.enums.Direction;
 import org.firstinspires.ftc.teamcode.framework.enums.MoveIndex;
 
+import org.firstinspires.ftc.teamcode.framework.Utility;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ public abstract class AutoOpMode extends BaseOpMode {
     protected final double[] defaultPIDGain = { .03, .03, .03 };
 
     protected final double defaultCorrectionTime = 350; // changed
-    protected final double defaultErrorDistance = countsPerInch * .3; // changed
+    protected final double defaultErrorDistance = countsPerInch * .2; // changed
 
     protected final Direction defaultDirection = Direction.FASTEST;
 
@@ -80,100 +82,28 @@ public abstract class AutoOpMode extends BaseOpMode {
 
     public void readFiles() {
         logger.addDataUpdate("Status", "Reading Red Side, Left Skystone Position File");
-
-        fileText = ReadWriteFile.readFile(redStoneLEFTPositions);
-        inputs = fileText.split("~");
-        redStoneLEFT = new double[inputs.length][5];
-        for (int i = 0; i < inputs.length; i++) {
-            String[] params = inputs[i].split(",");
-            for (int j = 0; j < params.length; j++) {
-                redStoneLEFT[i][j] = Double.parseDouble(params[j]);
-            }
-        }
+        redStoneLEFT = Utility.getMovementPositions(redStoneLEFTPositions);
 
         logger.addDataUpdate("Status", "Reading Red Side, Center Skystone Position File");
-
-        fileText = ReadWriteFile.readFile(redStoneCENTERPositions);
-        inputs = fileText.split("~");
-        redStoneCENTER = new double[inputs.length][5];
-        for (int i = 0; i < inputs.length; i++) {
-            String[] params = inputs[i].split(",");
-            for (int j = 0; j < params.length; j++) {
-                redStoneCENTER[i][j] = Double.parseDouble(params[j]);
-            }
-        }
+        redStoneCENTER = Utility.getMovementPositions(redStoneCENTERPositions);
 
         logger.addDataUpdate("Status", "Reading Red Side, Right Skystone Position File");
-
-        fileText = ReadWriteFile.readFile(redStoneRIGHTPositions);
-        inputs = fileText.split("~");
-        redStoneRIGHT = new double[inputs.length][5];
-        for (int i = 0; i < inputs.length; i++) {
-            String[] params = inputs[i].split(",");
-            for (int j = 0; j < params.length; j++) {
-                redStoneRIGHT[i][j] = Double.parseDouble(params[j]);
-            }
-        }
+        redStoneRIGHT = Utility.getMovementPositions(redStoneRIGHTPositions);
 
         logger.addDataUpdate("Status", "Reading Red Side, Foundation Side Position File");
-
-        fileText = ReadWriteFile.readFile(redFoundationPositions);
-        inputs = fileText.split("~");
-        redStoneFOUNDATION = new double[inputs.length][5];
-        for (int i = 0; i < inputs.length; i++) {
-            String[] params = inputs[i].split(",");
-            for (int j = 0; j < params.length; j++) {
-                redStoneFOUNDATION[i][j] = Double.parseDouble(params[j]);
-            }
-        }
+        redStoneFOUNDATION = Utility.getMovementPositions(redFoundationPositions);
 
         logger.addDataUpdate("Status", "Reading blue Side, Left Skystone Position File");
-
-        fileText = ReadWriteFile.readFile(blueStoneLEFTPositions);
-        inputs = fileText.split("~");
-        blueStoneLEFT = new double[inputs.length][5];
-        for (int i = 0; i < inputs.length; i++) {
-            String[] params = inputs[i].split(",");
-            for (int j = 0; j < params.length; j++) {
-                blueStoneLEFT[i][j] = Double.parseDouble(params[j]);
-            }
-        }
+        blueStoneLEFT = Utility.getMovementPositions(blueStoneLEFTPositions);
 
         logger.addDataUpdate("Status", "Reading blue Side, Center Skystone Position File");
-
-        fileText = ReadWriteFile.readFile(blueStoneCENTERPositions);
-        inputs = fileText.split("~");
-        blueStoneCENTER = new double[inputs.length][5];
-        for (int i = 0; i < inputs.length; i++) {
-            String[] params = inputs[i].split(",");
-            for (int j = 0; j < params.length; j++) {
-                blueStoneCENTER[i][j] = Double.parseDouble(params[j]);
-            }
-        }
-
+        blueStoneCENTER = Utility.getMovementPositions(blueStoneCENTERPositions);
+       
         logger.addDataUpdate("Status", "Reading Blue Side, Right Skystone Position File");
-
-        fileText = ReadWriteFile.readFile(blueStoneRIGHTPositions);
-        inputs = fileText.split("~");
-        blueStoneRIGHT = new double[inputs.length][5];
-        for (int i = 0; i < inputs.length; i++) {
-            String[] params = inputs[i].split(",");
-            for (int j = 0; j < params.length; j++) {
-                blueStoneRIGHT[i][j] = Double.parseDouble(params[j]);
-            }
-        }
+        blueStoneRIGHT = Utility.getMovementPositions(blueStoneRIGHTPositions);
 
         logger.addDataUpdate("Status", "Reading Blue Side, Foundation Side Position File");
-
-        fileText = ReadWriteFile.readFile(blueFoundationPositions);
-        inputs = fileText.split("~");
-        blueStoneFOUNDATION = new double[inputs.length][5];
-        for (int i = 0; i < inputs.length; i++) {
-            String[] params = inputs[i].split(",");
-            for (int j = 0; j < params.length; j++) {
-                blueStoneFOUNDATION[i][j] = Double.parseDouble(params[j]);
-            }
-        }
+        blueStoneFOUNDATION = Utility.getMovementPositions(blueFoundationPositions);
     }
 
     public void getStonePositions() {
