@@ -39,6 +39,7 @@ public class JellyTele2 extends BaseOpMode {
     double liftPosition = 0;
 
     double[] drivePower = new double[4];
+    double barPosition = 0;
 
     public void runOpMode() throws InterruptedException {
         logger.addDataUpdate("Status", "Loading JellyTele");
@@ -82,9 +83,9 @@ public class JellyTele2 extends BaseOpMode {
             xLeft1 = gamepad1.left_stick_x;
             yLeft1 = -gamepad1.left_stick_y;
             pivot = gamepad1.right_stick_x;
-            barMove = gamepad2.left_stick_y * 0.5;
+            barMove += gamepad2.left_stick_y * 0.2*20; //Multiply by period time of bar?
 
-            barCR.setPower(barMove);
+            bar.setPosition(barMove);
 
             if (gamepad2.right_stick_y > 0) {
                 lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

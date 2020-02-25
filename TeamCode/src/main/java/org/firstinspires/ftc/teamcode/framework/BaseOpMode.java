@@ -32,7 +32,7 @@ public abstract class BaseOpMode extends LinearOpMode {
 
     protected Servo foundationLeft, foundationRight;
     protected Servo grabber, bar;
-    protected CRServo barCR;
+   // protected CRServo barCR;
 
     protected DcMotor[] motors, encoders;
     protected DcMotor[] intake;
@@ -122,9 +122,9 @@ public abstract class BaseOpMode extends LinearOpMode {
         foundationRight = hardwareMap.servo.get("rFoundation"); // 2
 
         grabber = hardwareMap.servo.get("grabber");// 0
-        //bar = hardwareMap.servo.get("bar"); // 1
+        bar = hardwareMap.servo.get("bar"); // 1
 
-        barCR = hardwareMap.crservo.get("bar");
+      //  barCR = hardwareMap.crservo.get("bar");
 
         // stoneIntake = hardwareMap.servo.get("sI"); // 0
         // stoneOutake = hardwareMap.servo.get("sO"); // 1
