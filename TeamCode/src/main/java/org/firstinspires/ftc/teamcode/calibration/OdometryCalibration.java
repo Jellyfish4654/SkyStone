@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.ReadWriteFile;
 
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
+import org.firstinspires.ftc.teamcode.framework.enums.Motors;
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 
 import java.io.File;
@@ -40,10 +41,10 @@ public class OdometryCalibration extends BaseOpMode {
 
         //Begin calibration (if robot is unable to pivot at these speeds, please adjust the constant at the top of the code
         while(imu.getZAngle() < 90 && opModeIsActive()){
-            front_right.setPower(-PIVOT_SPEED);
-            back_right.setPower(-PIVOT_SPEED);
-            front_left.setPower(PIVOT_SPEED);
-            back_left.setPower(PIVOT_SPEED);
+            motors[Motors.FR].setPower(-PIVOT_SPEED);
+            motors[Motors.BR].setPower(-PIVOT_SPEED);
+            motors[Motors.FL].setPower(PIVOT_SPEED);
+            motors[Motors.BL].setPower(PIVOT_SPEED);
             if(imu.getZAngle() < 60) {
                 setPowerAll(-PIVOT_SPEED, -PIVOT_SPEED, PIVOT_SPEED, PIVOT_SPEED);
             }else{
@@ -70,13 +71,13 @@ public class OdometryCalibration extends BaseOpMode {
         Since the left encoder is also mapped to a drive motor, the encoder value needs to be reversed with the negative sign in front
         THIS MAY NEED TO BE CHANGED FOR EACH ROBOT
        */
-        double encoderDifference = Math.abs(verticalLeft.getCurrentPosition()) + (Math.abs(verticalRight.getCurrentPosition()));
+        double encoderDifference = Math.abs(encoders[Motors.E_VL].getCurrentPosition()) + (Math.abs(encoders[Motors.E_VR].getCurrentPosition()));
 
         double verticalEncoderTickOffsetPerDegree = encoderDifference/angle;
 
         double wheelBaseSeparation = (2*90*verticalEncoderTickOffsetPerDegree)/(Math.PI* countsPerInch);
 
-        horizontalTickOffset = horizontal.getCurrentPosition()/Math.toRadians(imu.getZAngle());
+        horizontalTickOffset = encoders[Motors.E_H].getCurrentPosition()/Math.toRadians(imu.getZAngle());
 
         //Write the constants to text files
         ReadWriteFile.writeFile(wheelBaseSeparationFile, String.valueOf(wheelBaseSeparation));
@@ -90,9 +91,9 @@ public class OdometryCalibration extends BaseOpMode {
 
             //Display raw values
             telemetry.addData("IMU Angle", imu.getZAngle());
-            telemetry.addData("Vertical Left Position", -verticalLeft.getCurrentPosition());
-            telemetry.addData("Vertical Right Position", verticalRight.getCurrentPosition());
-            telemetry.addData("Horizontal Position", horizontal.getCurrentPosition());
+            telemetry.addData("Vertical Left Position", -encoders[Motors.E_VL].getCurrentPosition());
+            telemetry.addData("Vertical Right Position", encoders[Motors.E_VR].getCurrentPosition());
+            telemetry.addData("Horizontal Position", encoders[Motors.E_H].getCurrentPosition());
             telemetry.addData("Vertical Encoder Offset", verticalEncoderTickOffsetPerDegree);
 
             //Update values
@@ -101,10 +102,9 @@ public class OdometryCalibration extends BaseOpMode {
     }
 
     private void setPowerAll(double fr, double br, double fl, double bl) {
-        front_right.setPower(fr);
-        back_right.setPower(br);
-        front_left.setPower(fl);
-        back_left.setPower(bl);
+        motors[Motors.FR].setPower(fr);
+        motors[Motors.BR].setPower(br);
+        motors[Motors.FL].setPower(fl);
+        motors[Motors.BL].setPower(bl);
     }
-
 }

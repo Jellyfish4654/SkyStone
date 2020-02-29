@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -54,7 +55,7 @@ public class AutoMec extends AutoOpMode {
             telemetry.update();
         }
 
-        // ***START***//
+        // ***START**
         waitForStart();
         timer.reset();
         drive.resetEncoders();
@@ -94,7 +95,7 @@ public class AutoMec extends AutoOpMode {
              * break; }
              * 
              * waitMilliseconds(3000, timer); }
-             */
+             *
         } else if (side == side.FOUNDATION) {
             stoneDetector.shutdownTF();
             // moveParams = new DriveTrain.MoveParams(16 * countsPerInch, 90);
@@ -119,7 +120,7 @@ public class AutoMec extends AutoOpMode {
         intake(0);
         while (opModeIsActive()) {
             drive.stop();
-            ReadWriteFile.writeFile(autoIMUOffset, String.valueOf(imu.getZAngle() - 45));
+//            ReadWriteFile.writeFile(autoIMUOffset, String.valueOf(imu.getZAngle() - 45));
             telemetry.addData("Status", "Auto Complete, Idle Mode");
             telemetry.update();
         }
@@ -283,3 +284,4 @@ public class AutoMec extends AutoOpMode {
     }
 
 }
+*/

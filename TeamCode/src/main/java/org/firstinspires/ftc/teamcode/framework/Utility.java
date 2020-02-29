@@ -20,7 +20,7 @@ public class Utility {
         return String.format("%2d:%2d:%2d ", now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE),
                 now.get(Calendar.SECOND));
     }
-
+/*
     public static double[][] getMovementPositions(File fileName) {
         String fileText = ReadWriteFile.readFile(fileName);
         String inputs[] = fileText.split("~");
@@ -33,4 +33,5 @@ public class Utility {
         }
         return coordinates;
     }
+   */
 }

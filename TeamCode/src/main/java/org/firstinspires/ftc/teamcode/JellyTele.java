@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.IMU;
 import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
 
-import org.firstinspires.ftc.teamcode.framework.enums.Motor;
+import org.firstinspires.ftc.teamcode.framework.enums.Motors;
 import org.firstinspires.ftc.teamcode.framework.enums.DebugMode;
 
 @TeleOp(name = "SkyStone JellyTele", group = "Iterative Opmode")
@@ -58,7 +58,6 @@ public class JellyTele extends BaseOpMode {
         }
 
         waitForStart();
-        initGlobalPosition();
         State state = State.MECANUM;
 
         /*
@@ -84,11 +83,6 @@ public class JellyTele extends BaseOpMode {
 
             telemetry.addData("Drive State", state);
 
-            if (debugMode != DebugMode.NONE)
-                positionTelemetry();
-            if (debugMode != DebugMode.NONE && debugMode != DebugMode.PARTIAL && gamepad2.start)
-                positionSave();
-
             double mult = gamepad1.left_bumper ? 0.5 : (gamepad1.right_bumper ? 0.2 : 1.0);
             double x = -gamepad1.left_stick_x, y = -gamepad1.left_stick_y;
             switch (state) {
@@ -113,27 +107,20 @@ public class JellyTele extends BaseOpMode {
             }
 
             if (gamepad2.left_bumper) {
-                foundationLeft.setPosition(foundationLeftExtend);
-                foundationRight.setPosition(foundationRightExtend);
+                foundation.extend();
             } else {
-                foundationLeft.setPosition(foundationLeftRetract);
-                foundationRight.setPosition(foundationRightRetract);
+                foundation.retract();
             }
             
-            intake(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
-           
-            if (gamepad2.start && debugMode == DebugMode.ALL) {
-                positionSave();
-            }
-            logger.update();
+            intake.run(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
         }
     }
 
     private void setPowers(double mult, double frontRight, double backRight, double frontLeft, double backLeft) {
-        motors[Motor.FR].setPower(frontRight * mult);
-        motors[Motor.BR].setPower(backRight * mult);
-        motors[Motor.FL].setPower(frontLeft * mult);
-        motors[Motor.BL].setPower(backLeft * mult);
+        motors[Motors.FR].setPower(frontRight * mult);
+        motors[Motors.BR].setPower(backRight * mult);
+        motors[Motors.FL].setPower(frontLeft * mult);
+        motors[Motors.BL].setPower(backLeft * mult);
     }
 
     protected void setMecanumPowers(double mult, double angle, double power) {

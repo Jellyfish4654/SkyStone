@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -16,7 +17,6 @@ import org.firstinspires.ftc.teamcode.framework.subsystems.imu.BNO055;
 
 import org.firstinspires.ftc.teamcode.framework.enums.Motor;
 import org.firstinspires.ftc.teamcode.framework.enums.DebugMode;
-
 @TeleOp(name = "SkyStone JellyTele2", group = "Tele V2")
 
 public class JellyTele2 extends BaseOpMode {
@@ -163,7 +163,7 @@ public class JellyTele2 extends BaseOpMode {
                 grabber.setPosition(grabberLock);
             }
 
-            intake(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
+            intake.run(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
 
             if (debugMode != DebugMode.NONE)
                 positionTelemetry();
@@ -175,3 +175,4 @@ public class JellyTele2 extends BaseOpMode {
         }
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -51,5 +52,7 @@ public class AutoTank extends AutoOpMode {
         stoneDetector = new TFStoneDetector();
         stoneDetector.initVuforia(this);
         stoneDetector.initTfod(0.55);
-  }*/ 
+  }*
 }
+
+*/

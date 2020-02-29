@@ -1,3 +1,4 @@
+/**
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -60,7 +61,7 @@ public class AutoMecTEST extends AutoOpMode {
             telemetry.update();
         }
 
-        // ***START***//
+        // ***START***
         waitForStart();
         timer.reset();
         drive.resetEncoders();
@@ -100,7 +101,7 @@ public class AutoMecTEST extends AutoOpMode {
              * break; }
              * 
              * waitMilliseconds(3000, timer); }
-             */
+             
         } else if (side == side.FOUNDATION) {
             stoneDetector.shutdownTF();
             // moveParams = new DriveTrain.MoveParams(16 * countsPerInch, 90);
@@ -281,3 +282,4 @@ public class AutoMecTEST extends AutoOpMode {
     }
 
 }
+*/

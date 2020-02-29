@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.framework;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -79,7 +80,7 @@ public abstract class AutoOpMode extends BaseOpMode {
         stoneDetector.initVuforia(this, webCam);
         stoneDetector.initTfod(confidence); // 0.55?
     }
-
+/*
     public void readFiles() {
         logger.addDataUpdate("Status", "Reading Red Side, Left Skystone Position File");
         redStoneLEFT = Utility.getMovementPositions(redStoneLEFTPositions);
@@ -105,6 +106,7 @@ public abstract class AutoOpMode extends BaseOpMode {
         logger.addDataUpdate("Status", "Reading Blue Side, Foundation Side Position File");
         blueStoneFOUNDATION = Utility.getMovementPositions(blueFoundationPositions);
     }
+    *
 
     public void getStonePositions() {
         updatedRecognitions = stoneDetector.detectStone();
@@ -165,7 +167,7 @@ public abstract class AutoOpMode extends BaseOpMode {
         } catch (NullPointerException nullPointer) {
             skyStonePosition = team == team.RED ? SkyStonePosition.RIGHT : SkyStonePosition.LEFT;
             logger.addDataUpdate("Error", "No stones detected. Selecting default positions. - " + skyStonePosition);
-        }
+        }             barCR.setPower(barMove);
     }
 
     protected boolean goToPosition(double targetX, double targetY, double targetOrientation, double maxPower,
@@ -230,5 +232,5 @@ public abstract class AutoOpMode extends BaseOpMode {
         xOffset = globalPositionUpdate.returnXCoordinate();
         yOffset = globalPositionUpdate.returnYCoordinate();
     }
-
 }
+*/
