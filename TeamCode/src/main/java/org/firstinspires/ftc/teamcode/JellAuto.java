@@ -225,7 +225,7 @@ public final class JellAuto extends BaseOpMode {
     public void runOpMode() throws InterruptedException {
         initHardware();
         initDrivetrain();
-        initVision(0.55);
+//        initVision(0.55);
 
         while (!opModeIsActive() && !isStopRequested()) { 
             // maybe detectStoneSilent?
@@ -277,6 +277,27 @@ public final class JellAuto extends BaseOpMode {
     }
 
     private void foundation() {
+        DriveTrain.MoveParams moveParams;
 
+        moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 180, 0, defaultParams);
+        resetCalPos();
+        while (drivetrain.move(getCalPos(), moveParams) && opModeIsActive());
+        drivetrain.stop();
+
+        foundation.extend();
+        sleep(1000);
+
+        moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 0, 0, defaultParams);
+        resetCalPos();
+        while (drivetrain.move(getCalPos(), moveParams) && opModeIsActive());
+        drivetrain.stop();
+
+        foundation.retract();
+        sleep(1000);
+
+        moveParams = new DriveTrain.MoveParams(36 * countsPerInch, 270, 0, defaultParams);
+        resetCalPos();
+        while (drivetrain.move(getCalPos(), moveParams) && opModeIsActive());
+        drivetrain.stop();
     }
 }
