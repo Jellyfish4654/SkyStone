@@ -279,11 +279,13 @@ public final class JellAuto extends BaseOpMode {
     private void foundation() {
         DriveTrain.MoveParams moveParams;
 
+        // Move forwards (which is really backwards)
         moveParams = new DriveTrain.MoveParams(30 * countsPerInch, 180, 0, defaultParams);
         resetCalPos();
         while (drivetrain.move(getCalPos(), moveParams) && opModeIsActive());
         drivetrain.stop();
 
+        // Grab & move back (which is really forwards)
         foundation.extend();
         sleep(1000);
 
@@ -292,10 +294,18 @@ public final class JellAuto extends BaseOpMode {
         while (drivetrain.move(getCalPos(), moveParams) && opModeIsActive());
         drivetrain.stop();
 
+        // Release
         foundation.retract();
         sleep(1000);
 
-        moveParams = new DriveTrain.MoveParams(36 * countsPerInch, 270, 0, defaultParams);
+        // Strafe & Park
+        if (team == Team.RED) {
+            // strafe right, which is really left b/c backwards
+            moveParams = new DriveTrain.MoveParams(36 * countsPerInch, 270, 0, defaultParams);
+        } else {
+            // strafe left, which is really right b/c backwards
+            moveParams = new DriveTrain.MoveParams(36 * countsPerInch, 90, 0, defaultParams);
+        }
         resetCalPos();
         while (drivetrain.move(getCalPos(), moveParams) && opModeIsActive());
         drivetrain.stop();
