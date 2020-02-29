@@ -105,7 +105,7 @@ public abstract class BaseOpMode extends LinearOpMode {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
-        intake = new Intake(intakeMotors);
+        intake = new Intake(intakeMotors, null, null, null);
 
         // Initialize IMU
         BNO055IMU imuHardware = hardwareMap.get(BNO055IMU.class, "imu");

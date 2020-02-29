@@ -60,14 +60,10 @@ public class JellyTele extends BaseOpMode {
         waitForStart();
         State state = State.MECANUM;
 
-        /*
-         ** Dpad** Up - DRIVE Down - TANK Left - Mecanum2 Right Mecanum
-         ** 
-         * Intake** Left Trigger (G2) Reverse with A + Left Trigger (G2)
-         * 
-         */
+		boolean isIntake = false;
+		boolean isOutput = false;
+        boolean intakeBlock = false; // true or false
 
-        // START
         logger.addData("Status", "JellyTele Active");
         while (opModeIsActive()) {
             if (gamepad1.dpad_up) {
@@ -106,13 +102,31 @@ public class JellyTele extends BaseOpMode {
                 break;
             }
 
+            // Foundation
             if (gamepad2.left_bumper) {
                 foundation.extend();
             } else {
                 foundation.retract();
             }
-            
-            intake.run(gamepad2.a ? -gamepad2.left_trigger : gamepad2.left_trigger);
+
+            // Intake
+			if (gamepad2.dpad_up && !isIntake && !isOutput) {
+                intakeBlock = false;
+                isIntake = true;
+            }
+			if (gamepad2.dpad_down && !isIntake && !isOutput) {
+                intakeBlock = true;
+                isIntake = true;
+            }
+			if (gamepad2.dpad_left && !isOutput) {
+                isOutput = true;
+                isIntake = false;
+			}
+
+            if (isOutput)
+                isOutput = intake.output();
+            if (isIntake)
+                isIntake = intake.intake(intakeBlock);
         }
     }
 
