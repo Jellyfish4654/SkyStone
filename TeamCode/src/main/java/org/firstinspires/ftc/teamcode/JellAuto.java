@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.framework.drivetrain.DriveTrain;
-import org.firstinspires.ftc.teamcode.framework.drivetrain.Mecanum;
+import org.firstinspires.ftc.teamcode.framework.drivetrain.MecanumOdo;
 import org.firstinspires.ftc.teamcode.framework.BaseOpMode;
 import org.firstinspires.ftc.teamcode.framework.subsystems.GlobalPosition;
 
@@ -36,7 +36,7 @@ public final class JellAuto extends BaseOpMode {
     private DriveTrain drivetrain;
     private DriveTrain.DefaultParams defaultParams;
     private void initDrivetrain() {
-        drivetrain = new Mecanum(Arrays.asList(motors), imu, logger, Arrays.asList(encoders));
+        drivetrain = new MecanumOdo(Arrays.asList(motors), imu, logger, Arrays.asList(encoders));
         defaultParams = new DriveTrain.DefaultParams(
             0.9, 0.35, // max, min
             0 * countsPerInch, 6 * countsPerInch, 12 * countsPerInch, // ramp {up,down,downend}
@@ -233,7 +233,7 @@ public final class JellAuto extends BaseOpMode {
                 team = Team.BLUE;
             if (gamepad1.b)
                 team = Team.RED;
-            
+
             if (gamepad1.dpad_up)
                 mode = Mode.PARK;
             if (gamepad1.dpad_left)
