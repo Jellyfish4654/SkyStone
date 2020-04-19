@@ -70,31 +70,42 @@ public class AutoMec extends AutoOpMode {
             }
             drive.stop();
 
-            // getStonePositions();
+            getStonePositions();
             stoneDetector.shutdownTF();
-            /*
-             * if (team == team.RED) {
-             * 
-             * switch (skyStonePosition) { case LEFT:
-             * 
-             * break; case CENTER: //
-             * goToPosition(redStoneCENTER[0][0],redStoneCENTER[0][1]); break; default:
-             * 
-             * break; }
-             * 
-             * // move to stones // collect and move to drop // move to stone position
-             * waitMilliseconds(3000, timer); } else if (team == team.BLUE) {
-             * 
-             * switch (skyStonePosition) { case LEFT:
-             * 
-             * break; case CENTER:
-             * 
-             * break; default:
-             * 
-             * break; }
-             * 
-             * waitMilliseconds(3000, timer); }
-             */
+
+            if (team == team.RED) {
+
+                switch (skyStonePosition) {
+                    case LEFT:
+
+                        break;
+                    case CENTER: //
+                        goToPosition(redStoneCENTER[0][0], redStoneCENTER[0][1]);
+                        break;
+                    default:
+
+                        break;
+                }
+
+                // move to stones // collect and move to drop // move to stone position
+                waitMilliseconds(3000, timer);
+            } else if (team == team.BLUE) {
+
+                switch (skyStonePosition) {
+                    case LEFT:
+
+                        break;
+                    case CENTER:
+
+                        break;
+                    default:
+
+                        break;
+                }
+
+                waitMilliseconds(3000, timer);
+            }
+
         } else if (side == side.FOUNDATION) {
             stoneDetector.shutdownTF();
             // moveParams = new DriveTrain.MoveParams(16 * countsPerInch, 90);

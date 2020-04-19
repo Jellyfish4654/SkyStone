@@ -37,15 +37,9 @@ public class AutoMecTEST extends AutoOpMode {
 
         logger.addDataUpdate("Status", "Activating Tensor Flow");
         stoneDetector.activateTF();
-
-      //  grabber.setPosition(grabberRelease);
-     //   bar.setPosition(0.5);
-
+   
         foundationLeft.setPosition(foundationLeftRetract);
         foundationRight.setPosition(foundationRightRetract);
-
-        // stoneIntake.setPosition(stoneIntakeLock);
-        // stoneOutake.setPosition(stoneOutputLock);
 
         logger.addDataUpdate("Status", "Initialization Complete, Awaiting Settings Override");
 

@@ -69,6 +69,7 @@ public class JellyTele2 extends BaseOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("JellyTele Drive State", state);
+            telemetry.addData("Field Centric", fieldCentric);
 
             if (gamepad1.dpad_left) {
                 fieldCentric = true;
